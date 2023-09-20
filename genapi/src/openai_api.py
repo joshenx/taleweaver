@@ -8,6 +8,13 @@ openai.api_key = os.environ.get("VITE_OPENAPI_KEY")
 
 # call openAI api
 def generate_response(prompt):
+    text_response = generate_story(prompt)
+    # TODO: for each image_prompt we call generate_image(image_prompt)
+    # put into return format
+    # "image_url": the actual image url
+    # return everything
+
+def generate_story(prompt):
     print(prompt)
     try:
         response = openai.ChatCompletion.create(
@@ -32,6 +39,20 @@ def generate_response(prompt):
         print("Error in creating campaigns from openAI:", str(e))
         return 503
     return response["choices"][0]["message"]["content"]
+
+def generate_image(prompt):
+    print(prompt)
+    try:
+        # TODO: change
+        response = openai.Completion.create(
+            model = "gpt-3.5-turbo", # change
+            prompt=prompt, # ????
+            temperature=0.7,
+        )
+    except Exception as e:
+        print("Error in creating campaigns from openAI:", str(e))
+        return 503
+    return response["choices"][0]["message"]["content"] # check
 
 def generate_response_debugger(prompt):
     print("ok called openai api with prompt: " + prompt)
