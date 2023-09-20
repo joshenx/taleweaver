@@ -22,3 +22,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .env
+
+frontend/.yarn/install-state.gz
+frontend/.next
+__pycache__/
+frontend/node_modules
