@@ -16,6 +16,7 @@ import {
   Icon,
   useDisclosure,
   VStack,
+  StackDivider,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import trackExample from '/src/images/TrackExampleHorizontal.png';
@@ -28,8 +29,11 @@ import SplitWithMessage from '../../App/components/SplitWithMessage';
 
 const Home = () => {
   const apiKey = import.meta.env.VITE_OPENAPI_KEY;
+  const numPages = 5;
+  const [focus, setFocus] = useState('vocabulary');
+  const [vocabAge, setVocabAge] = useState(3);
   const [prompt, setPrompt] = useState('');
-  const [response, setResponse] = useState('');
+  const [response, setResponse] = useState({});
   const [errorMsg, setErrorMsg] = useState('');
   const {
     isOpen: showAlert,
@@ -42,36 +46,66 @@ const Home = () => {
     onOpen: openSuccess,
   } = useDisclosure({ defaultIsOpen: false });
 
-  const handleSubmit = async () => {
-    // if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(prompt)) {
-    //   console.log('Invalid Email');
-    //   setErrorMsg('Invalid email.');
-    //   openAlert();
-    //   return;
-    // }
+  const additionalPromptInfo = `The story should teach ${focus} appropriate for a ${vocabAge}-year-old.`;
 
+  const handleSubmitDebug = () => {
+    const story = `{
+      "title": "The Adventures of Lily and Max",
+      "focus": "vocabulary",
+      "vocabulary_age": "3",
+      "story": [
+        {
+          "page": 1,
+          "text": "Once upon a time, there was a girl named Lily and a boy named Max. They were best friends. Lily had a beautiful pink dress, and Max wore a cool blue hat.",
+          "image_prompt": "An illustration of Lily wearing a pink dress and Max wearing a blue hat, holding hands and smiling"
+        },
+        {
+          "page": 2,
+          "text": "One sunny day, Lily and Max went to the park. They saw a big, yellow slide. 'Let's go down the slide,' said Max. 'Yes,' replied Lily with excitement.",
+          "image_prompt": "An image of Lily and Max sliding down a bright yellow slide, laughing and having fun"
+        },
+        {
+          "page": 3,
+          "text": "At the park, they also found a friendly dog named Spot. Spot had black and white fur. 'Woof woof!' barked Spot. 'He wants to play with us,' said Lily. 'Let's throw the ball!' exclaimed Max.",
+          "image_prompt": "An illustration of Lily, Max, and Spot playing with a red ball in the park, surrounded by green trees and colorful flowers"
+        },
+        {
+          "page": 4,
+          "text": "Lily and Max played with the ball until it was time to go home. They were tired but happy. 'Let's walk together,' suggested Lily. 'Hold my hand,' said Max.",
+          "image_prompt": "A picture of Lily and Max walking hand in hand, with the sun setting behind them, casting a warm orange glow"
+        },
+        {
+          "page": 5,
+          "text": "Finally, they reached their houses. Lily gave Max a big hug. 'Goodnight, Max,' said Lily. 'Goodnight, Lily,' replied Max. They went to sleep, looking forward to more adventures tomorrow.",
+          "image_prompt": "An image of Lily and Max hugging each other goodnight, with their houses in the background and a starry night sky"
+        }
+      ]
+    }`;
+    console.log(story);
+    setResponse(JSON.parse(story));
+  };
+
+  const handleSubmit = async () => {
     console.log(`Submitting prompt: ${prompt}`);
-    // const { error } = await supabase
-    //   .from('subscriptions')
-    //   .upsert({
-    //     email: email,
-    //     // name: name,
-    //   })
-    //   .select();
-    // if (error) {
-    //   console.log(error);
-    //   setErrorMsg('Something went wrong..');
-    //   openAlert();
-    // } else {
-    //   openSuccess();
-    // }
 
     const APIBody = {
       model: 'gpt-3.5-turbo',
       messages: [
         {
           role: 'user',
-          content: `Generate me a 100-word story about ${prompt}`,
+          content: `Generate a ${numPages}-page story about ${prompt}. For each page,
+          include an image prompt that is specific, colourful and creative and
+          matches the story of the page content. ${additionalPromptInfo}.  Format it in json format, like this example:
+          {
+          "title": "Charlie and his ball",
+          "focus": "${focus}",
+          "vocabulary_age": "${vocabAge}",
+          "story": {
+            ["page": 1,
+            "text": "First page of the story text goes here",
+            "image_prompt": "A young boy and his red ball on a green landscape with a tree in the background"],
+          ...
+          }}`,
         },
       ],
       temperature: 0.7,
@@ -90,7 +124,7 @@ const Home = () => {
     const story = data.choices[0].message.content;
 
     console.log(story);
-    setResponse(story);
+    setResponse(JSON.parse(story));
   };
 
   const scrollToTop = () => {
@@ -108,11 +142,6 @@ const Home = () => {
     let inputValue = e.target.value;
     setPrompt(inputValue);
   };
-
-  // const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   let inputValue = e.target.value;
-  //   setName(inputValue);
-  // };
 
   return (
     <Flex
@@ -175,15 +204,6 @@ const Home = () => {
           placeholder="Type your prompt here"
           required
         />
-        {/* <Input
-          focusBorderColor='brand.red'
-          value={name}
-          width={{ base: '60vw', md: '20vw' }}
-          onChange={handleNameChange}
-          placeholder="Your Name (optional)"
-          size="sm"
-          variant="flushed"
-        /> */}
         {!showAlert && !showSuccess && (
           <Button
             background="brand.red"
@@ -191,7 +211,7 @@ const Home = () => {
             fontWeight="normal"
             m="1rem 0rem"
             _hover={{ background: '#E86580' }}
-            onClick={handleSubmit}
+            onClick={handleSubmitDebug}
           >
             Get Story
           </Button>
@@ -229,65 +249,38 @@ const Home = () => {
           </Alert>
         </ScaleFade>
       )}
-      {/* <Image src={gradientDivider} width="100vw" mt="10vh" mb="-5vw" />
-      <Text textAlign="center" fontSize="3xl" fontWeight="600">
-        Get the guidance you need in one look.
-      </Text>
-      <SimpleThreeColumns />
-
-      <SplitWithImage pt="5rem" />
-      <SplitWithMessage pt="5rem" />
+      <Heading letterSpacing="0.2rem" color="#252A33" as="h1" size="3xl">
+        {response?.title}
+      </Heading>
       <VStack
-        spacing="5"
-        width={{ base: '100vw', sm: '60vw', md: '30vw' }}
-        px={{ base: '1rem', md: '0rem' }}
+        spacing="7"
+        width={{ base: '100vw', sm: '60vw', md: '45vw' }}
+        px={{ base: '1rem', md: '1rem' }}
         alignItems={{ base: 'center' }}
-        my="10vh"
         textAlign="center"
       >
-        <Text textAlign="center" fontSize="2xl" fontWeight="600">
-          We're still in progress!
-        </Text>
-        <Text textAlign="center" fontSize="md">
-          We're as excited as you to create TaleWeaver, and we strongly believe in
-          its transformative power to help you achieve your career dreams. To
-          stay up to date, subscribe to receive the latest news from us!
-        </Text>
-
-        <Button
-          background="brand.red"
-          color="white"
-          fontWeight="normal"
-          m="1rem 0rem"
-          _hover={{ background: '#E86580' }}
-          onClick={handleScrollToTop}
-        >
-          Subscribe
-        </Button>
-        <Box>
-          <Icon
-            as={Arrow}
-            color={'gray.800'}
-            w={71}
-            position={'relative'}
-            right={-91}
-            top={'-30px'}
-          />
-          <Text
-            fontSize={'lg'}
-            fontFamily={'Caveat'}
-            position={'relative'}
-            right={'-130px'}
-            top={'-75px'}
-            transform={'rotate(10deg)'}
-          >
-            Get notified!
-          </Text>
-        </Box>
-      </VStack> */}
-      <Text fontSize="lg" fontStyle="normal">
-        {response}
-      </Text>
+        {response &&
+          response.story &&
+          response.story.map((pageData) => (
+            <div key={pageData.page}>
+              <Text fontSize="lg" fontStyle="normal">
+                Page {pageData.page}: {pageData.text}
+              </Text>
+              <Heading as="h2" size="md">
+                Image prompt:
+              </Heading>
+              <Text fontSize="lg" fontStyle="normal">
+                {pageData.image_prompt}
+              </Text>
+              <Divider />
+              {/* <img
+            src={pageData.image_prompt}
+            alt={`Page ${pageData.page} Image`}
+            style={{ maxWidth: '100%' }}
+          /> */}
+            </div>
+          ))}
+      </VStack>
     </Flex>
   );
 };
