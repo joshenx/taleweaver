@@ -26,6 +26,7 @@ import { supabase } from '../../App/components/supabaseClient';
 import SimpleThreeColumns from '../../App/components/SimpleThreeColumns';
 import SplitWithImage from '../../App/components/SplitWithImage';
 import SplitWithMessage from '../../App/components/SplitWithMessage';
+import { PromptInput } from '../../App/components/PromptInput';
 
 const Home = () => {
   const apiKey = import.meta.env.VITE_OPENAPI_KEY;
@@ -302,6 +303,7 @@ const Home = () => {
             </div>
           ))}
       </VStack>
+      <PromptInput/>
     </Flex>
   );
 };
