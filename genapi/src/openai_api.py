@@ -11,9 +11,9 @@ openai.api_key = os.environ.get("VITE_OPENAPI_KEY")
 def generate_response(prompt):
     text_response = generate_story(prompt)
     # TODO: for each image_prompt we call generate_image(image_prompt)
-    # put into return format
-    # "image_url": the actual image url
-    # return everything
+    # the sample code is in `generate_response_debugger`
+    # for testing purposes we should call generate_image from generate_response_debugger first
+        # so we can test image generation with 1 image first instead of all 5 pages...
 
 def generate_story(prompt):
     print(prompt)
