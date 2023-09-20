@@ -1,6 +1,7 @@
 import openai
 import os
 from dotenv import load_dotenv
+import json
 
 load_dotenv()  # Loads environment variables from .env file
 
@@ -54,9 +55,24 @@ def generate_image(prompt):
         return 503
     return response["choices"][0]["message"]["content"] # check
 
+# ========== FOR TESTING PURPOSES ==========
+
 def generate_response_debugger(prompt):
+    text_response = generate_story_debugger(prompt)
+    text_json = json.loads(text_response)
+    pages = text_json["story"]
+    for page in pages:
+        image_prompt = page["image_prompt"]
+        image_response = generate_image_debugger(image_prompt)
+        page["image_url"] = image_response
+    return json.dumps(text_json)
+
+def generate_image_debugger(prompt):
+    return "url for " + prompt
+
+def generate_story_debugger(prompt):
     print("ok called openai api with prompt: " + prompt)
-    return {
+    return json.dumps({
       "title": "The Adventures of Lily and Max",
       "focus": "vocabulary",
       "vocabulary_age": "3",
@@ -87,4 +103,4 @@ def generate_response_debugger(prompt):
           "image_prompt": "An image of Lily and Max hugging each other goodnight, with their houses in the background and a starry night sky"
         }
       ]
-    }
+    })

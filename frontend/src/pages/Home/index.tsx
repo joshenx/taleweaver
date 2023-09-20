@@ -60,7 +60,14 @@ const Home = () => {
 
       if (response.ok) {
         const story = await response.json();
-        setResponse(story);
+        console.log(story);
+        try {
+          setResponse(JSON.parse(story));
+        } catch (error) {
+          console.error('Error parsing story', error);
+          setErrorMsg('Error parsing story');
+          openAlert();
+        }
       } else {
         console.error('Failed to send message to API');
       }
@@ -342,6 +349,12 @@ const Home = () => {
               </Heading>
               <Text fontSize="lg" fontStyle="normal">
                 {pageData.image_prompt}
+              </Text>
+              <Heading as="h2" size="md">
+                Image url:
+              </Heading>
+              <Text fontSize="lg" fontStyle="normal">
+                {pageData.image_url}
               </Text>
               <Divider />
               {/* <img
