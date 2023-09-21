@@ -17,6 +17,7 @@ import {
   useDisclosure,
   VStack,
   StackDivider,
+  Link,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import trackExample from '/src/images/TrackExampleHorizontal.png';
@@ -56,7 +57,7 @@ const Home = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt: prompt, context: "" }),
+        body: JSON.stringify({ prompt: prompt, context: '' }),
       });
 
       if (response.ok) {
@@ -214,7 +215,7 @@ const Home = () => {
         </Text>
         <Divider my="1rem" />
 
-        <Input
+        {/* <Input
           focusBorderColor="brand.red"
           width={{ base: '60vw', md: '20vw' }}
           value={prompt}
@@ -225,19 +226,8 @@ const Home = () => {
           size="md"
           placeholder="Type your prompt here"
           required
-        />
-        {!showAlert && !showSuccess && (
-          <Button
-            background="brand.red"
-            color="white"
-            fontWeight="normal"
-            m="1rem 0rem"
-            _hover={{ background: '#E86580' }}
-            onClick={handleSubmitDebug}
-          >
-            Get Story
-          </Button>
-        )}
+        /> */}
+        <Link href={'/create'}>Weave Story</Link>
       </VStack>
       {showAlert && (
         <ScaleFade initialScale={0.9} in={showAlert}>
@@ -303,7 +293,6 @@ const Home = () => {
             </div>
           ))}
       </VStack>
-      <PromptInput/>
     </Flex>
   );
 };
