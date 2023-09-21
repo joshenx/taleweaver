@@ -356,6 +356,10 @@ const Home = () => {
               <Text fontSize="lg" fontStyle="normal">
                 {pageData.image_url}
               </Text>
+              <img 
+                src={pageData.image_url}
+                alt={pageData.image_prompt}
+              />
               <Divider />
               {/* <img
             src={pageData.image_prompt}

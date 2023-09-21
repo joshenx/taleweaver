@@ -68,7 +68,7 @@ def generate_response_debugger(prompt):
     return json.dumps(text_json)
 
 def generate_image_debugger(prompt):
-    return "url for " + prompt
+    return "https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"
 
 def generate_story_debugger(prompt):
     print("ok called openai api with prompt: " + prompt)
