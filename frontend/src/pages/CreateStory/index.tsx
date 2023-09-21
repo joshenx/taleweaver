@@ -27,6 +27,7 @@ import {
   Image,
 } from '@chakra-ui/react';
 import { useState } from 'react';
+import BadWordsFilter from 'bad-words';
 
 const CreateStory = () => {
   const numPages = 1;
@@ -54,6 +55,8 @@ const CreateStory = () => {
     onClose: closeSuccess,
     onOpen: openSuccess,
   } = useDisclosure({ defaultIsOpen: false });
+
+  var filter = new BadWordsFilter();
 
   const getFullPrompt = () => {
     return `Generate a children's story about ${storyPrompt}. The story should have ${numPages} pages. For each page,
@@ -108,6 +111,11 @@ const CreateStory = () => {
   };
 
   const handleSubmit = async () => {
+    if (filter.isProfane(storyPrompt) || filter.isProfane(name)) {
+      openAlert();
+      return;
+    }
+
     const fullPrompt = getFullPrompt();
     console.log(`Submitting prompt: ${fullPrompt}`);
     setIsLoading(true);
