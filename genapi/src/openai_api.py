@@ -80,34 +80,18 @@ def generate_image_debugger(prompt):
 def generate_story_debugger(prompt):
     print("ok called openai api with prompt: " + prompt)
     return json.dumps({
-      "title": "The Adventures of Lily and Max",
-      "focus": "vocabulary",
-      "vocabulary_age": "3",
-      "story": [
-        {
-          "page": 1,
-          "text": "Once upon a time, there was a girl named Lily and a boy named Max. They were best friends. Lily had a beautiful pink dress, and Max wore a cool blue hat.",
-          "image_prompt": "An illustration of Lily wearing a pink dress and Max wearing a blue hat, holding hands and smiling"
-        },
-        {
-          "page": 2,
-          "text": "One sunny day, Lily and Max went to the park. They saw a big, yellow slide. 'Let's go down the slide,' said Max. 'Yes,' replied Lily with excitement.",
-          "image_prompt": "An image of Lily and Max sliding down a bright yellow slide, laughing and having fun"
-        },
-        {
-          "page": 3,
-          "text": "At the park, they also found a friendly dog named Spot. Spot had black and white fur. 'Woof woof!' barked Spot. 'He wants to play with us,' said Lily. 'Let's throw the ball!' exclaimed Max.",
-          "image_prompt": "An illustration of Lily, Max, and Spot playing with a red ball in the park, surrounded by green trees and colorful flowers"
-        },
-        {
-          "page": 4,
-          "text": "Lily and Max played with the ball until it was time to go home. They were tired but happy. 'Let's walk together,' suggested Lily. 'Hold my hand,' said Max.",
-          "image_prompt": "A picture of Lily and Max walking hand in hand, with the sun setting behind them, casting a warm orange glow"
-        },
-        {
-          "page": 5,
-          "text": "Finally, they reached their houses. Lily gave Max a big hug. 'Goodnight, Max,' said Lily. 'Goodnight, Lily,' replied Max. They went to sleep, looking forward to more adventures tomorrow.",
-          "image_prompt": "An image of Lily and Max hugging each other goodnight, with their houses in the background and a starry night sky"
-        }
-      ]
-    })
+        "title": "The Adventures of Teddy",
+        "focus": "vocabulary",
+        "vocabulary_age": "3",
+        "total_pages": "1",
+        "story": [
+            {"page": 1,
+             "text": "Once upon a time, there was a teddy bear named Teddy. Teddy loved to go on adventures and explore the world around him.",
+             "image_prompt": "Teddy bear playing in a colorful garden",
+             "subject_description": "A fluffy brown teddy bear with a big smile on his face",
+             "image_url": "https://oaidalleapiprodscus.blob.core.windows.net/private/org-PuMGCWJ1M3tJ6ExWwgZAlVT4/user-TETd6CWnI82tNSrj9rzXTm2Z/img-bAHOYMVZYaHoxhki7ijZ3wIC.png?st=2023-09-21T16%3A02%3A42Z&se=2023-09-21T18%3A02%3A42Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-09-20T21%3A55%3A13Z&ske=2023-09-21T21%3A55%3A13Z&sks=b&skv=2021-08-06&sig=1636ZkX6Wk18Neqpt%2BkucftDkjSc9RESrdE19MaZcvE%3D"},
+            {"page": 2,
+             "text": "Then, there was a teddy bear named Teddy. Teddy loved to go on adventures and explore the world around him.",
+             "image_prompt": "Teddy bear playing in a colorful garden",
+             "subject_description": "A fluffy brown teddy bear with a big smile on his face",
+             "image_url": "https://oaidalleapiprodscus.blob.core.windows.net/private/org-PuMGCWJ1M3tJ6ExWwgZAlVT4/user-TETd6CWnI82tNSrj9rzXTm2Z/img-bAHOYMVZYaHoxhki7ijZ3wIC.png?st=2023-09-21T16%3A02%3A42Z&se=2023-09-21T18%3A02%3A42Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-09-20T21%3A55%3A13Z&ske=2023-09-21T21%3A55%3A13Z&sks=b&skv=2021-08-06&sig=1636ZkX6Wk18Neqpt%2BkucftDkjSc9RESrdE19MaZcvE%3D"}]})

@@ -28,6 +28,7 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import BadWordsFilter from 'bad-words';
+import HTMLFlipBook from 'react-pageflip';
 
 const CreateStory = () => {
   const numPages = 1;
@@ -230,7 +231,7 @@ const CreateStory = () => {
               fontWeight="normal"
               m="1rem 0rem"
               _hover={{ background: '#E86580' }}
-              onClick={handleSubmit} // handleSubmitDebug for testing, handleSubmit for actual API call
+              onClick={handleSubmitDebug} // handleSubmitDebug for testing, handleSubmit for actual API call
             >
               Get Story
             </Button>
@@ -290,40 +291,76 @@ const CreateStory = () => {
         <Heading letterSpacing="-0.2rem" color="#252A33" as="h1" size="3xl">
           {response?.title}
         </Heading>
-        <VStack
-          spacing="7"
-          pt="2rem"
-          px={{ base: '1rem', md: '1rem' }}
-          alignItems={{ base: 'center' }}
-          textAlign="center"
-        >
-          {response &&
-            response.story &&
-            response.story.map((pageData) => (
-              <VStack key={pageData.page}>
-                <Heading as="h2" size="md">
-                  Image
-                </Heading>
-                <Image
-                  borderRadius="1rem"
-                  boxSize="300px"
-                  src={pageData.image_url}
-                  alt={pageData.image_prompt}
-                />
-                <Text fontSize="sm" fontStyle="normal">
-                  {pageData.image_prompt}
-                </Text>
-                <Text fontSize="lg" fontStyle="normal">
-                  Page {pageData.page}: {pageData.text}
-                </Text>
-                <Divider py="2rem" />
-                {/* <img
+        <VStack>
+          <HTMLFlipBook
+            width={550}
+            height={733}
+            size="stretch"
+            minWidth={315}
+            maxWidth={1000}
+            minHeight={400}
+            maxHeight={1533}
+            maxShadowOpacity={0.5}
+            showCover={false}
+            mobileScrollSupport={true}
+            className="demo-book"
+          >
+            {response &&
+              response.story &&
+              response.story.map((pageData) => (
+                <Box
+                  p="2rem"
+                  bg="white"
+                  border="1px"
+                  borderColor="gray.300"
+                  borderRadius="10px"
+                  overflow="clip"
+                >
+                  <VStack key={pageData.page} maxHeight="100%">
+                    <Image
+                      objectFit="cover"
+                      borderRadius="1rem"
+                      boxSize="100%"
+                      src={pageData.image_url}
+                      alt={pageData.image_prompt}
+                    />
+                    <Text fontSize="sm" fontStyle="normal">
+                      {pageData.image_prompt}
+                    </Text>
+                    <Text fontSize="lg" fontStyle="normal">
+                      {pageData.text}
+                    </Text>
+                    <Box position="absolute" bottom="1rem">
+                      <Divider />
+                      <Text fontSize="sm" fontStyle="normal">
+                        {pageData.page}
+                      </Text>
+                    </Box>
+                    {/* <img
         src={pageData.image_prompt}
         alt={`Page ${pageData.page} Image`}
         style={{ maxWidth: '100%' }}
       /> */}
-              </VStack>
-            ))}
+                  </VStack>
+                  <Box
+                    backgroundImage={pageData.image_url}
+                    backgroundSize="cover"
+                    filter="blur(5px)"
+                    border="1px"
+                    borderColor="gray.300"
+                    borderRadius="10px"
+                    position="absolute"
+                    top="0"
+                    left="0"
+                    zIndex="-1"
+                    opacity="0.2"
+                    bgPosition="center"
+                    width="100%"
+                    height="100%"
+                  />
+                </Box>
+              ))}
+          </HTMLFlipBook>
         </VStack>
       </Container>
     </>
