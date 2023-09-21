@@ -17,6 +17,7 @@ import {
   useDisclosure,
   VStack,
   StackDivider,
+  Link,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import trackExample from '/src/images/TrackExampleHorizontal.png';
@@ -28,54 +29,6 @@ import SplitWithImage from '../../App/components/SplitWithImage';
 import SplitWithMessage from '../../App/components/SplitWithMessage';
 
 const Home = () => {
-  const apiKey = import.meta.env.VITE_OPENAPI_KEY;
-  const numPages = 5;
-  const [focus, setFocus] = useState('vocabulary');
-  const [vocabAge, setVocabAge] = useState(3);
-  const [prompt, setPrompt] = useState('');
-  const [response, setResponse] = useState({});
-  const [errorMsg, setErrorMsg] = useState('');
-  const {
-    isOpen: showAlert,
-    onClose: closeAlert,
-    onOpen: openAlert,
-  } = useDisclosure({ defaultIsOpen: false });
-  const {
-    isOpen: showSuccess,
-    onClose: closeSuccess,
-    onOpen: openSuccess,
-  } = useDisclosure({ defaultIsOpen: false });
-
-  const additionalPromptInfo = `The story should teach ${focus} appropriate for a ${vocabAge}-year-old.`;
-
-  const handleSubmitDebug = async () => {
-    try {
-      const response = await fetch('http://127.0.0.1:8000/test', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt: prompt, context: "" }),
-      });
-
-      if (response.ok) {
-        const story = await response.json();
-        console.log(story);
-        try {
-          setResponse(JSON.parse(story));
-        } catch (error) {
-          console.error('Error parsing story', error);
-          setErrorMsg('Error parsing story');
-          openAlert();
-        }
-      } else {
-        console.error('Failed to send message to API');
-      }
-    } catch (error) {
-      console.error('Error sending message to API', error);
-    }
-  };
-
   /*
   const handleSubmitDebugWithoutApi = () => {
     const story = `{
@@ -114,52 +67,6 @@ const Home = () => {
     setResponse(JSON.parse(story));
   };
   */
-
-  const getFullPrompt = () => {
-    return `Generate a ${numPages}-page story about ${prompt}. For each page,
-      include an image prompt that is specific, colourful and creative and
-      matches the story of the page content. ${additionalPromptInfo}.  Format it in json format, like this example:
-      {
-      "title": "Charlie and his ball",
-      "focus": "${focus}",
-      "vocabulary_age": "${vocabAge}",
-      "story": {
-        ["page": 1,
-        "text": "First page of the story text goes here",
-        "image_prompt": "A young boy and his red ball on a green landscape with a tree in the background"],
-      ...
-      }}`
-  }
-
-  const handleSubmit = async () => {
-    console.log(`Submitting prompt: ${prompt}`);
-    const fullPrompt = getFullPrompt();
-
-    try {
-      const response = await fetch('http://127.0.0.1:8000/actual', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt: fullPrompt, context: "" }),
-      });
-
-      if (response.ok) {
-        const story = await response.json();
-        try {
-          setResponse(JSON.parse(story));
-        } catch (error) {
-          console.error('Error parsing story', error);
-          setErrorMsg('Error parsing story');
-          openAlert();
-        }
-      } else {
-        console.error('Failed to send message to API');
-      }
-    } catch (error) {
-      console.error('Error sending message to API', error);
-    }
-  }
 
   /*
   const handleSubmitWithoutApi = async () => {
@@ -216,11 +123,6 @@ const Home = () => {
     scrollToTop();
   };
 
-  const handlePromptChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let inputValue = e.target.value;
-    setPrompt(inputValue);
-  };
-
   return (
     <Flex
       gap={2}
@@ -270,7 +172,7 @@ const Home = () => {
         </Text>
         <Divider my="1rem" />
 
-        <Input
+        {/* <Input
           focusBorderColor="brand.red"
           width={{ base: '60vw', md: '20vw' }}
           value={prompt}
@@ -281,93 +183,8 @@ const Home = () => {
           size="md"
           placeholder="Type your prompt here"
           required
-        />
-        {!showAlert && !showSuccess && (
-          <Button
-            background="brand.red"
-            color="white"
-            fontWeight="normal"
-            m="1rem 0rem"
-            _hover={{ background: '#E86580' }}
-            onClick={handleSubmitDebug} // handleSubmitDebug for testing, handleSubmit for actual API call
-          >
-            Get Story
-          </Button>
-        )}
-      </VStack>
-      {showAlert && (
-        <ScaleFade initialScale={0.9} in={showAlert}>
-          <Alert mt="1rem" borderRadius="10px" status="error" variant="solid">
-            <AlertIcon />
-            <AlertDescription fontSize="sm">{errorMsg}</AlertDescription>
-            <CloseButton
-              alignSelf="flex-start"
-              position="relative"
-              right={-1}
-              top={'50%'}
-              onClick={closeAlert}
-            />
-          </Alert>
-        </ScaleFade>
-      )}
-      {showSuccess && (
-        <ScaleFade initialScale={0.9} in={showSuccess}>
-          <Alert mt="1rem" borderRadius="10px" status="success" variant="solid">
-            <AlertIcon />
-            <AlertDescription fontSize="sm">
-              Submission success!
-            </AlertDescription>
-            <CloseButton
-              textAlign="center"
-              alignSelf="flex-start"
-              position="relative"
-              right={-1}
-              onClick={closeSuccess}
-            />
-          </Alert>
-        </ScaleFade>
-      )}
-      <Heading letterSpacing="0.2rem" color="#252A33" as="h1" size="3xl">
-        {response?.title}
-      </Heading>
-      <VStack
-        spacing="7"
-        width={{ base: '100vw', sm: '60vw', md: '45vw' }}
-        px={{ base: '1rem', md: '1rem' }}
-        alignItems={{ base: 'center' }}
-        textAlign="center"
-      >
-        {response &&
-          response.story &&
-          response.story.map((pageData) => (
-            <div key={pageData.page}>
-              <Text fontSize="lg" fontStyle="normal">
-                Page {pageData.page}: {pageData.text}
-              </Text>
-              <Heading as="h2" size="md">
-                Image prompt:
-              </Heading>
-              <Text fontSize="lg" fontStyle="normal">
-                {pageData.image_prompt}
-              </Text>
-              <Heading as="h2" size="md">
-                Image url:
-              </Heading>
-              <Text fontSize="lg" fontStyle="normal">
-                {pageData.image_url}
-              </Text>
-              <img 
-                src={pageData.image_url}
-                alt={pageData.image_prompt}
-              />
-              <Divider />
-              {/* <img
-            src={pageData.image_prompt}
-            alt={`Page ${pageData.page} Image`}
-            style={{ maxWidth: '100%' }}
-          /> */}
-            </div>
-          ))}
+        /> */}
+        <Link href={'/create'}>Weave Story</Link>
       </VStack>
     </Flex>
   );

@@ -18,7 +18,7 @@ const theme = extendTheme({
     },
   },
   fonts: {
-    heading: `'Calistoga', sans-serif`,
+    heading: `'Inter', sans-serif`,
     body: `'Inter', sans-serif`,
   },
 });
