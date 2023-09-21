@@ -14,13 +14,9 @@ def generate_response(prompt):
     pages = text_json["story"]
     for page in pages:
         image_prompt = page["image_prompt"]
-        image_response = generate_image_debugger(image_prompt)
+        image_response = generate_image(image_prompt)
         page["image_url"] = image_response
     return json.dumps(text_json)
-    # TODO: for each image_prompt we call generate_image(image_prompt)
-    # the sample code is in `generate_response_debugger`
-    # for testing purposes we should call generate_image from generate_response_debugger first
-        # so we can test image generation with 1 image first instead of all 5 pages...
 
 def generate_story(prompt):
     print(prompt)
@@ -44,23 +40,21 @@ def generate_story(prompt):
             ],
         )
     except Exception as e:
-        print("Error in creating campaigns from openAI:", str(e))
+        print("Error in creating story from openAI:", str(e))
         return 503
     return response["choices"][0]["message"]["content"]
 
 def generate_image(prompt):
-    print(prompt)
     try:
-        # TODO: change
-        response = openai.Completion.create(
-            model = "gpt-3.5-turbo", # change
-            prompt=prompt, # ????
-            temperature=0.7,
+        response = openai.Image.create(
+            prompt = prompt,
+            n = 1, # number of images to generate 
+            size = "256x256", # size of each generated image
         )
     except Exception as e:
-        print("Error in creating campaigns from openAI:", str(e))
+        print("Error in creating image from openAI:", str(e))
         return 503
-    return response["choices"][0]["message"]["content"] # check
+    return response["data"][0]["url"]
 
 # ========== FOR TESTING PURPOSES ==========
 
@@ -68,14 +62,20 @@ def generate_response_debugger(prompt):
     text_response = generate_story_debugger(prompt)
     text_json = json.loads(text_response)
     pages = text_json["story"]
+    # i = 1
     for page in pages:
+        # if i == 1:
+        #     url = generate_image(page["image_prompt"])
+        #     page["image_url"] = url
+        #     i += 1
+        #     continue
         image_prompt = page["image_prompt"]
         image_response = generate_image_debugger(image_prompt)
         page["image_url"] = image_response
     return json.dumps(text_json)
 
 def generate_image_debugger(prompt):
-    return "url for " + prompt
+    return "https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"
 
 def generate_story_debugger(prompt):
     print("ok called openai api with prompt: " + prompt)
