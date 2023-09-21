@@ -28,7 +28,7 @@ import {
 import { useState } from 'react';
 
 const CreateStory = () => {
-  const numPages = 3;
+  const numPages = 1;
   const [focus, setFocus] = useState('vocabulary');
   const [vocabAge, setVocabAge] = useState(3);
   const [tabIndex, setTabIndex] = useState(0);
@@ -300,9 +300,10 @@ const CreateStory = () => {
                 <Heading as="h2" size="md">
                   Image url:
                 </Heading>
-                <Text fontSize="lg" fontStyle="normal">
+                {/* <Text fontSize="lg" fontStyle="normal">
                   {pageData.image_url}
-                </Text>
+                </Text> */}
+                <img src={pageData.image_url} alt={pageData.image_prompt} />
                 <Divider />
                 {/* <img
         src={pageData.image_prompt}
