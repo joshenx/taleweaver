@@ -24,6 +24,7 @@ import {
   SliderTrack,
   SliderFilledTrack,
   SliderThumb,
+  Image,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
@@ -278,7 +279,7 @@ const CreateStory = () => {
         )}
       </Container>
       <Container textAlign="center" maxW={'4xl'} py={12}>
-        <Heading letterSpacing="0.2rem" color="#252A33" as="h1" size="3xl">
+        <Heading letterSpacing="-0.2rem" color="#252A33" as="h1" size="3xl">
           {response?.title}
         </Heading>
         <VStack
@@ -291,30 +292,29 @@ const CreateStory = () => {
           {response &&
             response.story &&
             response.story.map((pageData) => (
-              <div key={pageData.page}>
+              <VStack key={pageData.page}>
+                <Heading as="h2" size="md">
+                  Image
+                </Heading>
+                <Image
+                  borderRadius="1rem"
+                  boxSize="300px"
+                  src={pageData.image_url}
+                  alt={pageData.image_prompt}
+                />
+                <Text fontSize="sm" fontStyle="normal">
+                  {pageData.image_prompt}
+                </Text>
                 <Text fontSize="lg" fontStyle="normal">
                   Page {pageData.page}: {pageData.text}
                 </Text>
-                <Heading as="h2" size="md">
-                  Image prompt:
-                </Heading>
-                <Text fontSize="lg" fontStyle="normal">
-                  {pageData.image_prompt}
-                </Text>
-                <Heading as="h2" size="md">
-                  Image:
-                </Heading>
-                {/* <Text fontSize="lg" fontStyle="normal">
-                  {pageData.image_url}
-                </Text> */}
-                <img src={pageData.image_url} alt={pageData.image_prompt} />
-                <Divider />
+                <Divider py="2rem" />
                 {/* <img
         src={pageData.image_prompt}
         alt={`Page ${pageData.page} Image`}
         style={{ maxWidth: '100%' }}
       /> */}
-              </div>
+              </VStack>
             ))}
         </VStack>
       </Container>
