@@ -57,20 +57,24 @@ const CreateStory = () => {
   const getFullPrompt = () => {
     return `Generate a children's story about ${storyPrompt}. The story should have ${numPages} pages. For each page,
       include an image prompt that is specific, colourful and creative and
-      matches the story of the page content. Any names in the "image_prompt" should be replaced with a description of the
-      subject. ${additionalPromptInfo} ${additionalNameInfo}
+      matches the story of the page content. The subject(s) in the "image_prompt" should include the main character with optional side subjects.
+      ${additionalPromptInfo} ${additionalNameInfo} The 'subject_description' should base the description of the subject off the
+      subject's name.
       Format it in json format, like this example:
+      """
       {
       "title": "Creative Story Title Here",
       "focus": "${focus}",
       "vocabulary_age": "${vocabAge}",
       "total_pages": "${numPages}",
-      "story": {
-        ["page": 1,
+      "story": [
+        {"page": 1,
         "text": "First page of the story text goes here",
-        "image_prompt": "A subject(s) doing an activity at a place"],
+        "image_prompt": "A subject(s) doing an activity at a place",
+        "subject_description": "A boy/girl with blonde/brunette/black hair"},
       ...
-      }}`;
+      ]}
+      """`;
   };
 
   const handleSubmitDebug = async () => {
@@ -298,7 +302,7 @@ const CreateStory = () => {
                   {pageData.image_prompt}
                 </Text>
                 <Heading as="h2" size="md">
-                  Image url:
+                  Image:
                 </Heading>
                 {/* <Text fontSize="lg" fontStyle="normal">
                   {pageData.image_url}
