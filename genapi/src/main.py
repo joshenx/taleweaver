@@ -17,7 +17,8 @@ app = FastAPI()
 
 origins = [
     "http//localhost:3000",
-    "http://localhost:5173/",
+    "http//localhost:5173",
+    "http://localhost:5173/"
     "http://13.212.192.8:3000",
 ]
 
@@ -48,6 +49,12 @@ class QuestionRequest(BaseModel):
 @app.post("/test")
 async def test(request_data: QuestionRequest):
     return generate_response_debugger(request_data.prompt)
+
+@app.post("/actual")
+async def get_story(request_data: QuestionRequest):
+    prompt = request_data.prompt
+    response = generate_response(prompt)
+    return response
 
 
 

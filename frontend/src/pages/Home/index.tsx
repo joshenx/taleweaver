@@ -61,8 +61,15 @@ const Home = () => {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        console.log(data);
+        const story = await response.json();
+        console.log(story);
+        try {
+          setResponse(JSON.parse(story));
+        } catch (error) {
+          console.error('Error parsing story', error);
+          setErrorMsg('Error parsing story');
+          openAlert();
+        }
       } else {
         console.error('Failed to send message to API');
       }
@@ -71,6 +78,7 @@ const Home = () => {
     }
   };
 
+  /*
   const handleSubmitDebugWithoutApi = () => {
     const story = `{
       "title": "The Adventures of Lily and Max",
@@ -107,8 +115,56 @@ const Home = () => {
     console.log(story);
     setResponse(JSON.parse(story));
   };
+  */
+
+  const getFullPrompt = () => {
+    return `Generate a ${numPages}-page story about ${prompt}. For each page,
+      include an image prompt that is specific, colourful and creative and
+      matches the story of the page content. ${additionalPromptInfo}.  Format it in json format, like this example:
+      {
+      "title": "Charlie and his ball",
+      "focus": "${focus}",
+      "vocabulary_age": "${vocabAge}",
+      "story": {
+        ["page": 1,
+        "text": "First page of the story text goes here",
+        "image_prompt": "A young boy and his red ball on a green landscape with a tree in the background"],
+      ...
+      }}`
+  }
 
   const handleSubmit = async () => {
+    console.log(`Submitting prompt: ${prompt}`);
+    const fullPrompt = getFullPrompt();
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/actual', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: fullPrompt, context: "" }),
+      });
+
+      if (response.ok) {
+        const story = await response.json();
+        try {
+          setResponse(JSON.parse(story));
+        } catch (error) {
+          console.error('Error parsing story', error);
+          setErrorMsg('Error parsing story');
+          openAlert();
+        }
+      } else {
+        console.error('Failed to send message to API');
+      }
+    } catch (error) {
+      console.error('Error sending message to API', error);
+    }
+  }
+
+  /*
+  const handleSubmitWithoutApi = async () => {
     console.log(`Submitting prompt: ${prompt}`);
 
     const APIBody = {
@@ -149,6 +205,7 @@ const Home = () => {
     console.log(story);
     setResponse(JSON.parse(story));
   };
+  */
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -283,6 +340,12 @@ const Home = () => {
               </Heading>
               <Text fontSize="lg" fontStyle="normal">
                 {pageData.image_prompt}
+              </Text>
+              <Heading as="h2" size="md">
+                Image url:
+              </Heading>
+              <Text fontSize="lg" fontStyle="normal">
+                {pageData.image_url}
               </Text>
               <Divider />
               {/* <img
