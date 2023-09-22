@@ -43,7 +43,8 @@ async def root():
     return {"message": "Hello World"}
 
 class QuestionRequest(BaseModel):
-    prompt: str
+    system_prompt: str
+    user_prompt: str
     context: Any
 
 @app.post("/test")
@@ -52,8 +53,10 @@ async def test(request_data: QuestionRequest):
 
 @app.post("/actual")
 async def get_story(request_data: QuestionRequest):
-    prompt = request_data.prompt
-    response = generate_response(prompt)
+    system_prompt = request_data.system_prompt
+    user_prompt = request_data.user_prompt
+    response = generate_response(system_prompt, user_prompt)
+    print(response)
     return response
 
 
