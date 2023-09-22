@@ -231,7 +231,7 @@ const CreateStory = () => {
               fontWeight="normal"
               m="1rem 0rem"
               _hover={{ background: '#E86580' }}
-              onClick={handleSubmitDebug} // handleSubmitDebug for testing, handleSubmit for actual API call
+              onClick={handleSubmit} // handleSubmitDebug for testing, handleSubmit for actual API call
             >
               Get Story
             </Button>
