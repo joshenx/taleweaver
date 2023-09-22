@@ -15,7 +15,6 @@ def generate_response(system_prompt, user_prompt):
     if ("Violation Detected" in text_response):
         return generate_response_debugger("prompt")
     text_json = json.loads(text_response)
-    print(text_json)
     pages = text_json["story"]
     for page in pages:
         image_prompt = f'The subjects in the image are {page["subject_description"]}, {page["image_prompt"]}, fairy tale, storybook illustration, a surrealist digital art'
