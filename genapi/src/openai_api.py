@@ -8,18 +8,21 @@ load_dotenv()  # Loads environment variables from .env file
 openai.api_key = os.environ.get("VITE_OPENAPI_KEY")
 
 # call openAI api
-def generate_response(prompt):
-    text_response = generate_story(prompt)
+def generate_response(system_prompt, user_prompt):
+    print(system_prompt)
+    print(user_prompt)
+    text_response = generate_story(system_prompt, user_prompt)
+    if ("Violation Detected" in text_response):
+        return generate_response_debugger("prompt")
     text_json = json.loads(text_response)
     pages = text_json["story"]
     for page in pages:
-        image_prompt = f'Traditional storybook illustration of {page["subject_description"]}, {page["image_prompt"]}, digital art'
+        image_prompt = f'The subjects in the image are {page["subject_description"]}, {page["image_prompt"]}, fairy tale, storybook illustration'
         image_response = generate_image(image_prompt)
         page["image_url"] = image_response
     return json.dumps(text_json)
 
-def generate_story(prompt):
-    print(prompt)
+def generate_story(system_prompt, user_prompt):
     try:
         response = openai.ChatCompletion.create(
             model = "gpt-3.5-turbo",
@@ -29,16 +32,22 @@ def generate_story(prompt):
             # presence_penalty=0,
             temperature = 0.7,
             messages = [
-                # {
-                #     "role": "system", 
-                #     "content": "You are an expert creative marketer. Create a campaign for the brand the user enters."
-                # },
+                {
+                    "role": "system", 
+                    "content": system_prompt
+                },
                 {
                     "role": "user", 
-                    "content": prompt
+                    "content": user_prompt
+                },
+                {
+                    "role": "assistant", 
+                    "content": str(generate_story_debugger("prompt"))
                 },
             ],
         )
+
+        print(response)
     except Exception as e:
         print("Error in creating story from openAI:", str(e))
         return 503
