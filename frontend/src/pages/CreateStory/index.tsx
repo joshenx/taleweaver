@@ -123,7 +123,7 @@ const CreateStory = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt: storyPrompt, context: '' }),
+        body: JSON.stringify({ system_prompt: getSystemPrompt(), user_prompt: getUserPrompt(), context: '' }),
       });
 
       if (response.ok) {

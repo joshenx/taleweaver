@@ -49,7 +49,7 @@ class QuestionRequest(BaseModel):
 
 @app.post("/test")
 async def test(request_data: QuestionRequest):
-    return generate_response_debugger(request_data.prompt)
+    return generate_response_debugger(request_data.user_prompt)
 
 @app.post("/actual")
 async def get_story(request_data: QuestionRequest):
