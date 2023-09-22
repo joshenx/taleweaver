@@ -11,7 +11,6 @@ openai.api_key = os.environ.get("VITE_OPENAPI_KEY")
 def generate_response(prompt):
     text_response = generate_story(prompt)
     text_json = json.loads(text_response)
-    print(text_json)
     pages = text_json["story"]
     for page in pages:
         image_prompt = f'Traditional storybook illustration of {page["subject_description"]}, {page["image_prompt"]}, digital art'
