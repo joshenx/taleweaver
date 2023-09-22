@@ -24,7 +24,6 @@ def generate_response(system_prompt, user_prompt):
     return json.dumps(text_json)
 
 def generate_story(system_prompt, user_prompt):
-    print(str(generate_story_debugger("prompt")))
     try:
         response = openai.ChatCompletion.create(
             model = "gpt-3.5-turbo",
