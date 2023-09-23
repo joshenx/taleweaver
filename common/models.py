@@ -3,6 +3,14 @@ from sqlalchemy.sql import func
 
 from common.database import Base
 
+class Users(Base):
+    __tablename__ = "users"
+
+    userid = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    password = Column(String, nullable=False)
+    name = Column(String, nullable=False)
+    createdat = Column(DateTime(timezone=True), server_default=func.now())
+
 class Instrument(Base):
     __tablename__ = "instruments"
 
