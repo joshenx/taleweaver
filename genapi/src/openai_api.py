@@ -88,19 +88,43 @@ def generate_image_debugger(prompt):
 
 def generate_story_debugger(prompt):
     print("ok called openai api with prompt: " + prompt)
-    return json.dumps({
-        "title": "The Adventures of Teddy",
-        "focus": "vocabulary",
-        "vocabulary_age": "3",
-        "total_pages": "1",
-        "story": [
-            {"page": 1,
-             "text": "Once upon a time, there was a teddy bear named Teddy. Teddy loved to go on adventures and explore the world around him.",
-             "image_prompt": "Teddy bear playing in a colorful garden",
-             "subject_description": "A fluffy brown teddy bear with a big smile on his face",
-             "image_url": "https://oaidalleapiprodscus.blob.core.windows.net/private/org-PuMGCWJ1M3tJ6ExWwgZAlVT4/user-TETd6CWnI82tNSrj9rzXTm2Z/img-bAHOYMVZYaHoxhki7ijZ3wIC.png?st=2023-09-21T16%3A02%3A42Z&se=2023-09-21T18%3A02%3A42Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-09-20T21%3A55%3A13Z&ske=2023-09-21T21%3A55%3A13Z&sks=b&skv=2021-08-06&sig=1636ZkX6Wk18Neqpt%2BkucftDkjSc9RESrdE19MaZcvE%3D"},
-            {"page": 2,
-             "text": "Then, there was a teddy bear named Teddy. Teddy loved to go on adventures and explore the world around him.",
-             "image_prompt": "Teddy bear playing in a colorful garden",
-             "subject_description": "A fluffy brown teddy bear with a big smile on his face",
-             "image_url": "https://oaidalleapiprodscus.blob.core.windows.net/private/org-PuMGCWJ1M3tJ6ExWwgZAlVT4/user-TETd6CWnI82tNSrj9rzXTm2Z/img-bAHOYMVZYaHoxhki7ijZ3wIC.png?st=2023-09-21T16%3A02%3A42Z&se=2023-09-21T18%3A02%3A42Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-09-20T21%3A55%3A13Z&ske=2023-09-21T21%3A55%3A13Z&sks=b&skv=2021-08-06&sig=1636ZkX6Wk18Neqpt%2BkucftDkjSc9RESrdE19MaZcvE%3D"}]})
+    return json.dumps(
+        {"title": "The Cheesy Adventure",
+         "moral": "Curiosity",
+         "genre": "Educational",
+         "vocabulary_age": "7",
+         "total_pages": "2",
+         "story": [{
+             "page": 1,
+             "text": "Once upon a time, there was a little mouse named Max. \
+             Max loved cheese more than anything in the world. He would scurry \
+            through the fields and forests, searching for the tastiest cheeses \
+            to nibble on.",
+            "image_prompt": "Max the mouse exploring a giant cheese maze",
+            "subject_description": "Max: A small brown mouse with big round ears",
+            "image_url": "https://oaidalleapiprodscus.blob.core.windows.net/privat\
+                e/org-PuMGCWJ1M3tJ6ExWwgZAlVT4/user-TETd6CWnI82tNSrj9rzXTm2Z/img-Zf\
+                    gEU1o0N0pvs8vRyz3e11QQ.png?st=2023-09-23T09%3A44%3A09Z&se=2023-0\
+                        9-23T11%3A44%3A09Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=\
+                            image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&skt\
+                                id=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-09-\
+                                    22T22%3A45%3A33Z&ske=2023-09-23T22%3A45%3A33Z&sk\
+                                        s=b&skv=2021-08-06&sig=33EYA25YTfdU%2BkxfrcD\
+                                            A8xU1v8qNwCVmgtv9crchk2Q%3D"},
+            {
+             "page": 2,
+             "text": "Then, there was a little mouse named Max. \
+             Max loved cheese more than anything in the world. He would scurry \
+            through the fields and forests, searching for the tastiest cheeses \
+            to nibble on.",
+            "image_prompt": "Max the mouse exploring a giant cheese maze",
+            "subject_description": "Max: A small brown mouse with big round ears",
+            "image_url": "https://oaidalleapiprodscus.blob.core.windows.net/privat\
+                e/org-PuMGCWJ1M3tJ6ExWwgZAlVT4/user-TETd6CWnI82tNSrj9rzXTm2Z/img-Zf\
+                    gEU1o0N0pvs8vRyz3e11QQ.png?st=2023-09-23T09%3A44%3A09Z&se=2023-0\
+                        9-23T11%3A44%3A09Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=\
+                            image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&skt\
+                                id=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-09-\
+                                    22T22%3A45%3A33Z&ske=2023-09-23T22%3A45%3A33Z&sk\
+                                        s=b&skv=2021-08-06&sig=33EYA25YTfdU%2BkxfrcD\
+                                            A8xU1v8qNwCVmgtv9crchk2Q%3D"}]})

@@ -10,38 +10,50 @@ import {
   Divider,
   Heading,
   Input,
-  Tab,
-  Tabs,
-  TabList,
-  TabPanels,
-  TabPanel,
   Text,
   Textarea,
   Spinner,
   useDisclosure,
   VStack,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
   Image,
+  Checkbox,
+  Tooltip,
+  HStack,
+  Select,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import BadWordsFilter from 'bad-words';
 import HTMLFlipBook from 'react-pageflip';
+import { QuestionOutlineIcon } from '@chakra-ui/icons';
+import { FaMicrophoneAltSlash } from 'react-icons/fa';
+import { GenreCustomiser } from './CustomisationComponents/GenreCustomiser';
+import { ValuesCustomiser } from './CustomisationComponents/ValuesCustomiser';
+import { VocabularyCustomiser } from './CustomisationComponents/VocabularyCustomiser';
+import { generateRandomStory } from './utils/storygenerator';
 
 const CreateStory = () => {
   const numPages = 1;
-  const [focus, setFocus] = useState('vocabulary');
+
+  const [isVocabActive, setIsVocabActive] = useState(false);
   const [vocabAge, setVocabAge] = useState(3);
-  const [tabIndex, setTabIndex] = useState(0);
+
+  const [isValuesActive, setIsValuesActive] = useState(false);
+  const [values, setValues] = useState('any');
+
+  const [isGenreActive, setIsGenreActive] = useState(false);
+  const [genre, setGenre] = useState('any');
+
   const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const [response, setResponse] = useState({});
   const [storyPrompt, setStory] = useState('');
+  const [isStoryRandom, setIsStoryRandom] = useState(false);
+
   const [name, setName] = useState('');
-  const additionalPromptInfo = `The story should teach ${focus} appropriate for a ${vocabAge}-year-old.`;
+  const additionalAgeInfo = `The story should contain vocabulary appropriate for a ${vocabAge}-year-old.`;
+  const additionalValuesInfo = `The moral of the story should teach ${values}.`;
+  const additionalGenreInfo = `The story should be of ${genre} genre.`;
   const additionalNameInfo =
     name === ''
       ? 'The main character can be any name.'
@@ -59,6 +71,16 @@ const CreateStory = () => {
 
   var filter = new BadWordsFilter();
 
+  const handleStoryRandomToggle = () => {
+    if (!isStoryRandom) {
+      //was not Random before click
+      setStory(generateRandomStory());
+    } else {
+      setStory('');
+    }
+    setIsStoryRandom(!isStoryRandom);
+  };
+
   const getSystemPrompt = () => {
     return `
       Act as a childbook writer and illustrator.
@@ -66,7 +88,10 @@ const CreateStory = () => {
       A. Create a story that have ${numPages} pages.
       B. For each page, include an image prompt that is specific, colourful and creative and matches the story of the page content. 
          The subject(s) in the "image_prompt" should include the main character with optional side subjects.
-      C. ${additionalPromptInfo} ${additionalNameInfo} The 'subject_description' should base the description of the subject off the
+      C. ${additionalAgeInfo} ${additionalNameInfo} ${
+        isValuesActive ? additionalValuesInfo : ''
+      } ${isGenreActive ? additionalGenreInfo : ''}
+         The 'subject_description' should base the description of the subject off the
          subject's name.
 
       Note:
@@ -75,7 +100,8 @@ const CreateStory = () => {
       3. You should only give your output in json format, like this example:
         {
           "title": "Creative Story Title Here",
-          "focus": "${focus}",
+          "moral": "${values}",
+          "genre": "${genre}",
           "vocabulary_age": "${vocabAge}",
           "total_pages": "${numPages}",
           "story": [
@@ -86,12 +112,12 @@ const CreateStory = () => {
           ...
         ]}
       4. If any violations are detected, strictly only write "Violation Detected" without modifying or adding anything.
-    `
-  }
+    `;
+  };
 
   const getUserPrompt = () => {
-    return `Generate a children's story about ${storyPrompt}.`
-  }
+    return `Generate a children's story about ${storyPrompt}.`;
+  };
 
   // const getFullPrompt = () => {
   //   return `Generate a children's story about ${storyPrompt}. The story should have ${numPages} pages. For each page,
@@ -123,7 +149,11 @@ const CreateStory = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ system_prompt: getSystemPrompt(), user_prompt: getUserPrompt(), context: '' }),
+        body: JSON.stringify({
+          system_prompt: getSystemPrompt(),
+          user_prompt: getUserPrompt(),
+          context: '',
+        }),
       });
 
       if (response.ok) {
@@ -161,7 +191,11 @@ const CreateStory = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ system_prompt: getSystemPrompt(), user_prompt: getUserPrompt(), context: '' }),
+        body: JSON.stringify({
+          system_prompt: getSystemPrompt(),
+          user_prompt: getUserPrompt(),
+          context: '',
+        }),
       });
 
       if (response.ok) {
@@ -202,85 +236,94 @@ const CreateStory = () => {
         <VStack
           flexGrow="1"
           px={{ base: '2rem', md: '0rem' }}
-          alignItems={{ base: 'left' }}
+          alignItems={{ base: 'center' }}
         >
           <Heading size="lg">Weave a story about...</Heading>
-          <Textarea
-            value={storyPrompt}
-            onChange={handleStoryPromptChange}
-            variant="filled"
-            mt="0.5rem"
-            resize="none"
-            size="xs"
-            placeholder="Type your story here!"
-          />
-          <Heading size="md">that focuses on...</Heading>
-          <Tabs onChange={(index) => setTabIndex(index)} variant="soft-rounded">
-            <TabList>
-              <Tab>Vocabulary</Tab>
-              <Tab>Morals/Values</Tab>
-              <Tab>Genre</Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel>
-                {/* Vocabulary Section */}
-                <Slider
-                  aria-label="slider-ex-2"
-                  id="slider"
-                  defaultValue={5}
-                  min={0}
-                  max={20}
-                  colorScheme="teal"
-                  onChange={(v) => setVocabAge(v)}
-                >
-                  <SliderTrack>
-                    <SliderFilledTrack />
-                  </SliderTrack>
-                  <SliderThumb />
-                </Slider>
-                {vocabAge} year-old
-              </TabPanel>
-              <TabPanel>
-                {/* Morals Section */}
-                <p>two!</p>
-              </TabPanel>
-              <TabPanel>
-                {/* Theme Section */}
-                <p>three!</p>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-          <Heading size="lg">The main character is</Heading>
-          <Input
-            value={name}
-            onChange={handleNameChange}
-            placeholder="Subject's Name (optional)"
-            size="xs"
-            variant="filled"
-          />
-          {!showAlert && !showSuccess && (
-            <Button
-              background="brand.red"
-              color="white"
-              fontWeight="normal"
-              m="1rem 0rem"
-              _hover={{ background: '#E86580' }}
-              onClick={handleSubmitDebug} // handleSubmitDebug for testing, handleSubmit for actual API call
+          <VStack width="100%" alignItems={{ base: 'left' }}>
+            <Textarea
+              isDisabled={isStoryRandom}
+              value={storyPrompt}
+              onChange={handleStoryPromptChange}
+              variant="filled"
+              mt="0.5rem"
+              resize="none"
+              size="lg"
+              placeholder="Type your story here!"
+            />
+            <Checkbox
+              size="md"
+              isChecked={isStoryRandom}
+              onChange={handleStoryRandomToggle}
+              defaultChecked
             >
-              Get Story
-            </Button>
-          )}
-          <Box alignItems="center">
-            {isLoading && (
-              <Spinner
-                thickness="4px"
-                speed="0.65s"
-                emptyColor="gray.200"
-                color="blue.500"
-                size="xl"
-              />
+              Randomise{' '}
+              <Tooltip
+                label="Let TaleWeaver decide on the story!"
+                size="sm"
+                placement="right"
+              >
+                <QuestionOutlineIcon color="gray" />
+              </Tooltip>
+            </Checkbox>
+          </VStack>
+          <Heading size="lg" pt="2rem" p="1rem">
+            Customise
+          </Heading>
+          <VStack width="100%" pb="2rem" spacing={3}>
+            <VocabularyCustomiser
+              age={vocabAge}
+              setAge={setVocabAge}
+              isActive={isVocabActive}
+              onToggleActive={setIsVocabActive}
+            />
+            <Divider />
+            <ValuesCustomiser
+              values={values}
+              setValues={setValues}
+              isActive={isValuesActive}
+              onToggleActive={setIsValuesActive}
+            />
+            <Divider />
+            <GenreCustomiser
+              genre={genre}
+              setGenre={setGenre}
+              isActive={isGenreActive}
+              onToggleActive={setIsGenreActive}
+            />
+          </VStack>
+          <VStack>
+            <Heading size="lg">The main character is</Heading>
+            <Input
+              value={name}
+              onChange={handleNameChange}
+              placeholder="Name (optional)"
+              textAlign="center"
+              width="100%"
+              size="md"
+              variant="flushed"
+            />
+            {!showAlert && !showSuccess && (
+              <Button
+                background="brand.red"
+                color="white"
+                fontWeight="normal"
+                m="1rem 0rem"
+                _hover={{ background: '#E86580' }}
+                onClick={handleSubmitDebug} // handleSubmitDebug for testing, handleSubmit for actual API call
+              >
+                Get Story
+              </Button>
             )}
-          </Box>
+          </VStack>
+          {isLoading && (
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+            />
+          )}
         </VStack>
 
         {showAlert && (
@@ -343,6 +386,7 @@ const CreateStory = () => {
               response.story &&
               response.story.map((pageData) => (
                 <Box
+                  key={pageData.page}
                   p="2rem"
                   bg="white"
                   border="1px"
