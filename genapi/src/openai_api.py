@@ -17,7 +17,7 @@ def generate_response(system_prompt, user_prompt):
     text_json = json.loads(text_response)
     pages = text_json["story"]
     for page in pages:
-        image_prompt = f'The subjects in the image are {page["subject_description"]}, {page["image_prompt"]}, fairy tale, storybook illustration'
+        image_prompt = f'Storybook illustration of {page["subject_description"]}, {page["image_prompt"]}, digital art'
         image_response = generate_image(image_prompt)
         page["image_url"] = image_response
     return json.dumps(text_json)
