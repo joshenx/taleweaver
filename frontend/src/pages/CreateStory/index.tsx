@@ -74,8 +74,9 @@ const CreateStory = () => {
   const handleStoryRandomToggle = async () => {
     if (!isStoryRandom) {
       //was not Random before click
+      setIsLoading(true);
       setStory(await generateRandomStory());
-      console.log(storyPrompt)
+      setIsLoading(false);
     } else {
       setStory('');
     }
