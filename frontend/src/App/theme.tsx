@@ -102,7 +102,7 @@ const theme = extendTheme({
       dark: '#200D08',
       orange: '#F96317',
       orange80: '#FF7833',
-      yellow: '#FFD166',
+      yellow: '#FFC229',
       green: '#06D6A0',
       white: '#FCFCFC',
     },
