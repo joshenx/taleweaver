@@ -9,7 +9,6 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException
-from common.database import SessionLocal
 from src.anthropic_api import get_anthropic_response
 from src.openai_api import generate_response, generate_response_debugger, generate_random_story
 
@@ -29,14 +28,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
 
 @app.get("/")
 async def root():
