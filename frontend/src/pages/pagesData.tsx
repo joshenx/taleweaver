@@ -1,8 +1,8 @@
 import { routerType } from '../types/router.types';
 import Home from './Home';
 import PageNotFound from './PageNotFound';
+import CreateStory from './CreateStory';
 import Login from './Login';
-import GatedCreateStory from './CreateStory';
 
 const pagesData: routerType[] = [
   {
@@ -12,7 +12,7 @@ const pagesData: routerType[] = [
   },
   {
     path: 'create',
-    element: <GatedCreateStory />,
+    element: <CreateStory />,
     title: 'Weave Story',
   },
   {
