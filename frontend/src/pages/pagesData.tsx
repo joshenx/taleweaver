@@ -2,6 +2,7 @@ import { routerType } from '../types/router.types';
 import Home from './Home';
 import PageNotFound from './PageNotFound';
 import CreateStory from './CreateStory';
+import Login from './Login';
 
 const pagesData: routerType[] = [
   {
@@ -13,6 +14,11 @@ const pagesData: routerType[] = [
     path: 'create',
     element: <CreateStory />,
     title: 'Weave Story',
+  },
+  {
+    path: 'login',
+    element: <Login />,
+    title: 'Login',
   },
   {
     path: '*',
