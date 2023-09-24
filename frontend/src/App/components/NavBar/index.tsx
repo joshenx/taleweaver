@@ -270,6 +270,7 @@ const MobileNav = () => {
   return (
     <Stack
       bg={useColorModeValue('white', 'gray.800')}
+      mt="3rem"
       p={4}
       display={{ md: 'none' }}
     >
@@ -346,6 +347,6 @@ const NAV_ITEMS: Array<NavItem> = [
   },
   {
     label: 'Create',
-    href: 'create',
+    href: '/create',
   },
 ];

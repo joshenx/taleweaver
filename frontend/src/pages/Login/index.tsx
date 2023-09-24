@@ -9,7 +9,7 @@ import {
   Button,
   Heading,
   Text,
-  useColorModeValue,
+  Container,
   Collapse,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -140,18 +140,31 @@ export default function Login() {
                     {showPasswordReset && 'Back to Login'}
                   </Text>
                 </Stack>
-                <Button
-                  type="submit"
-                  color={'white'}
-                  bg={'brand.orange'}
-                  _hover={{
-                    bg: 'brand.orange80',
-                  }}
-                  isLoading={loading}
-                >
-                  {!showPasswordReset && 'Sign In'}
-                  {showPasswordReset && 'Reset'}
-                </Button>
+                <Stack spacing={5}>
+                  <Button
+                    type="submit"
+                    color={'white'}
+                    bg={'brand.orange'}
+                    _hover={{
+                      bg: 'brand.orange80',
+                    }}
+                    isLoading={loading}
+                  >
+                    {!showPasswordReset && 'Sign In'}
+                    {showPasswordReset && 'Reset'}
+                  </Button>
+                  <Button
+                    m="0"
+                    as={'a'}
+                    fontSize={'sm'}
+                    fontWeight={400}
+                    variant={'link'}
+                    href={'/register'}
+                    display={{ base: 'inline-flex', md: 'none' }}
+                  >
+                    Register
+                  </Button>
+                </Stack>
               </Stack>
               {errorMsg && (
                 <Text color="red.500" textAlign="center">
