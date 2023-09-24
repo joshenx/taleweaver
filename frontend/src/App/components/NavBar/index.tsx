@@ -85,12 +85,12 @@ export default function NavBar() {
             as={'a'}
             display={{ base: 'none', md: 'inline-flex' }}
             fontSize={'sm'}
-            fontWeight={600}
+            fontWeight={400}
             color={'white'}
-            bg={'red.400'}
+            bg={'brand.orange'}
             href={'#'}
             _hover={{
-              bg: 'red.600',
+              bg: 'brand.orange80',
             }}
           >
             Sign Up

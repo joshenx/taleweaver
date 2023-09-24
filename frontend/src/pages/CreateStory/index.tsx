@@ -363,7 +363,7 @@ const CreateStory = () => {
         )}
       </Container>
       <Container textAlign="center" maxW={'4xl'} py={12}>
-        <Heading letterSpacing="-0.2rem" color="#252A33" as="h1" size="3xl">
+        <Heading letterSpacing="-0.2rem" as="h1" size="3xl">
           {response?.title}
         </Heading>
         <VStack>

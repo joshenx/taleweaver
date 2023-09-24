@@ -90,11 +90,18 @@ const theme = extendTheme({
       },
     },
   },
-  styles: {},
+  styles: {
+    global: {
+      body: {
+        color: '200D08',
+      },
+    },
+  },
   colors: {
     brand: {
-      dark: '#252A33',
-      red: '#F1616182',
+      dark: '#200D08',
+      orange: '#F96317',
+      orange80: '#FF7833',
       yellow: '#FFD166',
       green: '#06D6A0',
       white: '#FCFCFC',

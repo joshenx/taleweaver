@@ -42,7 +42,7 @@ export default function SplitWithMessage(props: any) {
         <Stack spacing={4}>
           <Text
             textTransform={'uppercase'}
-            color={'red'}
+            color={'brand.orange'}
             fontWeight={600}
             fontSize={'sm'}
             bg={useColorModeValue('red.50', 'red.900')}
