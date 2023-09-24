@@ -12,7 +12,8 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException
-from src.supabase_api import get_users, get_stories_by_user, get_story_by_id, save_users_story
+
+from src.supabase_api import get_users, get_stories_by_user, get_public_stories, get_story_by_id, save_users_story, set_story_public_status
 
 app = FastAPI()
 
@@ -47,6 +48,29 @@ async def get_all_users():
 async def get_users_stories(user_id: int):
     # no particular return format settled
     return get_stories_by_user(supabase, user_id)
+
+@app.get("/get-public-stories")
+async def get_all_public_stories():
+    # no particular return format settled
+    return get_public_stories(supabase)
+
+@app.put("/{story_id}/set-to-public")
+async def set_story_to_public(story_id: int):
+    # Return format: {success: bool}
+    response = set_story_public_status(supabase, story_id, True)
+    success = response['ispublic'] == True
+    return {
+        "success": success
+    }
+
+@app.put("/{story_id}/set-to-private")
+async def set_story_to_private(story_id: int):
+    # Return format: {success: bool}
+    response = set_story_public_status(supabase, story_id, False)
+    success = response['ispublic'] == False
+    return {
+        "success": success
+    }
 
 @app.get("/{story_id}/get-story")
 async def get_story(story_id: int):

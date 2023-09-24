@@ -12,6 +12,16 @@ def get_stories_by_user(db: Client, user_id: int):
     stories = json.loads(stories)
     return stories['data']
 
+def get_public_stories(db: Client):
+    stories = db.table('stories').select('*').eq('ispublic', True).execute().model_dump_json()
+    stories = json.loads(stories)
+    return stories['data']
+
+def set_story_public_status(db: Client, story_id: int, new_status: bool):
+    response = db.table('stories').update({'ispublic': new_status}).eq('storyid', story_id).execute().model_dump_json()
+    response = json.loads(response)
+    return response['data'][0]
+
 def get_story_by_id(db: Client, story_id: int):
     story_info = db.table('stories').select('age', 'focus', 'title').eq('storyid', story_id).execute().model_dump_json()
     story_info = json.loads(story_info)['data'][0]
