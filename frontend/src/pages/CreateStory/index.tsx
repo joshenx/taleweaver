@@ -306,11 +306,7 @@ const CreateStory = () => {
             />
             {!showAlert && !showSuccess && (
               <Button
-                background="brand.red"
-                color="white"
-                fontWeight="normal"
-                m="1rem 0rem"
-                _hover={{ background: '#E86580' }}
+                variant="styled-color"
                 onClick={handleSubmitDebug} // handleSubmitDebug for testing, handleSubmit for actual API call
               >
                 Get Story
