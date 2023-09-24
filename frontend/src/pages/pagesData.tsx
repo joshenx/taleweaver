@@ -3,6 +3,7 @@ import Home from './Home';
 import PageNotFound from './PageNotFound';
 import CreateStory from './CreateStory';
 import Login from './Login';
+import Register from './Register';
 
 const pagesData: routerType[] = [
   {
@@ -19,6 +20,11 @@ const pagesData: routerType[] = [
     path: 'login',
     element: <Login />,
     title: 'Login',
+  },
+  {
+    path: 'register',
+    element: <Register />,
+    title: 'Register',
   },
   {
     path: '*',

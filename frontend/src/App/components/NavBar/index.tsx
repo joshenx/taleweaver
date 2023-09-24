@@ -12,7 +12,7 @@ import {
   PopoverTrigger,
   PopoverContent,
   useColorModeValue,
-  useBreakpointValue,
+  Container,
   useDisclosure,
 } from '@chakra-ui/react';
 import { Link as ReachLink } from 'react-router-dom';
@@ -25,9 +25,24 @@ import {
 import pagesData from '../../../pages/pagesData';
 import { routerType } from '../../../types/router.types';
 import { DefaultLogo } from '../../DefautLogo';
+import { useAuth } from '../../../context/AuthProvider';
+import { supabase } from '../../../App/components/supabaseClient';
 
 export default function NavBar() {
+  const { user, signOut } = useAuth();
+  console.log(user);
+  console.log(user?.email);
   const { isOpen, onToggle } = useDisclosure();
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      const { error } = await signOut();
+      console.log(error);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Box>
@@ -76,29 +91,53 @@ export default function NavBar() {
           direction={'row'}
           spacing={6}
         >
-          <Button
-            as={'a'}
-            fontSize={'sm'}
-            fontWeight={400}
-            variant={'link'}
-            href={'/login'}
-          >
-            Sign In
-          </Button>
-          <Button
-            as={'a'}
-            display={{ base: 'none', md: 'inline-flex' }}
-            fontSize={'sm'}
-            fontWeight={400}
-            color={'white'}
-            bg={'brand.orange'}
-            href={'/login'}
-            _hover={{
-              bg: 'brand.orange80',
-            }}
-          >
-            Sign Up
-          </Button>
+          {!user && (
+            <>
+              <Button
+                as={'a'}
+                fontSize={'sm'}
+                fontWeight={400}
+                variant={'link'}
+                href={'/login'}
+              >
+                Sign In
+              </Button>
+              <Button
+                as={'a'}
+                display={{ base: 'none', md: 'inline-flex' }}
+                fontSize={'sm'}
+                fontWeight={400}
+                color={'white'}
+                bg={'brand.orange'}
+                href={'/register'}
+                _hover={{
+                  bg: 'brand.orange80',
+                }}
+              >
+                Sign Up
+              </Button>
+            </>
+          )}
+          {user && (
+            <>
+              <Box
+                fontSize={'sm'}
+                fontWeight={400}
+                margin="auto"
+                textAlign="center"
+              >
+                {user?.email}
+              </Box>
+              <Button
+                display={{ base: 'none', md: 'inline-flex' }}
+                fontSize={'sm'}
+                fontWeight={400}
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            </>
+          )}
         </Stack>
       </Flex>
 
@@ -300,36 +339,6 @@ interface NavItem {
 }
 
 const NAV_ITEMS: Array<NavItem> = [
-  // {
-  //   label: 'Inspiration',
-  //   children: [
-  //     {
-  //       label: 'Explore Design Work',
-  //       subLabel: 'Trending Design to inspire you',
-  //       href: '#',
-  //     },
-  //     {
-  //       label: 'New & Noteworthy',
-  //       subLabel: 'Up-and-coming Designers',
-  //       href: '#',
-  //     },
-  //   ],
-  // },
-  // {
-  //   label: 'Find Work',
-  //   children: [
-  //     {
-  //       label: 'Job Board',
-  //       subLabel: 'Find your dream design job',
-  //       href: '#',
-  //     },
-  //     {
-  //       label: 'Freelance Projects',
-  //       subLabel: 'An exclusive list for contract work',
-  //       href: '#',
-  //     },
-  //   ],
-  // },
   {
     label: 'Home',
     href: '/',

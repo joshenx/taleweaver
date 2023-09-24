@@ -56,6 +56,9 @@ async def generate_random_story_endpoint():
     return response
 
 
+def generate_random_story():
+    return "a kid's adventure"
+
 # @app.post("/ask-question")
 # async def ask_anthropic_question(request_data: QuestionRequest):
 #     try:
