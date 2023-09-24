@@ -11,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException
 from common.database import SessionLocal
 from src.anthropic_api import get_anthropic_response
-from src.openai_api import generate_response, generate_response_debugger
+from src.openai_api import generate_response, generate_response_debugger, generate_random_story
 
 app = FastAPI()
 
@@ -59,6 +59,10 @@ async def get_story(request_data: QuestionRequest):
     print(response)
     return response
 
+@app.get("/generate-random-story")
+async def generate_random_story_endpoint():
+    response = generate_random_story()
+    return response
 
 
 # @app.post("/ask-question")

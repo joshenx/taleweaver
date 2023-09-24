@@ -47,7 +47,6 @@ def generate_story(system_prompt, user_prompt):
             ],
         )
 
-        print(response)
     except Exception as e:
         print("Error in creating story from openAI:", str(e))
         return 503
@@ -128,3 +127,32 @@ def generate_story_debugger(prompt):
                                     22T22%3A45%3A33Z&ske=2023-09-23T22%3A45%3A33Z&sk\
                                         s=b&skv=2021-08-06&sig=33EYA25YTfdU%2BkxfrcD\
                                             A8xU1v8qNwCVmgtv9crchk2Q%3D"}]})
+
+def generate_random_story():
+    system_prompt = "Generate a random brief description of a story suitable for children in 15 words."
+    assistant_example = "A child adventure in the forest."
+    try:
+        response = openai.ChatCompletion.create(
+            model = "gpt-3.5-turbo",
+            # n=1, => higher = generate multiple messages choices
+            # top_p=1, => see docs... idrk what this is
+            # frequency_penalty=0,
+            # presence_penalty=0,
+            temperature = 0.7,
+            messages = [
+                {
+                    "role": "system", 
+                    "content": system_prompt
+                },
+                {
+                    "role": "assistant", 
+                    "content": assistant_example
+                },
+            ],
+        )
+        print(response)
+
+    except Exception as e:
+        print("Error in generating random story from openAI:", str(e))
+        return 503
+    return response["choices"][0]["message"]["content"]

@@ -71,10 +71,11 @@ const CreateStory = () => {
 
   var filter = new BadWordsFilter();
 
-  const handleStoryRandomToggle = () => {
+  const handleStoryRandomToggle = async () => {
     if (!isStoryRandom) {
       //was not Random before click
-      setStory(generateRandomStory());
+      setStory(await generateRandomStory());
+      console.log(storyPrompt)
     } else {
       setStory('');
     }
