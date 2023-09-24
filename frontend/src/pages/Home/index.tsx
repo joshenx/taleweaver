@@ -15,6 +15,7 @@ import {
   VStack,
   StackDivider,
   Link,
+  Container,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import trackExample from '/src/images/TrackExampleHorizontal.png';
@@ -24,6 +25,7 @@ import { supabase } from '../../App/components/supabaseClient';
 import SimpleThreeColumns from '../../App/components/SimpleThreeColumns';
 import SplitWithImage from '../../App/components/SplitWithImage';
 import SplitWithMessage from '../../App/components/SplitWithMessage';
+import SplineScene from '../../App/components/SplineScene';
 
 const Home = () => {
   /*
@@ -142,38 +144,32 @@ const Home = () => {
       /> */}
       <VStack
         mt="3rem"
-        spacing="10"
-        width={{ base: '100vw', sm: '60vw', md: '45vw' }}
+        spacing="5"
         px={{ base: '1rem', md: '1rem' }}
         alignItems={{ base: 'center' }}
         textAlign="center"
       >
-        <Heading as="h1" size="3xl">
-          Personalised, educational storybooks for your kid.
-        </Heading>
-        <Text fontSize="lg" fontStyle="normal">
-          Are you a time-strapped working parent struggling to find quality
-          storytime for your child? Say goodbye to the frustration of repetitive
-          bedtime tales and the endless quest for the right book. Start weaving
-          your tales today.
-        </Text>
-        <Divider my="1rem" />
-
-        {/* <Input
-          focusBorderColor="brand.red"
-          width={{ base: '60vw', md: '20vw' }}
-          value={prompt}
-          onChange={handlePromptChange}
-          variant="filled"
-          type="prompt"
-          mt="0.5rem"
-          size="md"
-          placeholder="Type your prompt here"
-          required
-        /> */}
-        <Button variant="styled" onClick={navigateToCreate}>
-          Weave Story
-        </Button>
+        <SplineScene />
+        <VStack
+          pt={{ base: '1rem', lg: '4rem' }}
+          spacing="10"
+          width={{ base: '100vw', sm: '60vw', md: '45vw' }}
+          minHeight="60vh"
+        >
+          <Heading as="h1" size="3xl">
+            Personalised, educational storybooks for your kid.
+          </Heading>
+          <Text fontSize="lg" fontStyle="normal">
+            Are you a time-strapped working parent struggling to find quality
+            storytime for your child? Say goodbye to the frustration of
+            repetitive bedtime tales and the endless quest for the right book.
+            Start weaving your tales today.
+          </Text>
+          <Divider my="1rem" />
+          <Button variant="styled" onClick={navigateToCreate}>
+            Weave Story
+          </Button>
+        </VStack>
         <Image src={gradientDivider} width="100vw" mt="10vh" mb="-5vw" />
         <Text textAlign="center" fontSize="3xl" fontWeight="600">
           The creative, guilt-free alternative to mindless screen-time.

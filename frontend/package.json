@@ -11,6 +11,8 @@
     "@fontsource/caveat": "^5.0.8",
     "@fontsource/inter": "^4.5.14",
     "@rollup/plugin-node-resolve": "^15.0.1",
+    "@splinetool/react-spline": "^2.2.6",
+    "@splinetool/runtime": "^0.9.455",
     "@supabase/supabase-js": "^2.0.5",
     "@syncfusion/ej2-react-inputs": "^20.3.50",
     "@tanstack/react-query": "^4.29.19",
