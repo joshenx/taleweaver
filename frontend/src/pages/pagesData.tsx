@@ -4,6 +4,7 @@ import PageNotFound from './PageNotFound';
 import CreateStory from './CreateStory';
 import Login from './Login';
 import Register from './Register';
+import PasswordReset from './PasswordReset';
 
 const pagesData: routerType[] = [
   {
@@ -25,6 +26,11 @@ const pagesData: routerType[] = [
     path: 'register',
     element: <Register />,
     title: 'Register',
+  },
+  {
+    path: 'password-reset',
+    element: <PasswordReset />,
+    title: 'Password Reset',
   },
   {
     path: '*',

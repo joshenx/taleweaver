@@ -26,10 +26,9 @@ import pagesData from '../../../pages/pagesData';
 import { routerType } from '../../../types/router.types';
 import { DefaultLogo } from '../../DefautLogo';
 import { useAuth } from '../../../context/AuthProvider';
-import { supabase } from '../../../App/components/supabaseClient';
 
 export default function NavBar() {
-  const { user, signOut } = useAuth();
+  const { auth, user, signOut } = useAuth();
   console.log(user);
   console.log(user?.email);
   const { isOpen, onToggle } = useDisclosure();
@@ -91,7 +90,7 @@ export default function NavBar() {
           direction={'row'}
           spacing={6}
         >
-          {!user && (
+          {!auth && (
             <>
               <Button
                 as={'a'}
@@ -118,7 +117,7 @@ export default function NavBar() {
               </Button>
             </>
           )}
-          {user && (
+          {auth && (
             <>
               <Box
                 fontSize={'sm'}

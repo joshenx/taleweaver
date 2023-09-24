@@ -6,10 +6,18 @@ const AuthContext = createContext({});
 
 export const useAuth = () => useContext(AuthContext);
 
-const login = (email, password) =>
+const login = (email: string, password: string) =>
   supabase.auth.signInWithPassword({ email, password });
 
 const signOut = () => supabase.auth.signOut();
+
+const passwordReset = (email: string) =>
+  supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: 'http://localhost:5173/update-password',
+  });
+
+const updatePassword = (updatedPassword: string) =>
+  supabase.auth.updateUser({ password: updatedPassword });
 
 const AuthProvider = ({ children }: any) => {
   const [user, setUser] = useState<User | null>(null);
@@ -17,7 +25,9 @@ const AuthProvider = ({ children }: any) => {
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN') {
+      if (event == 'PASSWORD_RECOVERY') {
+        setAuth(false);
+      } else if (event === 'SIGNED_IN') {
         setUser(session!.user); // session is never null if signed in
         setAuth(true);
       } else if (event === 'SIGNED_OUT') {
@@ -31,7 +41,9 @@ const AuthProvider = ({ children }: any) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, signOut }}>
+    <AuthContext.Provider
+      value={{ auth, user, login, signOut, passwordReset, updatePassword }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -10,6 +10,8 @@ import {
   Heading,
   Text,
   useColorModeValue,
+  Collapse,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -20,24 +22,36 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPasswordReset, setShowPasswordReset] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, passwordReset } = useAuth();
+  const { isOpen, onToggle } = useDisclosure();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setErrorMsg('');
       setLoading(true);
-      if (!password || !email) {
-        setErrorMsg('Please fill in the fields');
-        return;
+
+      if (showPasswordReset) {
+        if (!email) {
+          setErrorMsg('Please enter your email');
+          return;
+        }
+        const { data, error } = await passwordReset(email);
+        if (error) setErrorMsg(error.message);
+      } else {
+        if (!password || !email) {
+          setErrorMsg('Please fill in the fields');
+          return;
+        }
+        const {
+          data: { user, session },
+          error,
+        } = await login(email, password);
+        if (error) setErrorMsg(error.message);
+        if (user && session) navigate('/');
       }
-      const {
-        data: { user, session },
-        error,
-      } = await login(email, password);
-      if (error) setErrorMsg(error.message);
-      if (user && session) navigate('/');
     } catch (error) {
       setErrorMsg('Email or Password Incorrect');
     }
@@ -69,7 +83,10 @@ export default function Login() {
     <Flex minH={'80vh'} align={'center'} justify={'center'}>
       <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
         <Stack align={'center'}>
-          <Heading fontSize={'4xl'}>Sign in to your account</Heading>
+          <Heading fontSize={'4xl'}>
+            {!showPasswordReset && 'Sign in to your account'}
+            {showPasswordReset && 'Reset your Password'}
+          </Heading>
           <Text fontSize={'lg'} color={'gray.600'}>
             to enjoy all of our cool{' '}
             <Text as="span" color={'brand.orange'}>
@@ -89,22 +106,39 @@ export default function Login() {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </FormControl>
-              <FormControl id="password">
-                <FormLabel>Password</FormLabel>
-                <Input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </FormControl>
+              <Collapse
+                in={!showPasswordReset}
+                startingHeight={1}
+                animateOpacity
+              >
+                <FormControl id="password">
+                  <FormLabel>Password</FormLabel>
+                  <Input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </FormControl>
+              </Collapse>
               <Stack spacing={10}>
                 <Stack
                   direction={{ base: 'column', sm: 'row' }}
                   align={'start'}
                   justify={'space-between'}
                 >
-                  <Checkbox>Remember me</Checkbox>
-                  <Text color={'blue.400'}>Forgot password?</Text>
+                  {!showPasswordReset && <Checkbox>Remember me</Checkbox>}
+                  <Text
+                    cursor="pointer"
+                    color={'blue.400'}
+                    onClick={() => {
+                      setShowPasswordReset(!showPasswordReset);
+                      onToggle();
+                    }}
+                    margin="auto"
+                  >
+                    {!showPasswordReset && 'Forgot password?'}
+                    {showPasswordReset && 'Back to Login'}
+                  </Text>
                 </Stack>
                 <Button
                   type="submit"
@@ -115,7 +149,8 @@ export default function Login() {
                   }}
                   isLoading={loading}
                 >
-                  Sign in
+                  {!showPasswordReset && 'Sign In'}
+                  {showPasswordReset && 'Reset'}
                 </Button>
               </Stack>
               {errorMsg && (
