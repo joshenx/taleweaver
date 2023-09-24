@@ -20,6 +20,8 @@ import {
 import { useState } from 'react';
 import trackExample from '/src/images/TrackExampleHorizontal.png';
 import gradientDivider from '/src/images/GradientDivider.svg';
+import heroBackground from '/src/images/heroBackground.png';
+
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../App/components/supabaseClient';
 import SimpleThreeColumns from '../../App/components/SimpleThreeColumns';
@@ -148,8 +150,10 @@ const Home = () => {
         px={{ base: '1rem', md: '1rem' }}
         alignItems={{ base: 'center' }}
         textAlign="center"
+        position="relative"
       >
-        <SplineScene />
+        {/* <SplineScene /> */}
+
         <VStack
           pt={{ base: '1rem', lg: '4rem' }}
           spacing="10"
@@ -159,6 +163,14 @@ const Home = () => {
           <Heading as="h1" size="3xl">
             Personalised, educational storybooks for your kid.
           </Heading>
+          <Image
+            src={heroBackground}
+            position="absolute"
+            width="100%"
+            top="-10vw"
+            left="0"
+            zIndex={-1}
+          />
           <Text fontSize="lg" fontStyle="normal">
             Are you a time-strapped working parent struggling to find quality
             storytime for your child? Say goodbye to the frustration of
