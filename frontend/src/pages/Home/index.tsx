@@ -1,7 +1,4 @@
 import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
   createIcon,
   Button,
   CloseButton,
@@ -22,7 +19,7 @@ import {
 import { useState } from 'react';
 import trackExample from '/src/images/TrackExampleHorizontal.png';
 import gradientDivider from '/src/images/GradientDivider.svg';
-
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../App/components/supabaseClient';
 import SimpleThreeColumns from '../../App/components/SimpleThreeColumns';
 import SplitWithImage from '../../App/components/SplitWithImage';
@@ -111,6 +108,12 @@ const Home = () => {
     setResponse(JSON.parse(story));
   };
   */
+  const navigate = useNavigate();
+
+  const navigateToCreate = () => {
+    // 👇️ navigate to /contacts
+    navigate('/create');
+  };
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -138,31 +141,15 @@ const Home = () => {
         width={{ base: '90vw', md: '500px' }}
       /> */}
       <VStack
-        spacing="7"
+        mt="3rem"
+        spacing="10"
         width={{ base: '100vw', sm: '60vw', md: '45vw' }}
         px={{ base: '1rem', md: '1rem' }}
         alignItems={{ base: 'center' }}
         textAlign="center"
       >
-        <Heading letterSpacing="0.2rem" color="#252A33" as="h1" size="3xl">
-          Create{' '}
-          <Text
-            as={'span'}
-            position={'relative'}
-            _after={{
-              content: "''",
-              width: 'full',
-              height: '15%',
-              position: 'absolute',
-              bottom: 2,
-              left: 2,
-              bg: 'red.200',
-              zIndex: -1,
-            }}
-          >
-            personalised storybooks
-          </Text>{' '}
-          for your kid.
+        <Heading as="h1" size="3xl">
+          Personalised, educational storybooks for your kid.
         </Heading>
         <Text fontSize="lg" fontStyle="normal">
           Are you a time-strapped working parent struggling to find quality
@@ -184,7 +171,59 @@ const Home = () => {
           placeholder="Type your prompt here"
           required
         /> */}
-        <Link href={'/create'}>Weave Story</Link>
+        <Button variant="styled" onClick={navigateToCreate}>
+          Weave Story
+        </Button>
+        <Image src={gradientDivider} width="100vw" mt="10vh" mb="-5vw" />
+        <Text textAlign="center" fontSize="3xl" fontWeight="600">
+          The creative, guilt-free alternative to mindless screen-time.
+        </Text>
+        <SimpleThreeColumns />
+
+        <SplitWithImage pt="5rem" />
+        <SplitWithMessage pt="5rem" />
+        <VStack
+          spacing="5"
+          width={{ base: '100vw', sm: '60vw', md: '30vw' }}
+          px={{ base: '1rem', md: '0rem' }}
+          alignItems={{ base: 'center' }}
+          my="10vh"
+          textAlign="center"
+        >
+          <Text textAlign="center" fontSize="2xl" fontWeight="600">
+            We're still in BETA!
+          </Text>
+          <Text textAlign="center" fontSize="md">
+            We're as excited as you to weave the best tales for your kids, and
+            we strongly believe in its transformative power to become a healthy
+            alternative to mindless screentime. Try it today and leave some
+            feedback for us to improve!
+          </Text>
+
+          <Button variant="styled" onClick={navigateToCreate}>
+            Weave Story
+          </Button>
+          <Box>
+            <Icon
+              as={Arrow}
+              color={'gray.800'}
+              w={81}
+              position={'relative'}
+              right={-110}
+              top={'-30px'}
+            />
+            <Text
+              fontSize={'lg'}
+              fontFamily={'Caveat'}
+              position={'relative'}
+              right={'-150px'}
+              top={'-75px'}
+              transform={'rotate(10deg)'}
+            >
+              Try it for free!
+            </Text>
+          </Box>
+        </VStack>
       </VStack>
     </Flex>
   );

@@ -29,12 +29,12 @@ const Feature = ({ text }: FeatureProps) => {
 
 export default function SplitWithImage(props: any) {
   return (
-    <Container maxW={'7xl'} py={12}>
+    <Container width="80vw" maxW={'7xl'} py={12} textAlign="left">
       <SimpleGrid {...props} columns={{ base: 1, md: 2 }} spacing={10}>
         <Stack spacing={4}>
           <Text
             textTransform={'uppercase'}
-            color={'red'}
+            color={'brand.orange'}
             fontWeight={600}
             fontSize={'sm'}
             bg={useColorModeValue('red.50', 'red.900')}
@@ -42,15 +42,18 @@ export default function SplitWithImage(props: any) {
             alignSelf={'flex-start'}
             rounded={'md'}
           >
-            Our TaleWeaver
+            CUSTOMISATION
           </Text>
           <Heading color={'brand.dark'}>
-            Simple, intuitive career tracks display
+            Tailor your stories for vocabulary, values, and genre.
           </Heading>
           <Text color={'gray.500'} fontSize={'lg'}>
-            Drawing inspiration on train route information you would normally
-            see at a train station, our innovative display allows you to view
-            all tracks leading to your dream career at once.
+            Experience the power of personalized storytelling like never before
+            with our app's versatile customization options. Craft stories that
+            resonate with your child's vocabulary, explore a world of genres,
+            and impart the values that matter most to your family. Plus, don't
+            miss the chance to make your child the star of their very own
+            adventures!
           </Text>
           <Stack
             spacing={4}
@@ -60,16 +63,16 @@ export default function SplitWithImage(props: any) {
               />
             }
           >
-            <Feature text={'Industry Changes'} />
-            <Feature text={'Required Skills and Qualifications'} />
-            <Feature text={'Past and Present Roles'} />
+            <Feature text={'Age-Appropriate Vocabulary'} />
+            <Feature text={'Genre Variety'} />
+            <Feature text={'Teach Morals and Values'} />
           </Stack>
         </Stack>
         <Flex>
           <Image
             rounded={'md'}
             alt={'feature image'}
-            src={trackdisplaySrc}
+            src=""
             objectFit="contain"
           />
         </Flex>

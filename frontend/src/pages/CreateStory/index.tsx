@@ -306,11 +306,7 @@ const CreateStory = () => {
             />
             {!showAlert && !showSuccess && (
               <Button
-                background="brand.red"
-                color="white"
-                fontWeight="normal"
-                m="1rem 0rem"
-                _hover={{ background: '#E86580' }}
+                variant="styled-color"
                 onClick={handleSubmitDebug} // handleSubmitDebug for testing, handleSubmit for actual API call
               >
                 Get Story
@@ -367,7 +363,7 @@ const CreateStory = () => {
         )}
       </Container>
       <Container textAlign="center" maxW={'4xl'} py={12}>
-        <Heading letterSpacing="-0.2rem" color="#252A33" as="h1" size="3xl">
+        <Heading letterSpacing="-0.2rem" as="h1" size="3xl">
           {response?.title}
         </Heading>
         <VStack>

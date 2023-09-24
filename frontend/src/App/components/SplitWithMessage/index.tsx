@@ -29,20 +29,20 @@ const Feature = ({ text }: FeatureProps) => {
 
 export default function SplitWithMessage(props: any) {
   return (
-    <Container maxW={'7xl'} py={12}>
+    <Container width="80vw" maxW={'7xl'} py={12} textAlign="left">
       <SimpleGrid {...props} columns={{ base: 1, md: 2 }} spacing={10}>
         <Flex>
           <Image
             rounded={'md'}
             alt={'feature image'}
-            src={chatdisplaySrc}
+            src=""
             objectFit="contain"
           />
         </Flex>
         <Stack spacing={4}>
           <Text
             textTransform={'uppercase'}
-            color={'red'}
+            color={'brand.orange'}
             fontWeight={600}
             fontSize={'sm'}
             bg={useColorModeValue('red.50', 'red.900')}
@@ -50,14 +50,18 @@ export default function SplitWithMessage(props: any) {
             alignSelf={'flex-start'}
             rounded={'md'}
           >
-            MESSAGING
+            SAFETY
           </Text>
           <Heading color={'brand.dark'}>
-            Connect with those living your dream
+            Safe, Secure, and Age-Appropriate Content Every Time
           </Heading>
           <Text color={'gray.500'} fontSize={'lg'}>
-            Create a free account and learn from people who have done it.
-            Message them and understand how you can follow in their tracks.
+            "Your child's safety is our top priority, and we've gone the extra
+            mile to ensure that our content is a safe haven for young minds. Say
+            goodbye to worries about profanity, mature themes, or
+            age-inappropriate material. Our content is carefully curated and
+            designed with your child's well-being in mind, offering a worry-free
+            experience for both parents and kids.
           </Text>
           <Stack
             spacing={4}
@@ -67,9 +71,9 @@ export default function SplitWithMessage(props: any) {
               />
             }
           >
-            <Feature text={'Anonymous'} />
-            <Feature text={'Industry Professionals'} />
-            <Feature text={'Messaging and Voice Chat'} />
+            <Feature text={'Profanity-Free'} />
+            <Feature text={'Maturity-Theme Filters'} />
+            <Feature text={'Age-Specific Content'} />
           </Stack>
         </Stack>
       </SimpleGrid>

@@ -1,5 +1,3 @@
-'use client';
-
 import {
   Box,
   Flex,
@@ -34,15 +32,21 @@ export default function NavBar() {
   return (
     <Box>
       <Flex
-        bg={useColorModeValue('white', 'gray.800')}
-        color={useColorModeValue('gray.600', 'white')}
+        position="fixed"
+        top="0"
+        w="100%"
+        backdropFilter="contrast(98%) blur(5px)"
+        boxShadow="0px 0px 30px 0px rgba(0, 0, 0, 0.15)"
+        bg="rgba(255,255,255,0.5)"
+        color="gray.600"
         minH={'60px'}
         py={{ base: 2 }}
         px={{ base: 4 }}
         borderBottom={1}
         borderStyle={'solid'}
-        borderColor={useColorModeValue('gray.200', 'gray.900')}
+        borderColor="gray.200"
         align={'center'}
+        zIndex="overlay"
       >
         <Flex
           flex={{ base: 1, md: 'auto' }}
@@ -85,12 +89,12 @@ export default function NavBar() {
             as={'a'}
             display={{ base: 'none', md: 'inline-flex' }}
             fontSize={'sm'}
-            fontWeight={600}
+            fontWeight={400}
             color={'white'}
-            bg={'red.400'}
+            bg={'brand.orange'}
             href={'/login'}
             _hover={{
-              bg: 'red.600',
+              bg: 'brand.orange80',
             }}
           >
             Sign Up
