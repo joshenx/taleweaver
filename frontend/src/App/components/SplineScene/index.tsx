@@ -33,7 +33,7 @@ const Spline = React.lazy(() => import('@splinetool/react-spline'));
 export default function SplineScene() {
   const [backgroundOpacity, setBackgroundOpacity] = useState(1);
 
-  function onLoad(spline) {
+  function onLoad() {
     // Once the scene is loaded, fade out the white background
     setTimeout(() => setBackgroundOpacity(0), 1000);
   }
@@ -45,7 +45,7 @@ export default function SplineScene() {
       p="0"
       top="0"
       left="0"
-      width="100%"
+      width="100vw"
       height="100vh"
       overflow="hidden"
       zIndex="-1"
@@ -56,8 +56,8 @@ export default function SplineScene() {
           position: 'absolute',
           top: 0,
           left: 0,
-          width: '100%',
-          height: '100%',
+          width: '100vw',
+          height: '100vh',
           backgroundColor: 'white',
           opacity: backgroundOpacity,
           transition: 'opacity 5s ease', // Control the duration of the fade here
@@ -68,7 +68,7 @@ export default function SplineScene() {
       {/* Spline scene */}
       <Spline
         onLoad={onLoad}
-        scene="https://prod.spline.design/nli0UYEy-6i4iAq1/scene.splinecode"
+        scene="https://prod.spline.design/xhWaEXuUSuqiadA3/scene.splinecode"
       />
     </Box>
   );
