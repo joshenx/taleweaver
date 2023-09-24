@@ -22,8 +22,7 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from '@chakra-ui/icons';
-import pagesData from '../../../pages/pagesData';
-import { routerType } from '../../../types/router.types';
+import { useNavigate } from 'react-router-dom';
 import { DefaultLogo } from '../../DefautLogo';
 import { useAuth } from '../../../context/AuthProvider';
 
@@ -33,6 +32,8 @@ export default function NavBar() {
   console.log(user?.email);
   const { isOpen, onToggle } = useDisclosure();
 
+  const navigate = useNavigate();
+
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
@@ -41,6 +42,7 @@ export default function NavBar() {
     } catch (error) {
       console.log(error);
     }
+    navigate('/');
   };
 
   return (
