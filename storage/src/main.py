@@ -12,7 +12,7 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException
 
-from src.supabase_api import get_users, create_user_from_userid, update_name_from_userid, get_stories_by_user, get_public_stories, get_story_by_id, save_users_story, set_story_public_status
+from src.supabase_api import get_users, get_stories_by_user, get_public_stories, get_story_by_id, save_users_story, set_story_public_status
 
 app = FastAPI()
 
@@ -43,21 +43,21 @@ async def get_all_users():
     # no particular return format settled
     return get_users(supabase)
 
-@app.post("/create-user")
-async def create_user(user_id: str, name: str):
-    # Return format: {success: bool}
-    success = create_user_from_userid(supabase, user_id, name) == user_id
-    return {
-        "success": success
-    }
+# @app.post("/create-user")
+# async def create_user(user_id: str, name: str):
+#     # Return format: {success: bool}
+#     success = create_user_from_userid(supabase, user_id, name) == user_id
+#     return {
+#         "success": success
+#     }
 
-@app.put("/update-name")
-async def update_name(user_id: str, name: str):
-    # Return format: {success: bool}
-    success = update_name_from_userid(supabase, user_id, name) == name
-    return {
-        "success": success
-    }
+# @app.put("/update-name")
+# async def update_name(user_id: str, name: str):
+#     # Return format: {success: bool}
+#     success = update_name_from_userid(supabase, user_id, name) == name
+#     return {
+#         "success": success
+#     }
 
 @app.get("/{user_id}/get-all-stories")
 async def get_users_stories(user_id: str):

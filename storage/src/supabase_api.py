@@ -7,19 +7,19 @@ def get_users(db: Client):
     users = json.loads(users)
     return users['data']
 
-def create_user_from_userid(db: Client, user_id: str, name: str):
-    user_info = {
-        "userid": user_id,
-        "name": name,
-    }
-    response = db.table('users').insert(user_info).execute().model_dump_json()
-    user_id = json.loads(response)['data'][0]['userid']
-    return user_id
+# def create_user_from_userid(db: Client, user_id: str, name: str):
+#     user_info = {
+#         "userid": user_id,
+#         "name": name,
+#     }
+#     response = db.table('users').insert(user_info).execute().model_dump_json()
+#     user_id = json.loads(response)['data'][0]['userid']
+#     return user_id
 
-def update_name_from_userid(db: Client, user_id: str, name: str):
-    response = db.table('users').update({'name': name}).eq('userid', user_id).execute().model_dump_json()
-    name = json.loads(response)['data'][0]['name']
-    return name
+# def update_name_from_userid(db: Client, user_id: str, name: str):
+#     response = db.table('users').update({'name': name}).eq('userid', user_id).execute().model_dump_json()
+#     name = json.loads(response)['data'][0]['name']
+#     return name
 
 def get_stories_by_user(db: Client, user_id: str):
     stories = db.table('stories').select('*').eq('userid', user_id).execute().model_dump_json()
