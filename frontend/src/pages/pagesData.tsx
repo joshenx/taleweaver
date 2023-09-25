@@ -55,7 +55,7 @@ const pagesData: routerType[] = [
     path: 'public-library',
     element: <PublicLibrary />,
     title: 'Public Library',
-    authRequired: false,
+    authRequired: true,
     mainNav: true,
   },
   {
