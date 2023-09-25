@@ -11,7 +11,6 @@ import {
   ModalFooter,
   Input,
 } from '@chakra-ui/react';
-import { useAuth } from '../../context/AuthProvider';
 import { useState, useEffect } from 'react';
 
 interface Story {
@@ -24,28 +23,23 @@ interface Story {
   userid: string;
 }
 
-const MyLibrary = () => {
-  const { user } = useAuth();
-
-  const [userStories, setUserStories] = useState<Story[]>([]);
+const PublicLibrary = () => {
+  const [publicStories, setPublicStories] = useState<Story[]>([]);
   const [selectedStory, setSelectedStory] = useState<Story>(); // To store the selected story for viewing in the modal
   const [isModalOpen, setIsModalOpen] = useState(false); // To toggle the modal
   const [searchQuery, setSearchQuery] = useState(''); // State for the search query
 
-  const getUserStories = async () => {
+  const getPublicStories = async () => {
     try {
-      const response = await fetch(
-        `http://127.0.0.1:8080/${user.id}/get-all-stories`,
-      );
+      const response = await fetch(`http://127.0.0.1:8080/get-public-stories`);
       if (!response.ok) {
         console.log('Network response was not ok');
         return;
       }
       const data = await response.json();
-      console.log(data);
-      setUserStories(data);
+      setPublicStories(data);
     } catch (error) {
-      console.error('Error fetching user stories:', error);
+      console.error('Error fetching public stories:', error);
     }
   };
 
@@ -82,65 +76,13 @@ const MyLibrary = () => {
     openModal();
   };
 
-  const handleShareButtonClick = async (storyId: number) => {
-    try {
-      const response = await fetch(
-        `http://127.0.0.1:8080/${storyId}/set-to-public`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-      if (!response.ok) {
-        console.log('Network response was not ok');
-        return;
-      }
-      // Update the userStories state to reflect the change in private status
-      setUserStories((prevStories) =>
-        prevStories.map((story) =>
-          story.storyid === storyId ? { ...story, ispublic: true } : story,
-        ),
-      );
-    } catch (error) {
-      console.error('Error setting to public:', error);
-    }
-  };
-
-  const handleUnshareButtonClick = async (storyId: number) => {
-    try {
-      const response = await fetch(
-        `http://127.0.0.1:8080/${storyId}/set-to-private`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-      if (!response.ok) {
-        console.log('Network response was not ok');
-        return;
-      }
-      // Update the userStories state to reflect the change in public status
-      setUserStories((prevStories) =>
-        prevStories.map((story) =>
-          story.storyid === storyId ? { ...story, ispublic: false } : story,
-        ),
-      );
-    } catch (error) {
-      console.error('Error setting to private:', error);
-    }
-  };
-
   // Filter stories based on the search query
-  const filteredStories = userStories.filter((story) =>
+  const filteredStories = publicStories.filter((story) =>
     story.title.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   useEffect(() => {
-    getUserStories();
+    getPublicStories();
   }, []);
 
   return (
@@ -151,6 +93,7 @@ const MyLibrary = () => {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
+
       {filteredStories.length === 0 ? (
         <Text>No stories available.</Text>
       ) : (
@@ -164,16 +107,6 @@ const MyLibrary = () => {
             <Button onClick={() => handleViewStoryClick(story.storyid)}>
               View Story
             </Button>
-            {!story.ispublic && (
-              <Button onClick={() => handleShareButtonClick(story.storyid)}>
-                Share My Story
-              </Button>
-            )}
-            {story.ispublic && (
-              <Button onClick={() => handleUnshareButtonClick(story.storyid)}>
-                Unshare My Story
-              </Button>
-            )}
           </Box>
         ))
       )}
@@ -181,10 +114,10 @@ const MyLibrary = () => {
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <ModalOverlay />
         <ModalContent>
+          <ModalHeader>{selectedStory?.title}</ModalHeader>
+          <ModalCloseButton />
           {selectedStory && (
             <>
-              <ModalHeader>{selectedStory?.title}</ModalHeader>
-              <ModalCloseButton />
               <ModalBody>
                 <Text>{selectedStory}</Text>
               </ModalBody>
@@ -199,4 +132,4 @@ const MyLibrary = () => {
   );
 };
 
-export default MyLibrary;
+export default PublicLibrary;

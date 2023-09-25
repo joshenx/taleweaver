@@ -34,12 +34,6 @@ export default function NavBar() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log(session);
-    console.log(user);
-    console.log(auth);
-  }, [user]);
-
   const handleLogout = async (e) => {
     e.preventDefault();
     try {

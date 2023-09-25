@@ -5,7 +5,8 @@ import CreateStory from './CreateStory';
 import Login from './Login';
 import Register from './Register';
 import PasswordReset from './PasswordReset';
-import MyLibrary from './MyLibrary'
+import MyLibrary from './MyLibrary';
+import PublicLibrary from './PublicLibrary';
 
 const pagesData: routerType[] = [
   {
@@ -48,6 +49,13 @@ const pagesData: routerType[] = [
     element: <MyLibrary />,
     title: 'My Library',
     authRequired: true,
+    mainNav: true,
+  },
+  {
+    path: 'public-library',
+    element: <PublicLibrary />,
+    title: 'Public Library',
+    authRequired: false,
     mainNav: true,
   },
   {

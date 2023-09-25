@@ -232,8 +232,8 @@ const CreateStory = () => {
   };
 
   const handleSave = async () => {
-    const storyData = response
-    console.log(storyData)
+    const storyData = response;
+    console.log(storyData);
     try {
       const response = await fetch('http://127.0.0.1:8080/save-story', {
         method: 'POST',
@@ -245,14 +245,14 @@ const CreateStory = () => {
           story_data: storyData,
         }),
       });
-  
+
       if (!response.ok) {
         console.log('Failed to save story.');
       }
     } catch (error) {
       console.error('Error saving story:', error);
     }
-  }
+  };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let inputValue = e.target.value;
@@ -464,14 +464,11 @@ const CreateStory = () => {
                 </Box>
               ))}
           </HTMLFlipBook>
-          { response && response.story &&
-            (<Button
-                  colorScheme='green'
-                  onClick={handleSave}
-                >
-                Save My Story
-            </Button>)
-        }
+          {response && response.story && (
+            <Button colorScheme="green" onClick={handleSave}>
+              Save My Story
+            </Button>
+          )}
         </VStack>
       </Container>
     </>
