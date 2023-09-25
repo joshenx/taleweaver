@@ -94,6 +94,10 @@ async def get_story(story_id: int):
 
 @app.post("/save-story") # TODO: check if story data type needs to be converted
 async def save_story(user_id: str, story: dict):
+    # story = "{\"title\": \"The Adventures of Johnny\", \"moral\": \"Curiosity leads to new discoveries\", \"genre\": \"Adventure\",\"vocabulary_age\": \"3\", \"total_pages\": \"1\", \"story\": [{\"page\": 1,\"text\": \"Once upon a time, there was a little boy named Johnny. Johnny was always full of curiosity and loved going on adventures.\", \"image_prompt\": \"Johnny exploring a magical forest\", \"subject_description\": \"Johnny: A young boy with messy brown hair, wearing a red cap and a backpack\", \"image_url\": \"https://oaidalleapiprodscus.blob.core.windows.net/private/org-PuMGCWJ1M3tJ6ExWwgZAlVT4/user-TETd6CWnI82tNSrj9rzXTm2Z/img-9VHZceioZgtAvoZCKF9JICpP.png?st=2023-09-25T10%3A55%3A15Z&se=2023-09-25T12%3A55%3A15Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-09-24T21%3A23%3A48Z&ske=2023-09-25T21%3A23%3A48Z&sks=b&skv=2021-08-06&sig=/%2B7m/mA21OR6qoR30cRs7EUAowDK6Fu06LCBh%2BmG9mk%3D\"}]}"
+    # TODO: if story is string and not dict, uncomment this line:
+    # story = json.loads(story)
+
     # story = {
     #     "title": "The Adventures of Johnny", 
     #     "moral": "Curiosity leads to new discoveries", 
