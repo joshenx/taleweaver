@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 import os
 from dotenv import load_dotenv
-from pydantic import BaseModel
+from pydantic import BaseModel, Json
 from supabase import create_client, Client
 
 from typing import Any
@@ -97,7 +97,7 @@ class SaveStoryRequest(BaseModel):
     user_id: str
     story_data: dict
 
-@app.post("/save-story") # TODO: check if story data type needs to be converted
+@app.post("/save-story")
 async def save_story(request_data: SaveStoryRequest):
     # user_id = 1
     # story = {
@@ -123,7 +123,7 @@ async def save_story(request_data: SaveStoryRequest):
     #         }
     #     ]
     # }
-
+    
     # returns an int, which is the story id
     return save_users_story(supabase, request_data.user_id, request_data.story_data)
 

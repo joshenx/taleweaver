@@ -40,15 +40,12 @@ class QuestionRequest(BaseModel):
     user_prompt: str
     context: Any
 
-@app.post("/test/{user_id}")
-async def test(request_data: QuestionRequest, user_id: str):
-    story_data_json = generate_response_debugger(request_data.user_prompt)
-    story_data_dict = json.loads(story_data_json)
-    requests.post('http://127.0.0.1:8080/save-story', json={"user_id": user_id, "story_data": story_data_dict})
-    return story_data_json
+@app.post("/test")
+async def test(request_data: QuestionRequest):
+    return generate_response_debugger(request_data.user_prompt)
 
-@app.post("/actual/{user_id}")
-async def get_story(request_data: QuestionRequest, user_id: str):
+@app.post("/actual")
+async def get_story(request_data: QuestionRequest):
     system_prompt = request_data.system_prompt
     user_prompt = request_data.user_prompt
     response = generate_response(system_prompt, user_prompt)

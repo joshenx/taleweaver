@@ -148,9 +148,8 @@ const CreateStory = () => {
   // };
 
   const handleSubmitDebug = async () => {
-    console.log(user.id)
     try {
-      const response = await fetch(`http://127.0.0.1:8000/test/${user.id}`, {
+      const response = await fetch('http://127.0.0.1:8000/test/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -192,7 +191,7 @@ const CreateStory = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/actual/${user.id}`, {
+      const response = await fetch('http://127.0.0.1:8000/actual/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -231,6 +230,29 @@ const CreateStory = () => {
     let inputValue = e.target.value;
     setStory(inputValue);
   };
+
+  const handleSave = async () => {
+    const storyData = response
+    console.log(storyData)
+    try {
+      const response = await fetch('http://127.0.0.1:8080/save-story', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: user.id,
+          story_data: storyData,
+        }),
+      });
+  
+      if (!response.ok) {
+        console.log('Failed to save story.');
+      }
+    } catch (error) {
+      console.error('Error saving story:', error);
+    }
+  }
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let inputValue = e.target.value;
@@ -312,7 +334,7 @@ const CreateStory = () => {
             {!showAlert && !showSuccess && (
               <Button
                 variant="styled-color"
-                onClick={handleSubmitDebug} // handleSubmitDebug for testing, handleSubmit for actual API call
+                onClick={handleSubmit} // handleSubmitDebug for testing, handleSubmit for actual API call
               >
                 Get Story
               </Button>
@@ -442,6 +464,14 @@ const CreateStory = () => {
                 </Box>
               ))}
           </HTMLFlipBook>
+          { response && response.story &&
+            (<Button
+                  colorScheme='green'
+                  onClick={handleSave}
+                >
+                Save My Story
+            </Button>)
+        }
         </VStack>
       </Container>
     </>
