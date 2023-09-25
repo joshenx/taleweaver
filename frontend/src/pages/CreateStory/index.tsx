@@ -30,8 +30,11 @@ import { GenreCustomiser } from './CustomisationComponents/GenreCustomiser';
 import { ValuesCustomiser } from './CustomisationComponents/ValuesCustomiser';
 import { VocabularyCustomiser } from './CustomisationComponents/VocabularyCustomiser';
 import { generateRandomStory } from './utils/storygenerator';
+import { useAuth } from '../../context/AuthProvider';
 
 const CreateStory = () => {
+  const { auth, user, signOut } = useAuth();
+  console.log(`auth status: ${auth}`);
   const numPages = 1;
 
   const [isVocabActive, setIsVocabActive] = useState(false);
