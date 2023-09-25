@@ -123,7 +123,7 @@ async def save_story(request_data: SaveStoryRequest):
     #         }
     #     ]
     # }
-    
+
     # returns an int, which is the story id
     return save_users_story(supabase, request_data.user_id, request_data.story_data)
 
