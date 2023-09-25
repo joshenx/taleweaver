@@ -7,7 +7,6 @@ import {
   Stack,
   Collapse,
   Icon,
-  Link,
   Popover,
   PopoverTrigger,
   PopoverContent,
@@ -15,24 +14,31 @@ import {
   Container,
   useDisclosure,
 } from '@chakra-ui/react';
-import { Link as ReachLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   HamburgerIcon,
   CloseIcon,
   ChevronDownIcon,
   ChevronRightIcon,
 } from '@chakra-ui/icons';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DefaultLogo } from '../../DefautLogo';
 import { useAuth } from '../../../context/AuthProvider';
+import { routerType } from '../../../types/router.types';
+import pagesData from '../../../pages/pagesData';
 
 export default function NavBar() {
-  const { auth, user, signOut } = useAuth();
-  console.log(user);
-  console.log(user?.email);
+  const { session, auth, user, signOut } = useAuth();
   const { isOpen, onToggle } = useDisclosure();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(session);
+    console.log(user);
+    console.log(auth);
+  }, [user]);
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -94,29 +100,36 @@ export default function NavBar() {
         >
           {!auth && (
             <>
-              <Button
-                as={'a'}
-                fontSize={'sm'}
-                fontWeight={400}
-                variant={'link'}
-                href={'/login'}
-              >
-                Sign In
-              </Button>
-              <Button
-                as={'a'}
-                display={{ base: 'none', md: 'inline-flex' }}
-                fontSize={'sm'}
-                fontWeight={400}
-                color={'white'}
-                bg={'brand.orange'}
-                href={'/register'}
-                _hover={{
-                  bg: 'brand.orange80',
-                }}
-              >
-                Sign Up
-              </Button>
+              <Box margin="auto">
+                <Link to={'/login'}>
+                  <Button
+                    _hover={{
+                      textDecoration: 'none',
+                      color: 'gray.800',
+                    }}
+                    margin="auto"
+                    fontSize={'sm'}
+                    fontWeight={400}
+                    variant={'link'}
+                  >
+                    Sign In
+                  </Button>
+                </Link>
+              </Box>
+              <Link to={'/register'}>
+                <Button
+                  display={{ base: 'none', md: 'inline-flex' }}
+                  fontSize={'sm'}
+                  fontWeight={400}
+                  color={'white'}
+                  bg={'brand.orange'}
+                  _hover={{
+                    bg: 'brand.orange80',
+                  }}
+                >
+                  Sign Up
+                </Button>
+              </Link>
             </>
           )}
           {auth && (
@@ -152,117 +165,29 @@ export default function NavBar() {
 const DesktopNav = () => {
   const linkColor = useColorModeValue('gray.600', 'gray.200');
   const linkHoverColor = useColorModeValue('gray.800', 'white');
-  const popoverContentBgColor = useColorModeValue('white', 'gray.800');
-  const NavLink = ({
-    children,
-    link,
-  }: {
-    children: ReactNode;
-    link: string;
-  }) => (
-    <Link
-      px={2}
-      py={1}
-      rounded={'md'}
-      _hover={{
-        textDecoration: 'none',
-        bg: useColorModeValue('gray.200', 'gray.700'),
-      }}
-      as={ReachLink}
-      to={`/${link}`}
-      onClick={onClose}
-    >
-      {children}
-    </Link>
-  );
 
   return (
     <Stack direction={'row'} spacing={4}>
-      {/* {pagesData
-        .filter(({ path }: routerType) => path !== '*')
+      {pagesData
+        .filter(({ mainNav }: routerType) => mainNav)
         .map(({ path, title }: routerType, index) => (
-          <NavLink key={index} link={path}>
-            {title}
-          </NavLink>
-        ))} */}
-      {NAV_ITEMS.map((navItem) => (
-        <Box key={navItem.label}>
-          <Popover trigger={'hover'} placement={'bottom-start'}>
-            <PopoverTrigger>
-              <Box
-                as="a"
-                p={2}
-                href={navItem.href ?? '#'}
-                fontSize={'sm'}
-                fontWeight={500}
-                color={linkColor}
+          <Box px="5px" key={title}>
+            <Link to={`${path}`} color={linkColor}>
+              <Button
                 _hover={{
                   textDecoration: 'none',
                   color: linkHoverColor,
                 }}
+                fontSize={'sm'}
+                fontWeight={400}
+                variant={'link'}
               >
-                {navItem.label}
-              </Box>
-            </PopoverTrigger>
-
-            {navItem.children && (
-              <PopoverContent
-                border={0}
-                boxShadow={'xl'}
-                bg={popoverContentBgColor}
-                p={4}
-                rounded={'xl'}
-                minW={'sm'}
-              >
-                <Stack>
-                  {navItem.children.map((child) => (
-                    <DesktopSubNav key={child.label} {...child} />
-                  ))}
-                </Stack>
-              </PopoverContent>
-            )}
-          </Popover>
-        </Box>
-      ))}
+                {title}
+              </Button>
+            </Link>
+          </Box>
+        ))}
     </Stack>
-  );
-};
-
-const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
-  return (
-    <Box
-      as="a"
-      href={href}
-      role={'group'}
-      display={'block'}
-      p={2}
-      rounded={'md'}
-      _hover={{ bg: useColorModeValue('pink.50', 'gray.900') }}
-    >
-      <Stack direction={'row'} align={'center'}>
-        <Box>
-          <Text
-            transition={'all .3s ease'}
-            _groupHover={{ color: 'pink.400' }}
-            fontWeight={500}
-          >
-            {label}
-          </Text>
-          <Text fontSize={'sm'}>{subLabel}</Text>
-        </Box>
-        <Flex
-          transition={'all .3s ease'}
-          transform={'translateX(-10px)'}
-          opacity={0}
-          _groupHover={{ opacity: '100%', transform: 'translateX(0)' }}
-          justify={'flex-end'}
-          align={'center'}
-          flex={1}
-        >
-          <Icon color={'pink.400'} w={5} h={5} as={ChevronRightIcon} />
-        </Flex>
-      </Stack>
-    </Box>
   );
 };
 
@@ -274,22 +199,21 @@ const MobileNav = () => {
       p={4}
       display={{ md: 'none' }}
     >
-      {NAV_ITEMS.map((navItem) => (
-        <MobileNavItem key={navItem.label} {...navItem} />
-      ))}
+      {pagesData
+        .filter(({ mainNav }: routerType) => mainNav)
+        .map(({ path, title }: routerType, index) => (
+          <MobileNavItem path={path} key={index} title={title} />
+        ))}
     </Stack>
   );
 };
 
-const MobileNavItem = ({ label, children, href }: NavItem) => {
-  const { isOpen, onToggle } = useDisclosure();
-
+const MobileNavItem = ({ path, key, title }: NavItem) => {
   return (
-    <Stack spacing={4} onClick={children && onToggle}>
-      <Box
-        py={2}
+    <Stack spacing={4}>
+      <Link
         as="a"
-        href={href ?? '#'}
+        to={path}
         justifyContent="space-between"
         alignItems="center"
         _hover={{
@@ -297,56 +221,13 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
         }}
       >
         <Text
+          py={2}
           fontWeight={600}
           color={useColorModeValue('gray.600', 'gray.200')}
         >
-          {label}
+          {title}
         </Text>
-        {children && (
-          <Icon
-            as={ChevronDownIcon}
-            transition={'all .25s ease-in-out'}
-            transform={isOpen ? 'rotate(180deg)' : ''}
-            w={6}
-            h={6}
-          />
-        )}
-      </Box>
-
-      <Collapse in={isOpen} animateOpacity style={{ marginTop: '0!important' }}>
-        <Stack
-          mt={2}
-          pl={4}
-          borderLeft={1}
-          borderStyle={'solid'}
-          borderColor={useColorModeValue('gray.200', 'gray.700')}
-          align={'start'}
-        >
-          {children &&
-            children.map((child) => (
-              <Box as="a" key={child.label} py={2} href={child.href}>
-                {child.label}
-              </Box>
-            ))}
-        </Stack>
-      </Collapse>
+      </Link>
     </Stack>
   );
 };
-interface NavItem {
-  label: string;
-  subLabel?: string;
-  children?: Array<NavItem>;
-  href?: string;
-}
-
-const NAV_ITEMS: Array<NavItem> = [
-  {
-    label: 'Home',
-    href: '/',
-  },
-  {
-    label: 'Create',
-    href: '/create',
-  },
-];

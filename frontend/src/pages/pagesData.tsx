@@ -12,36 +12,42 @@ const pagesData: routerType[] = [
     element: <Home />,
     title: 'Home',
     authRequired: false,
+    mainNav: true,
   },
   {
     path: 'create',
     element: <CreateStory />,
-    title: 'Weave Story',
+    title: 'Create',
     authRequired: true,
+    mainNav: true,
   },
   {
     path: 'login',
     element: <Login />,
     title: 'Login',
     authRequired: false,
+    mainNav: false,
   },
   {
     path: 'register',
     element: <Register />,
     title: 'Register',
     authRequired: false,
+    mainNav: false,
   },
   {
     path: 'password-reset',
     element: <PasswordReset />,
     title: 'Password Reset',
     authRequired: false,
+    mainNav: false,
   },
   {
     path: '*',
     element: <PageNotFound />,
     title: 'error404',
     authRequired: false,
+    mainNav: false,
   },
 ];
 

@@ -2,10 +2,10 @@ import { useAuth } from '../../../context/AuthProvider';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 const AuthRoute = () => {
-  const { user } = useAuth();
+  const { session } = useAuth();
   const location = useLocation();
 
-  return user ? (
+  return session ? (
     <Outlet />
   ) : (
     <Navigate to={'/login'} replace state={{ path: location.pathname }} />

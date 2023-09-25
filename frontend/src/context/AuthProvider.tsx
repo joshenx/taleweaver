@@ -20,11 +20,14 @@ const updatePassword = (updatedPassword: string) =>
   supabase.auth.updateUser({ password: updatedPassword });
 
 const AuthProvider = ({ children }: any) => {
+  const [session, setSession] = useState(null);
   const [user, setUser] = useState<User | null>(null);
   const [auth, setAuth] = useState(false);
+  const [loading, setLoading] = useState(null);
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log(`Supabase auth event: ${event}`);
       if (event == 'PASSWORD_RECOVERY') {
         setAuth(false);
       } else if (event === 'SIGNED_IN') {
@@ -33,8 +36,19 @@ const AuthProvider = ({ children }: any) => {
       } else if (event === 'SIGNED_OUT') {
         setUser(null);
         setAuth(false);
+      } else if (event === 'INITIAL_SESSION') {
+        setUser(session!.user);
+        setAuth(true);
       }
+      setSession(session);
     });
+
+    setLoading(true);
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLoading(false);
+    });
+
     return () => {
       data.subscription.unsubscribe();
     };
@@ -42,9 +56,17 @@ const AuthProvider = ({ children }: any) => {
 
   return (
     <AuthContext.Provider
-      value={{ auth, user, login, signOut, passwordReset, updatePassword }}
+      value={{
+        session,
+        auth,
+        user,
+        login,
+        signOut,
+        passwordReset,
+        updatePassword,
+      }}
     >
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };

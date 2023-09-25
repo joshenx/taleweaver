@@ -11,17 +11,20 @@ import Router from '../pages/router';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import theme from './theme';
+import AuthProvider from '../context/AuthProvider';
 
 export const App = () => (
   <ChakraProvider theme={theme}>
     <BrowserRouter>
-      <Box fontSize="md">
-        <NavBar />
-        <Box mt="20">
-          <Router />
+      <AuthProvider>
+        <Box fontSize="md">
+          <NavBar />
+          <Box mt="20">
+            <Router />
+          </Box>
+          <Footer />
         </Box>
-        <Footer />
-      </Box>
+      </AuthProvider>
     </BrowserRouter>
   </ChakraProvider>
 );
