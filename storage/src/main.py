@@ -6,14 +6,13 @@ from dotenv import load_dotenv
 from supabase import create_client, Client
 
 from typing import Any
-from pydantic import BaseModel
 
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException
 
-from src.supabase_api import get_users, get_stories_by_user, get_public_stories, get_story_by_id, save_users_story, set_story_public_status
+from src.supabase_api import get_users, create_user_from_userid, update_name_from_userid, get_stories_by_user, get_public_stories, get_story_by_id, save_users_story, set_story_public_status
 
 app = FastAPI()
 
@@ -44,8 +43,24 @@ async def get_all_users():
     # no particular return format settled
     return get_users(supabase)
 
+@app.post("/create-user")
+async def create_user(user_id: str, name: str):
+    # Return format: {success: bool}
+    success = create_user_from_userid(supabase, user_id, name) == user_id
+    return {
+        "success": success
+    }
+
+@app.put("/update-name")
+async def update_name(user_id: str, name: str):
+    # Return format: {success: bool}
+    success = update_name_from_userid(supabase, user_id, name) == name
+    return {
+        "success": success
+    }
+
 @app.get("/{user_id}/get-all-stories")
-async def get_users_stories(user_id: int):
+async def get_users_stories(user_id: str):
     # no particular return format settled
     return get_stories_by_user(supabase, user_id)
 
@@ -74,28 +89,32 @@ async def set_story_to_private(story_id: int):
 
 @app.get("/{story_id}/get-story")
 async def get_story(story_id: int):
-    # same return format as with the genapi
+    # Return format: same return format as with the genapi
     return get_story_by_id(supabase, story_id)
 
 @app.post("/save-story") # TODO: check if story data type needs to be converted
-async def save_story(user_id: int, story: dict):
-    # user_id = 1
+async def save_story(user_id: str, story: dict):
     # story = {
-    #     "title": "The Adventures of Teddy",
-    #     "focus": "vocabulary",
-    #     "vocabulary_age": "3",
-    #     "total_pages": "1",
+    #     "title": "The Adventures of Johnny", 
+    #     "moral": "Curiosity leads to new discoveries", 
+    #     "genre": "Adventure",
+    #     "vocabulary_age": "3", 
+    #     "total_pages": "2", 
     #     "story": [
-    #         {"page": 1,
-    #          "text": "Once upon a time, there was a teddy bear named Teddy. Teddy loved to go on adventures and explore the world around him.",
-    #          "image_prompt": "Teddy bear playing in a colorful garden",
-    #          "subject_description": "A fluffy brown teddy bear with a big smile on his face",
-    #          "image_url": "https://oaidalleapiprodscus.blob.core.windows.net/private/org-PuMGCWJ1M3tJ6ExWwgZAlVT4/user-TETd6CWnI82tNSrj9rzXTm2Z/img-bAHOYMVZYaHoxhki7ijZ3wIC.png?st=2023-09-21T16%3A02%3A42Z&se=2023-09-21T18%3A02%3A42Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-09-20T21%3A55%3A13Z&ske=2023-09-21T21%3A55%3A13Z&sks=b&skv=2021-08-06&sig=1636ZkX6Wk18Neqpt%2BkucftDkjSc9RESrdE19MaZcvE%3D"},
-    #         {"page": 2,
-    #          "text": "Then, there was a teddy bear named Teddy. Teddy loved to go on adventures and explore the world around him.",
-    #          "image_prompt": "Teddy bear playing in a colorful garden",
-    #          "subject_description": "A fluffy brown teddy bear with a big smile on his face",
-    #          "image_url": "https://placekitten.com/200/300"}
+    #         {
+    #             "page": 1,
+    #             "text": "Once upon a time, there was a little boy named Johnny. Johnny was always full of curiosity and loved going on adventures.", 
+    #             "image_prompt": "Johnny exploring a magical forest", 
+    #             "subject_description": "Johnny: A young boy with messy brown hair, wearing a red cap and a backpack", 
+    #             "image_url": "https://oaidalleapiprodscus.blob.core.windows.net/private/org-PuMGCWJ1M3tJ6ExWwgZAlVT4/user-TETd6CWnI82tNSrj9rzXTm2Z/img-9VHZceioZgtAvoZCKF9JICpP.png?st=2023-09-25T10%3A55%3A15Z&se=2023-09-25T12%3A55%3A15Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-09-24T21%3A23%3A48Z&ske=2023-09-25T21%3A23%3A48Z&sks=b&skv=2021-08-06&sig=/%2B7m/mA21OR6qoR30cRs7EUAowDK6Fu06LCBh%2BmG9mk%3D"
+    #         },
+    #         {
+    #             "page": 2,
+    #             "text": "Johnny went to climb up a tree.", 
+    #             "image_prompt": "Johnny climbing up a tree.", 
+    #             "subject_description": "Johnny: A young boy with messy brown hair, climbing up a tree", 
+    #             "image_url": "https://placekitten.com/200/300"
+    #         }
     #     ]
     # }
     

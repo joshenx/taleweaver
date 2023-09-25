@@ -7,7 +7,21 @@ def get_users(db: Client):
     users = json.loads(users)
     return users['data']
 
-def get_stories_by_user(db: Client, user_id: int):
+def create_user_from_userid(db: Client, user_id: str, name: str):
+    user_info = {
+        "userid": user_id,
+        "name": name,
+    }
+    response = db.table('users').insert(user_info).execute().model_dump_json()
+    user_id = json.loads(response)['data'][0]['userid']
+    return user_id
+
+def update_name_from_userid(db: Client, user_id: str, name: str):
+    response = db.table('users').update({'name': name}).eq('userid', user_id).execute().model_dump_json()
+    name = json.loads(response)['data'][0]['name']
+    return name
+
+def get_stories_by_user(db: Client, user_id: str):
     stories = db.table('stories').select('*').eq('userid', user_id).execute().model_dump_json()
     stories = json.loads(stories)
     return stories['data']
@@ -23,15 +37,16 @@ def set_story_public_status(db: Client, story_id: int, new_status: bool):
     return response['data'][0]
 
 def get_story_by_id(db: Client, story_id: int):
-    story_info = db.table('stories').select('age', 'focus', 'title').eq('storyid', story_id).execute().model_dump_json()
+    story_info = db.table('stories').select('title', 'age', 'moral', 'genre').eq('storyid', story_id).execute().model_dump_json()
     story_info = json.loads(story_info)['data'][0]
 
     pages = db.table('pages').select('*').eq('storyid', story_id).execute().model_dump_json()
     pages = json.loads(pages)['data']
     story = {
         "title": story_info['title'],
-        "focus": story_info['focus'],
-        "vocabulary_age": story_info['age'],
+        "moral": story_info['moral'],
+        "genre": story_info['genre'],
+        "vocabulary_age": str(story_info['age']),
         "total_pages": len(pages),
         "story": []
     }
@@ -50,14 +65,17 @@ def get_story_by_id(db: Client, story_id: int):
     return json.dumps(story)
 
 def save_users_story(db: Client, user_id: int, story: dict):
-    story_id = save_story_info(db, user_id, story['title'])
+    story_id = save_story_info(db, user_id, story['title'], int(story['vocabulary_age']), story['moral'], story['genre'])
     save_story_pages(db, story_id, story['story'])
     return story_id
 
-def save_story_info(db: Client, user_id: int, title: str):
+def save_story_info(db: Client, user_id: str, title: str, age: int, moral: str, genre: str):
     story_info = {
         "userid": user_id,
         "title": title,
+        "age": age,
+        "moral": moral,
+        "genre": genre
     }
     response = db.table('stories').insert(story_info).execute().model_dump_json()
     story_id = json.loads(response)['data'][0]['storyid']
