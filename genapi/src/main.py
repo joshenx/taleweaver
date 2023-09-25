@@ -12,6 +12,8 @@ from fastapi import FastAPI, HTTPException
 from src.anthropic_api import get_anthropic_response
 from src.openai_api import generate_response, generate_response_debugger, generate_random_story
 
+import requests
+
 app = FastAPI()
 
 origins = [
@@ -38,12 +40,15 @@ class QuestionRequest(BaseModel):
     user_prompt: str
     context: Any
 
-@app.post("/test")
-async def test(request_data: QuestionRequest):
-    return generate_response_debugger(request_data.user_prompt)
+@app.post("/test/{user_id}")
+async def test(request_data: QuestionRequest, user_id: str):
+    story_data_json = generate_response_debugger(request_data.user_prompt)
+    story_data_dict = json.loads(story_data_json)
+    requests.post('http://127.0.0.1:8080/save-story', json={"user_id": user_id, "story_data": story_data_dict})
+    return story_data_json
 
-@app.post("/actual")
-async def get_story(request_data: QuestionRequest):
+@app.post("/actual/{user_id}")
+async def get_story(request_data: QuestionRequest, user_id: str):
     system_prompt = request_data.system_prompt
     user_prompt = request_data.user_prompt
     response = generate_response(system_prompt, user_prompt)
@@ -52,11 +57,12 @@ async def get_story(request_data: QuestionRequest):
 
 @app.get("/generate-random-story")
 async def generate_random_story_endpoint():
-    response = generate_random_story()
+    response = generate_random_story_debugger()
+    print(response)
     return response
 
 
-def generate_random_story():
+def generate_random_story_debugger():
     return "a kid's adventure"
 
 # @app.post("/ask-question")
@@ -74,3 +80,5 @@ def generate_random_story():
 #         )
 #         code = 500 if "code" not in e else e["code"]
 #         raise HTTPException(status_code=code, detail=error_message)
+
+

@@ -148,8 +148,9 @@ const CreateStory = () => {
   // };
 
   const handleSubmitDebug = async () => {
+    console.log(user.id)
     try {
-      const response = await fetch('http://127.0.0.1:8000/test', {
+      const response = await fetch(`http://127.0.0.1:8000/test/${user.id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -191,7 +192,7 @@ const CreateStory = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/actual', {
+      const response = await fetch(`http://127.0.0.1:8000/actual/${user.id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -200,6 +201,7 @@ const CreateStory = () => {
           system_prompt: getSystemPrompt(),
           user_prompt: getUserPrompt(),
           context: '',
+          user_id: user.id,
         }),
       });
 

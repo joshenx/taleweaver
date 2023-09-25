@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 import os
 from dotenv import load_dotenv
+from pydantic import BaseModel
 from supabase import create_client, Client
 
 from typing import Any
@@ -12,7 +13,7 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException
 
-from src.supabase_api import get_users, get_stories_by_user, get_public_stories, get_story_by_id, save_users_story, set_story_public_status
+from src.supabase_api import get_users, get_stories_by_user, get_public_stories, get_story_by_id, save_users_story, set_story_public_status, save_image
 
 app = FastAPI()
 
@@ -92,8 +93,13 @@ async def get_story(story_id: int):
     # Return format: same return format as with the genapi
     return get_story_by_id(supabase, story_id)
 
+class SaveStoryRequest(BaseModel):
+    user_id: str
+    story_data: dict
+
 @app.post("/save-story") # TODO: check if story data type needs to be converted
-async def save_story(user_id: str, story: dict):
+async def save_story(request_data: SaveStoryRequest):
+    # user_id = 1
     # story = {
     #     "title": "The Adventures of Johnny", 
     #     "moral": "Curiosity leads to new discoveries", 
@@ -117,7 +123,7 @@ async def save_story(user_id: str, story: dict):
     #         }
     #     ]
     # }
-    
+
     # returns an int, which is the story id
-    return save_users_story(supabase, user_id, story)
+    return save_users_story(supabase, request_data.user_id, request_data.story_data)
 
