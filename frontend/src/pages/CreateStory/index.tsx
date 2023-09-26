@@ -34,7 +34,7 @@ import { useAuth } from '../../context/AuthProvider';
 
 const CreateStory = () => {
   const { auth, user, signOut } = useAuth();
-  console.log(`auth status: ${auth}`);
+  console.log(`CreateStory: ${user}`);
   const numPages = 1;
 
   const [isVocabActive, setIsVocabActive] = useState(false);
