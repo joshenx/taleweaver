@@ -65,14 +65,14 @@ export const VocabularyCustomiser: React.FC<VocabularyCustomiserProps> = ({
           aria-label="slider-ex-2"
           id="slider"
           defaultValue={age}
-          min={0}
+          min={1}
           max={20}
           onChange={handleSliderChange}
         >
           <SliderTrack>
-            <SliderFilledTrack />
+            <SliderFilledTrack bg="brand.orange" />
           </SliderTrack>
-          <SliderThumb />
+          <SliderThumb borderColor="brand.orange" />
         </Slider>
       </Box>
     </HStack>

@@ -309,10 +309,11 @@ const CreateStory = () => {
             />
             {!showAlert && !showSuccess && (
               <Button
+                m="1rem"
                 variant="styled-color"
                 onClick={handleSubmitDebug} // handleSubmitDebug for testing, handleSubmit for actual API call
               >
-                Get Story
+                Create Story
               </Button>
             )}
           </VStack>

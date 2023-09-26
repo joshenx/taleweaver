@@ -4,6 +4,33 @@ const theme = extendTheme({
   initialColorMode: 'light',
   useSystemColorMode: false,
   components: {
+    Input: {
+      defaultProps: {
+        focusBorderColor: 'brand.orange',
+      },
+    },
+
+    Textarea: {
+      defaultProps: {
+        focusBorderColor: 'brand.orange',
+      },
+    },
+
+    Select: {
+      defaultProps: {
+        focusBorderColor: 'brand.orange',
+      },
+    },
+    Slider: {
+      defaultProps: {
+        colorScheme: 'red',
+      },
+    },
+    Checkbox: {
+      defaultProps: {
+        colorScheme: 'orange',
+      },
+    },
     Button: {
       baseStyle: {
         fontStyle: 'normal',
