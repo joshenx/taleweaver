@@ -71,6 +71,8 @@ const Footer = () => {
               aria-label="GitHub"
               target="_blank"
               icon={<FaGithub fontSize="1.25rem" />}
+              color="white"
+              _hover={{ bgColor: '#333333' }}
             />
             {/* <IconButton
               as="a"

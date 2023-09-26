@@ -20,6 +20,7 @@ import {
 import { useState } from 'react';
 import trackExample from '/src/images/TrackExampleHorizontal.png';
 import gradientDivider from '/src/images/GradientDivider.svg';
+import taleweaverIcon from '/src/images/taleweaver_icon_svg.svg';
 import heroBackground from '/src/images/heroBackground.png';
 
 import { useNavigate } from 'react-router-dom';
@@ -158,7 +159,6 @@ const Home = () => {
           pt={{ base: '1rem', lg: '4rem' }}
           spacing="10"
           width={{ base: '100vw', sm: '60vw', md: '45vw' }}
-          minHeight="60vh"
         >
           <Heading as="h1" size="3xl">
             Personalised, educational storybooks for your kid.
@@ -166,10 +166,11 @@ const Home = () => {
           <Image
             src={heroBackground}
             position="absolute"
-            width="100%"
+            width="min(1920px, 100%)"
             top="-10vw"
-            left="0"
+            margin="auto"
             zIndex={-1}
+            filter="drop-shadow(-5px 5px 5px #cccccc)"
           />
           <Text fontSize="lg" fontStyle="normal">
             Are you a time-strapped working parent struggling to find quality
@@ -182,7 +183,12 @@ const Home = () => {
             Weave Story
           </Button>
         </VStack>
-        <Image src={gradientDivider} width="100vw" mt="10vh" mb="-5vw" />
+        <Image
+          src={gradientDivider}
+          width="min(1920px, 100vw)"
+          mb="-5vw"
+          zIndex={-2}
+        />
         <Text textAlign="center" fontSize="3xl" fontWeight="600">
           The creative, guilt-free alternative to mindless screen-time.
         </Text>
@@ -195,9 +201,10 @@ const Home = () => {
           width={{ base: '100vw', sm: '60vw', md: '30vw' }}
           px={{ base: '1rem', md: '0rem' }}
           alignItems={{ base: 'center' }}
-          my="10vh"
+          my="3rem"
           textAlign="center"
         >
+          <Image alt="TaleWeaver icon" src={taleweaverIcon} height="50px" />
           <Text textAlign="center" fontSize="2xl" fontWeight="600">
             We're still in BETA!
           </Text>

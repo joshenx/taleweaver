@@ -4,6 +4,33 @@ const theme = extendTheme({
   initialColorMode: 'light',
   useSystemColorMode: false,
   components: {
+    Input: {
+      defaultProps: {
+        focusBorderColor: 'brand.orange',
+      },
+    },
+
+    Textarea: {
+      defaultProps: {
+        focusBorderColor: 'brand.orange',
+      },
+    },
+
+    Select: {
+      defaultProps: {
+        focusBorderColor: 'brand.orange',
+      },
+    },
+    Slider: {
+      defaultProps: {
+        colorScheme: 'red',
+      },
+    },
+    Checkbox: {
+      defaultProps: {
+        colorScheme: 'orange',
+      },
+    },
     Button: {
       baseStyle: {
         fontStyle: 'normal',
@@ -13,7 +40,9 @@ const theme = extendTheme({
         styled: {
           appearance: 'none',
           borderRadius: '40em',
-          borderStyle: 'none',
+          borderStyle: 'solid',
+          borderColor: 'brand.white',
+          borderWidth: '1px',
           boxSizing: 'border-box',
           fontFamily: '-apple-system, sans-serif',
           fontSize: '1.2rem',
@@ -104,7 +133,7 @@ const theme = extendTheme({
       orange80: '#FF7833',
       yellow: '#FFC229',
       green: '#06D6A0',
-      white: '#FCFCFC',
+      white: '#ECECEC',
     },
   },
   fonts: {
