@@ -10,9 +10,13 @@ import {
   ModalCloseButton,
   ModalFooter,
   Input,
+  Image,
+  VStack,
+  Divider,
 } from '@chakra-ui/react';
 import { useAuth } from '../../context/AuthProvider';
 import { useState, useEffect } from 'react';
+import HTMLFlipBook from 'react-pageflip';
 
 interface Story {
   storyid: number;
@@ -42,7 +46,6 @@ const MyLibrary = () => {
         return;
       }
       const data = await response.json();
-      console.log(data);
       setUserStories(data);
     } catch (error) {
       console.error('Error fetching user stories:', error);
@@ -59,9 +62,9 @@ const MyLibrary = () => {
         return;
       }
       const data = await response.json();
-      console.log(data);
-      console.log(data.title);
-      setSelectedStory(data);
+      const json_data = JSON.parse(data);
+      console.log(json_data);
+      setSelectedStory(json_data);
     } catch (error) {
       console.error('Error fetching story:', error);
     }
@@ -178,21 +181,77 @@ const MyLibrary = () => {
         ))
       )}
 
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <Modal isOpen={isModalOpen} onClose={closeModal} size={'full'}>
         <ModalOverlay />
         <ModalContent>
-          {selectedStory && (
-            <>
-              <ModalHeader>{selectedStory?.title}</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <Text>{selectedStory}</Text>
-              </ModalBody>
-              <ModalFooter>
-                <Button onClick={closeModal}>Close</Button>
-              </ModalFooter>
-            </>
-          )}
+          <ModalHeader>{selectedStory?.title}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <HTMLFlipBook
+              width={200}
+              height={300}
+              size="stretch"
+              maxShadowOpacity={0.5}
+              showCover={false}
+              mobileScrollSupport={true}
+              className="demo-book"
+            >
+              {selectedStory &&
+                selectedStory.story &&
+                selectedStory.story.map((pageData) => (
+                  <Box
+                    key={pageData.page}
+                    p="2rem"
+                    bg="white"
+                    border="1px"
+                    borderColor="gray.300"
+                    borderRadius="10px"
+                    overflow="clip"
+                  >
+                    <VStack key={pageData.page} maxHeight="100%">
+                      <Image
+                        objectFit="cover"
+                        borderRadius="1rem"
+                        boxSize="100%"
+                        src={pageData.image_url}
+                        alt={pageData.image_prompt}
+                      />
+                      <Text fontSize="sm" fontStyle="normal">
+                        {pageData.image_prompt}
+                      </Text>
+                      <Text fontSize="lg" fontStyle="normal">
+                        {pageData.text}
+                      </Text>
+                      <Box position="absolute" bottom="1rem">
+                        <Divider />
+                        <Text fontSize="sm" fontStyle="normal">
+                          {pageData.page}
+                        </Text>
+                      </Box>
+                    </VStack>
+                    <Box
+                      backgroundImage={pageData.image_url}
+                      backgroundSize="cover"
+                      filter="blur(5px)"
+                      border="1px"
+                      borderColor="gray.300"
+                      borderRadius="10px"
+                      position="absolute"
+                      top="0"
+                      left="0"
+                      zIndex="-1"
+                      opacity="0.2"
+                      bgPosition="center"
+                      width="100%"
+                      height="100%"
+                    />
+                  </Box>
+                ))}
+            </HTMLFlipBook>
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={closeModal}>Close</Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
