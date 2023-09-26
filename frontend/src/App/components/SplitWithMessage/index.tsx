@@ -13,7 +13,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { ReactElement } from 'react';
-import chatdisplaySrc from '/src/images/chatdisplay.png';
+import rocketshipImage from '/src/images/rocketshipImage.png';
 
 interface FeatureProps {
   text: string;
@@ -34,8 +34,8 @@ export default function SplitWithMessage(props: any) {
         <Flex>
           <Image
             rounded={'md'}
-            alt={'feature image'}
-            src=""
+            alt={'Image of kid on rocketship'}
+            src={rocketshipImage}
             objectFit="contain"
           />
         </Flex>

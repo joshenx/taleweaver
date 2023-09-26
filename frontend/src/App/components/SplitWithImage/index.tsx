@@ -13,7 +13,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { ReactElement } from 'react';
-import trackdisplaySrc from '/src/images/trackdisplay.png';
+import customiseImage from '/src/images/customiseImage.png';
 
 interface FeatureProps {
   text: string;
@@ -72,7 +72,7 @@ export default function SplitWithImage(props: any) {
           <Image
             rounded={'md'}
             alt={'feature image'}
-            src=""
+            src={customiseImage}
             objectFit="contain"
           />
         </Flex>
