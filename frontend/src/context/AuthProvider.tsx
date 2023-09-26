@@ -23,9 +23,10 @@ const AuthProvider = ({ children }: any) => {
   const [session, setSession] = useState(null);
   const [user, setUser] = useState<User | null>(null);
   const [auth, setAuth] = useState(false);
-  const [loading, setLoading] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
       console.log(`Supabase auth event: ${event}`);
       if (event == 'PASSWORD_RECOVERY') {
@@ -43,7 +44,6 @@ const AuthProvider = ({ children }: any) => {
       setSession(session);
     });
 
-    setLoading(true);
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setLoading(false);
@@ -57,6 +57,7 @@ const AuthProvider = ({ children }: any) => {
   return (
     <AuthContext.Provider
       value={{
+        loading,
         session,
         auth,
         user,
