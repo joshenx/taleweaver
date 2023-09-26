@@ -1,0 +1,10 @@
+openai
+python-dotenv
+fastapi
+pydantic
+uvicorn
+sqlalchemy
+psycopg2-binary
+anthropic
+datetime
+supabase
