@@ -35,7 +35,7 @@ import { useAuth } from '../../context/AuthProvider';
 const CreateStory = () => {
   const { auth, user, signOut } = useAuth();
   console.log(`CreateStory: ${user}`);
-  const numPages = 1;
+  const numPages = 2;
 
   const [isVocabActive, setIsVocabActive] = useState(false);
   const [vocabAge, setVocabAge] = useState(3);
@@ -52,6 +52,8 @@ const CreateStory = () => {
   const [response, setResponse] = useState({});
   const [storyPrompt, setStory] = useState('');
   const [isStoryRandom, setIsStoryRandom] = useState(false);
+
+  const [isSaved, setIsSaved] = useState(false);
 
   const [name, setName] = useState('');
   const additionalAgeInfo = `The story should contain vocabulary appropriate for a ${vocabAge}-year-old.`;
@@ -117,6 +119,7 @@ const CreateStory = () => {
           ...
         ]}
       4. If any violations are detected, strictly only write "Violation Detected" without modifying or adding anything.
+      5. The story should finish within the indicated number of pages.
     `;
   };
 
@@ -149,7 +152,7 @@ const CreateStory = () => {
 
   const handleSubmitDebug = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/test/', {
+      const response = await fetch('http://127.0.0.1:8000/test', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -191,7 +194,7 @@ const CreateStory = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/actual/', {
+      const response = await fetch('http://127.0.0.1:8000/actual', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -200,7 +203,6 @@ const CreateStory = () => {
           system_prompt: getSystemPrompt(),
           user_prompt: getUserPrompt(),
           context: '',
-          user_id: user.id,
         }),
       });
 
@@ -221,6 +223,7 @@ const CreateStory = () => {
       console.error('Error sending message to API', error);
     } finally {
       setIsLoading(false);
+      setIsSaved(false);
     }
   };
 
@@ -231,9 +234,14 @@ const CreateStory = () => {
     setStory(inputValue);
   };
 
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let inputValue = e.target.value;
+    setName(inputValue);
+  };
+
   const handleSave = async () => {
     const storyData = response;
-    console.log(storyData);
+    setIsSaved(true);
     try {
       const response = await fetch('http://127.0.0.1:8080/save-story', {
         method: 'POST',
@@ -252,11 +260,6 @@ const CreateStory = () => {
     } catch (error) {
       console.error('Error saving story:', error);
     }
-  };
-
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let inputValue = e.target.value;
-    setName(inputValue);
   };
 
   return (
@@ -466,9 +469,19 @@ const CreateStory = () => {
               ))}
           </HTMLFlipBook>
           {response && response.story && (
-            <Button colorScheme="green" onClick={handleSave}>
-              Save My Story
+            <Button
+              colorScheme={isSaved ? 'gray' : 'green'}
+              onClick={handleSave}
+              disabled={isSaved}
+            >
+              {isSaved ? 'Story Saved' : 'Save My Story'}
             </Button>
+          )}
+          {isSaved && (
+            <Alert status="success" mt={4}>
+              <AlertIcon />
+              Story saved successfully!
+            </Alert>
           )}
         </VStack>
       </Container>

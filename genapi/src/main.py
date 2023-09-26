@@ -54,7 +54,7 @@ async def get_story(request_data: QuestionRequest):
 
 @app.get("/generate-random-story")
 async def generate_random_story_endpoint():
-    response = generate_random_story_debugger()
+    response = generate_random_story()
     print(response)
     return response
 
