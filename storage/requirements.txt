@@ -7,5 +7,5 @@ sqlalchemy
 psycopg2-binary
 anthropic
 datetime
-supabase
+supabase==1.0.4
 requests
