@@ -16,6 +16,7 @@ import {
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthProvider';
+import { useAnalyticsEventTracker } from '../../App/hooks/useAnalyticsEventTracker'
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -26,8 +27,10 @@ export default function Login() {
   const navigate = useNavigate();
   const { login, passwordReset } = useAuth();
   const { isOpen, onToggle } = useDisclosure();
+  const eventTracker = useAnalyticsEventTracker('Login');
 
   const handleSubmit = async (e) => {
+    eventTracker('submitted login', 'normal');
     e.preventDefault();
     try {
       setErrorMsg('');
@@ -54,6 +57,7 @@ export default function Login() {
       }
     } catch (error) {
       setErrorMsg('Email or Password Incorrect');
+      eventTracker('login error', 'error')
     }
     setLoading(false);
   };
