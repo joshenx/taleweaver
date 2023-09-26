@@ -8,7 +8,6 @@ import {
   ModalHeader,
   ModalBody,
   ModalCloseButton,
-  ModalFooter,
   Input,
   Image,
   VStack,

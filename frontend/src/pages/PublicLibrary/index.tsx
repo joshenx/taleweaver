@@ -8,10 +8,15 @@ import {
   ModalHeader,
   ModalBody,
   ModalCloseButton,
-  ModalFooter,
   Input,
+  Image,
+  Spinner,
+  VStack,
+  Center,
+  Divider,
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
+import HTMLFlipBook from 'react-pageflip';
 
 interface Story {
   storyid: number;
@@ -21,6 +26,7 @@ interface Story {
   title: string;
   genre: string;
   userid: string;
+  story: [];
 }
 
 const PublicLibrary = () => {
@@ -28,6 +34,7 @@ const PublicLibrary = () => {
   const [selectedStory, setSelectedStory] = useState<Story>(); // To store the selected story for viewing in the modal
   const [isModalOpen, setIsModalOpen] = useState(false); // To toggle the modal
   const [searchQuery, setSearchQuery] = useState(''); // State for the search query
+  const [isLoading, setIsLoading] = useState(true);
 
   const getPublicStories = async () => {
     try {
@@ -37,7 +44,11 @@ const PublicLibrary = () => {
         return;
       }
       const data = await response.json();
+      for (let i = 0; i < data.length; i++) {
+        data[i].story = await getStory(data[i].storyid);
+      }
       setPublicStories(data);
+      setIsLoading(false);
     } catch (error) {
       console.error('Error fetching public stories:', error);
     }
@@ -53,9 +64,8 @@ const PublicLibrary = () => {
         return;
       }
       const data = await response.json();
-      console.log(data);
-      console.log(data.title);
-      setSelectedStory(data);
+      const json_data = JSON.parse(data);
+      return json_data.story;
     } catch (error) {
       console.error('Error fetching story:', error);
     }
@@ -72,7 +82,7 @@ const PublicLibrary = () => {
   };
 
   const handleViewStoryClick = async (storyId: number) => {
-    await getStory(storyId);
+    setSelectedStory(publicStories.find((story) => story.storyid === storyId));
     openModal();
   };
 
@@ -94,7 +104,9 @@ const PublicLibrary = () => {
         onChange={(e) => setSearchQuery(e.target.value)}
       />
 
-      {filteredStories.length === 0 ? (
+      {isLoading ? (
+        <Spinner size="xl" color="teal.500" />
+      ) : filteredStories.length === 0 ? (
         <Text>No stories available.</Text>
       ) : (
         filteredStories.map((story, index) => (
@@ -111,21 +123,80 @@ const PublicLibrary = () => {
         ))
       )}
 
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <Modal isOpen={isModalOpen} onClose={closeModal} size={'full'}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent maxW="100vw" maxH="100vh" overflow="hidden">
           <ModalHeader>{selectedStory?.title}</ModalHeader>
           <ModalCloseButton />
-          {selectedStory && (
-            <>
-              <ModalBody>
-                <Text>{selectedStory}</Text>
-              </ModalBody>
-              <ModalFooter>
-                <Button onClick={closeModal}>Close</Button>
-              </ModalFooter>
-            </>
-          )}
+          <ModalBody>
+            <Center>
+              <HTMLFlipBook
+                width={300}
+                height={450}
+                size="stretch"
+                minWidth={172}
+                maxWidth={545}
+                minHeight={218}
+                maxHeight={837}
+                maxShadowOpacity={0.5}
+                showCover={false}
+                mobileScrollSupport={true}
+                className="demo-book"
+              >
+                {selectedStory &&
+                  selectedStory.story &&
+                  selectedStory.story.map((pageData) => (
+                    <Box
+                      key={pageData.page}
+                      p="2rem"
+                      bg="white"
+                      border="1px"
+                      borderColor="gray.300"
+                      borderRadius="10px"
+                      overflow="clip"
+                    >
+                      <VStack key={pageData.page} maxHeight="100%">
+                        <Image
+                          objectFit="cover"
+                          borderRadius="1rem"
+                          boxSize="100%"
+                          src={pageData.image_url}
+                          alt={pageData.image_prompt}
+                        />
+                        <Text fontSize="sm" fontStyle="normal">
+                          {pageData.image_prompt}
+                        </Text>
+                        <Text fontSize="lg" fontStyle="normal">
+                          {pageData.text}
+                        </Text>
+                        <Box position="absolute" bottom="1rem">
+                          <Divider />
+                          <Text fontSize="sm" fontStyle="normal">
+                            {pageData.page}
+                          </Text>
+                        </Box>
+                      </VStack>
+                      <Box
+                        backgroundImage={pageData.image_url}
+                        backgroundSize="cover"
+                        filter="blur(5px)"
+                        border="1px"
+                        borderColor="gray.300"
+                        borderRadius="10px"
+                        position="absolute"
+                        top="0"
+                        left="0"
+                        zIndex="-1"
+                        opacity="0.2"
+                        bgPosition="center"
+                        width="100%"
+                        height="100%"
+                      />
+                    </Box>
+                  ))}
+              </HTMLFlipBook>
+            </Center>
+          </ModalBody>
         </ModalContent>
       </Modal>
     </>
