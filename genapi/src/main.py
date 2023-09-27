@@ -12,6 +12,8 @@ from fastapi import FastAPI, HTTPException
 from src.anthropic_api import get_anthropic_response
 from src.openai_api import generate_response, generate_response_debugger, generate_random_story
 
+import requests
+
 app = FastAPI()
 
 origins = [
@@ -53,10 +55,11 @@ async def get_story(request_data: QuestionRequest):
 @app.get("/generate-random-story")
 async def generate_random_story_endpoint():
     response = generate_random_story()
+    print(response)
     return response
 
 
-def generate_random_story():
+def generate_random_story_debugger():
     return "a kid's adventure"
 
 # @app.post("/ask-question")
@@ -74,3 +77,5 @@ def generate_random_story():
 #         )
 #         code = 500 if "code" not in e else e["code"]
 #         raise HTTPException(status_code=code, detail=error_message)
+
+

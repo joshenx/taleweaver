@@ -34,12 +34,6 @@ export default function NavBar() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log(session);
-    console.log(user);
-    console.log(auth);
-  }, [user]);
-
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
@@ -202,20 +196,24 @@ const MobileNav = () => {
       {pagesData
         .filter(({ mainNav }: routerType) => mainNav)
         .map(({ path, title }: routerType, index) => (
-          <MobileNavItem path={path} key={index} title={title} />
+          <MobileNavItem path={path} key={index} mykey={index} title={title} />
         ))}
     </Stack>
   );
 };
 
-const MobileNavItem = ({ path, key, title }: NavItem) => {
+interface NavItem {
+  path: string;
+  mykey: number;
+  title: string;
+}
+
+const MobileNavItem = ({ path, mykey, title }: NavItem) => {
   return (
-    <Stack spacing={4}>
+    <Stack key={mykey} spacing={4}>
       <Link
         as="a"
         to={path}
-        justifyContent="space-between"
-        alignItems="center"
         _hover={{
           textDecoration: 'none',
         }}

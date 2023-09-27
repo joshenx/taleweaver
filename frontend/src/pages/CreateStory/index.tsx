@@ -34,8 +34,8 @@ import { useAuth } from '../../context/AuthProvider';
 
 const CreateStory = () => {
   const { auth, user, signOut } = useAuth();
-  console.log(`auth status: ${auth}`);
-  const numPages = 1;
+  console.log(`CreateStory: ${user}`);
+  const numPages = 2;
 
   const [isVocabActive, setIsVocabActive] = useState(false);
   const [vocabAge, setVocabAge] = useState(3);
@@ -52,6 +52,8 @@ const CreateStory = () => {
   const [response, setResponse] = useState({});
   const [storyPrompt, setStory] = useState('');
   const [isStoryRandom, setIsStoryRandom] = useState(false);
+
+  const [isSaved, setIsSaved] = useState(false);
 
   const [name, setName] = useState('');
   const additionalAgeInfo = `The story should contain vocabulary appropriate for a ${vocabAge}-year-old.`;
@@ -117,6 +119,7 @@ const CreateStory = () => {
           ...
         ]}
       4. If any violations are detected, strictly only write "Violation Detected" without modifying or adding anything.
+      5. The story should finish within the indicated number of pages.
     `;
   };
 
@@ -220,6 +223,7 @@ const CreateStory = () => {
       console.error('Error sending message to API', error);
     } finally {
       setIsLoading(false);
+      setIsSaved(false);
     }
   };
 
@@ -233,6 +237,29 @@ const CreateStory = () => {
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let inputValue = e.target.value;
     setName(inputValue);
+  };
+
+  const handleSave = async () => {
+    const storyData = response;
+    setIsSaved(true);
+    try {
+      const response = await fetch('http://127.0.0.1:8080/save-story', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: user.id,
+          story_data: storyData,
+        }),
+      });
+
+      if (!response.ok) {
+        console.log('Failed to save story.');
+      }
+    } catch (error) {
+      console.error('Error saving story:', error);
+    }
   };
 
   return (
@@ -311,7 +338,7 @@ const CreateStory = () => {
               <Button
                 m="1rem"
                 variant="styled-color"
-                onClick={handleSubmitDebug} // handleSubmitDebug for testing, handleSubmit for actual API call
+                onClick={handleSubmit} // handleSubmitDebug for testing, handleSubmit for actual API call
               >
                 Create Story
               </Button>
@@ -441,6 +468,21 @@ const CreateStory = () => {
                 </Box>
               ))}
           </HTMLFlipBook>
+          {response && response.story && (
+            <Button
+              colorScheme={isSaved ? 'gray' : 'green'}
+              onClick={handleSave}
+              disabled={isSaved}
+            >
+              {isSaved ? 'Story Saved' : 'Save My Story'}
+            </Button>
+          )}
+          {isSaved && (
+            <Alert status="success" mt={4}>
+              <AlertIcon />
+              Story saved successfully!
+            </Alert>
+          )}
         </VStack>
       </Container>
     </>

@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 import os
 from dotenv import load_dotenv
+from pydantic import BaseModel, Json
 from supabase import create_client, Client
 
 from typing import Any
@@ -12,7 +13,7 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException
 
-from src.supabase_api import get_users, get_stories_by_user, get_public_stories, get_story_by_id, save_users_story, set_story_public_status
+from src.supabase_api import get_users, get_stories_by_user, get_public_stories, get_story_by_id, save_users_story, set_story_public_status, save_image
 
 app = FastAPI()
 
@@ -92,12 +93,13 @@ async def get_story(story_id: int):
     # Return format: same return format as with the genapi
     return get_story_by_id(supabase, story_id)
 
-@app.post("/save-story") # TODO: check if story data type needs to be converted
-async def save_story(user_id: str, story: dict):
-    # story = "{\"title\": \"The Adventures of Johnny\", \"moral\": \"Curiosity leads to new discoveries\", \"genre\": \"Adventure\",\"vocabulary_age\": \"3\", \"total_pages\": \"1\", \"story\": [{\"page\": 1,\"text\": \"Once upon a time, there was a little boy named Johnny. Johnny was always full of curiosity and loved going on adventures.\", \"image_prompt\": \"Johnny exploring a magical forest\", \"subject_description\": \"Johnny: A young boy with messy brown hair, wearing a red cap and a backpack\", \"image_url\": \"https://oaidalleapiprodscus.blob.core.windows.net/private/org-PuMGCWJ1M3tJ6ExWwgZAlVT4/user-TETd6CWnI82tNSrj9rzXTm2Z/img-9VHZceioZgtAvoZCKF9JICpP.png?st=2023-09-25T10%3A55%3A15Z&se=2023-09-25T12%3A55%3A15Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-09-24T21%3A23%3A48Z&ske=2023-09-25T21%3A23%3A48Z&sks=b&skv=2021-08-06&sig=/%2B7m/mA21OR6qoR30cRs7EUAowDK6Fu06LCBh%2BmG9mk%3D\"}]}"
-    # TODO: if story is string and not dict, uncomment this line:
-    # story = json.loads(story)
+class SaveStoryRequest(BaseModel):
+    user_id: str
+    story_data: dict
 
+@app.post("/save-story")
+async def save_story(request_data: SaveStoryRequest):
+    # user_id = 1
     # story = {
     #     "title": "The Adventures of Johnny", 
     #     "moral": "Curiosity leads to new discoveries", 
@@ -121,7 +123,7 @@ async def save_story(user_id: str, story: dict):
     #         }
     #     ]
     # }
-    
+
     # returns an int, which is the story id
-    return save_users_story(supabase, user_id, story)
+    return save_users_story(supabase, request_data.user_id, request_data.story_data)
 

@@ -2,10 +2,14 @@ import { Route, Routes } from 'react-router-dom';
 import { routerType } from '../types/router.types';
 import pagesData from './pagesData';
 import AuthRoute from '../App/components/AuthRoute';
+import { useAuth } from '../context/AuthProvider';
 import { useEffect } from 'react';
 import ReactGA4 from 'react-ga4';
 
+
 const Router = () => {
+  const { auth, loading } = useAuth();
+
   useEffect(() =>
     ReactGA4.send({ 
       hitType: 'pageview',
