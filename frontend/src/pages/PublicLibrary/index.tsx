@@ -44,9 +44,6 @@ const PublicLibrary = () => {
         return;
       }
       const data = await response.json();
-      for (let i = 0; i < data.length; i++) {
-        data[i].story = await getStory(data[i].storyid);
-      }
       setPublicStories(data);
       setIsLoading(false);
     } catch (error) {
@@ -55,6 +52,14 @@ const PublicLibrary = () => {
   };
 
   const getStory = async (storyId: number) => {
+    const publicStory = publicStories.find(
+      (story) => story.storyid === storyId,
+    );
+    if (publicStory && publicStory.story != undefined) {
+      setSelectedStory(publicStory);
+      return;
+    }
+
     try {
       const response = await fetch(
         `http://127.0.0.1:8080/${storyId}/get-story`,
@@ -65,7 +70,14 @@ const PublicLibrary = () => {
       }
       const data = await response.json();
       const json_data = JSON.parse(data);
-      return json_data.story;
+      setSelectedStory(json_data);
+      setPublicStories((prevPublicStories) =>
+        prevPublicStories.map((prevStory) =>
+          prevStory.storyid === storyId
+            ? { ...prevStory, story: json_data.story }
+            : prevStory,
+        ),
+      );
     } catch (error) {
       console.error('Error fetching story:', error);
     }
@@ -82,7 +94,7 @@ const PublicLibrary = () => {
   };
 
   const handleViewStoryClick = async (storyId: number) => {
-    setSelectedStory(publicStories.find((story) => story.storyid === storyId));
+    await getStory(storyId);
     openModal();
   };
 
