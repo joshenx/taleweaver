@@ -49,7 +49,6 @@ async def get_story(request_data: QuestionRequest):
     system_prompt = request_data.system_prompt
     user_prompt = request_data.user_prompt
     response = generate_response(system_prompt, user_prompt)
-    print(response)
     return response
 
 @app.get("/generate-random-story")
