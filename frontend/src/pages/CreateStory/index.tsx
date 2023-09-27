@@ -118,7 +118,7 @@ const CreateStory = () => {
             "subject_description": "Actor1: A boy with black hair, Actor2: A girl with blonde hair"},
           ...
         ]}
-      4. If any violations are detected, strictly only write "Violation Detected" without modifying or adding anything.
+      4. If any violations are detected, strictly write "Violation Detected" and provide information to the user as to why it is a violation. 
       5. The story should finish within the indicated number of pages.
     `;
   };

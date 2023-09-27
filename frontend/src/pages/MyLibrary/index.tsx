@@ -49,10 +49,6 @@ const MyLibrary = () => {
         return;
       }
       const data = await response.json();
-      for (let i = 0; i < data.length; i++) {
-        data[i].story = await getStory(data[i].storyid);
-      }
-      console.log(data);
       setUserStories(data);
       setIsLoading(false);
     } catch (error) {
@@ -71,7 +67,7 @@ const MyLibrary = () => {
       }
       const data = await response.json();
       const json_data = JSON.parse(data);
-      return json_data.story;
+      setSelectedStory(json_data);
     } catch (error) {
       console.error('Error fetching story:', error);
     }
@@ -88,7 +84,7 @@ const MyLibrary = () => {
   };
 
   const handleViewStoryClick = async (storyId: number) => {
-    setSelectedStory(userStories.find((story) => story.storyid === storyId));
+    await getStory(storyId);
     openModal();
   };
 
