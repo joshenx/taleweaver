@@ -57,6 +57,12 @@ const MyLibrary = () => {
   };
 
   const getStory = async (storyId: number) => {
+    const userStory = userStories.find((story) => story.storyid === storyId);
+    if (userStory && userStory.story != undefined) {
+      setSelectedStory(userStory);
+      return;
+    }
+
     try {
       const response = await fetch(
         `http://127.0.0.1:8080/${storyId}/get-story`,
@@ -68,6 +74,13 @@ const MyLibrary = () => {
       const data = await response.json();
       const json_data = JSON.parse(data);
       setSelectedStory(json_data);
+      setUserStories((prevUserStories) =>
+        prevUserStories.map((prevStory) =>
+          prevStory.storyid === storyId
+            ? { ...prevStory, story: json_data.story }
+            : prevStory,
+        ),
+      );
     } catch (error) {
       console.error('Error fetching story:', error);
     }
