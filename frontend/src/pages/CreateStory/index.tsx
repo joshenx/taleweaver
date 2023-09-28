@@ -26,12 +26,12 @@ import { useState } from 'react';
 import BadWordsFilter from 'bad-words';
 import HTMLFlipBook from 'react-pageflip';
 import { QuestionOutlineIcon } from '@chakra-ui/icons';
-import { FaMicrophoneAltSlash } from 'react-icons/fa';
 import { GenreCustomiser } from './CustomisationComponents/GenreCustomiser';
 import { ValuesCustomiser } from './CustomisationComponents/ValuesCustomiser';
 import { VocabularyCustomiser } from './CustomisationComponents/VocabularyCustomiser';
 import { generateRandomStory } from './utils/storygenerator';
 import { useAuth } from '../../context/AuthProvider';
+import FlipbookDisplay from '../../App/components/FlipbookDisplay';
 
 const CreateStory = () => {
   const { auth, user, signOut } = useAuth();
@@ -406,76 +406,7 @@ const CreateStory = () => {
           {response?.title}
         </Heading>
         <VStack>
-          <HTMLFlipBook
-            width={550}
-            height={733}
-            size="stretch"
-            minWidth={315}
-            maxWidth={1000}
-            minHeight={400}
-            maxHeight={1533}
-            maxShadowOpacity={0.5}
-            showCover={false}
-            mobileScrollSupport={true}
-            className="demo-book"
-          >
-            {response &&
-              response.story &&
-              response.story.map((pageData) => (
-                <Box
-                  key={pageData.page}
-                  p="2rem"
-                  bg="white"
-                  border="1px"
-                  borderColor="gray.300"
-                  borderRadius="10px"
-                  overflow="clip"
-                >
-                  <VStack key={pageData.page} maxHeight="100%">
-                    <Image
-                      objectFit="cover"
-                      borderRadius="1rem"
-                      boxSize="100%"
-                      src={pageData.image_url}
-                      alt={pageData.image_prompt}
-                    />
-                    <Text fontSize="xs" fontStyle="normal">
-                      {pageData.image_prompt}
-                    </Text>
-                    <Text fontSize="md" fontStyle="normal">
-                      {pageData.text}
-                    </Text>
-                    <Box position="absolute" bottom="1rem">
-                      <Divider />
-                      <Text fontSize="sm" fontStyle="normal">
-                        {pageData.page}
-                      </Text>
-                    </Box>
-                    {/* <img
-        src={pageData.image_prompt}
-        alt={`Page ${pageData.page} Image`}
-        style={{ maxWidth: '100%' }}
-      /> */}
-                  </VStack>
-                  <Box
-                    backgroundImage={pageData.image_url}
-                    backgroundSize="cover"
-                    filter="blur(5px)"
-                    border="1px"
-                    borderColor="gray.300"
-                    borderRadius="10px"
-                    position="absolute"
-                    top="0"
-                    left="0"
-                    zIndex="-1"
-                    opacity="0.2"
-                    bgPosition="center"
-                    width="100%"
-                    height="100%"
-                  />
-                </Box>
-              ))}
-          </HTMLFlipBook>
+          <FlipbookDisplay selectedStory={response} />
 
           {response && response.story && (
             <Button

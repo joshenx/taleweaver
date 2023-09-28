@@ -1,23 +1,29 @@
 import {
   Button,
   Box,
+  Tag,
+  Container,
   Text,
   Modal,
+  Heading,
   ModalOverlay,
   ModalContent,
   ModalHeader,
   ModalBody,
   ModalCloseButton,
   Input,
+  HStack,
   Image,
   VStack,
   Divider,
   Spinner,
   Center,
+  SkeletonText,
 } from '@chakra-ui/react';
 import { useAuth } from '../../context/AuthProvider';
 import { useState, useEffect } from 'react';
 import HTMLFlipBook from 'react-pageflip';
+import FlipbookDisplay from '../../App/components/FlipbookDisplay';
 
 interface Story {
   storyid: number;
@@ -163,7 +169,7 @@ const MyLibrary = () => {
   }, []);
 
   return (
-    <>
+    <Container minHeight="100vh">
       <Input
         type="text"
         placeholder="Search by title..."
@@ -171,111 +177,62 @@ const MyLibrary = () => {
         onChange={(e) => setSearchQuery(e.target.value)}
       />
       {isLoading ? (
-        <Spinner size="xl" color="teal.500" />
+        <SkeletonText mt="4" noOfLines={4} spacing="4" skeletonHeight="4" />
       ) : filteredStories.length === 0 ? (
         <Text>No stories available.</Text>
       ) : (
         filteredStories.map((story, index) => (
-          <Box key={story.storyid} borderWidth="1px" p="4">
+          <Box
+            key={story.storyid}
+            borderWidth="1px"
+            borderRadius="5px"
+            m="1rem"
+            p="4"
+          >
             <Text fontWeight="bold">
               {index + 1}. {story.title}
             </Text>
-            <Text>{story.moral}</Text>
-            <Text>{story.genre}</Text>
-            <Button onClick={() => handleViewStoryClick(story.storyid)}>
-              View Story
-            </Button>
-            {!story.ispublic && (
-              <Button onClick={() => handleShareButtonClick(story.storyid)}>
-                Share My Story
+            <Tag m="3px" size={'sm'} variant="solid" colorScheme="teal">
+              {story.moral}
+            </Tag>
+
+            <Tag m="3px" size={'sm'} variant="solid" colorScheme="orange">
+              {story.genre}
+            </Tag>
+            <HStack pt="1rem">
+              <Button onClick={() => handleViewStoryClick(story.storyid)}>
+                View Story
               </Button>
-            )}
-            {story.ispublic && (
-              <Button onClick={() => handleUnshareButtonClick(story.storyid)}>
-                Unshare My Story
-              </Button>
-            )}
+              {!story.ispublic && (
+                <Button onClick={() => handleShareButtonClick(story.storyid)}>
+                  Share My Story
+                </Button>
+              )}
+              {story.ispublic && (
+                <Button onClick={() => handleUnshareButtonClick(story.storyid)}>
+                  Unshare My Story
+                </Button>
+              )}
+            </HStack>
           </Box>
         ))
       )}
 
       <Modal isOpen={isModalOpen} onClose={closeModal} size={'full'}>
         <ModalOverlay />
-        <ModalContent maxW="100vw" maxH="100vh" overflow="hidden">
+        <ModalContent>
           <ModalHeader>{selectedStory?.title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Center>
-              <HTMLFlipBook
-                width={300}
-                height={450}
-                size="stretch"
-                minWidth={172}
-                maxWidth={545}
-                minHeight={218}
-                maxHeight={837}
-                maxShadowOpacity={0.5}
-                showCover={false}
-                mobileScrollSupport={true}
-                className="demo-book"
-              >
-                {selectedStory &&
-                  selectedStory.story &&
-                  selectedStory.story.map((pageData) => (
-                    <Box
-                      key={pageData.page}
-                      p="2rem"
-                      bg="white"
-                      border="1px"
-                      borderColor="gray.300"
-                      borderRadius="10px"
-                      overflow="clip"
-                    >
-                      <VStack key={pageData.page} maxHeight="100%">
-                        <Image
-                          objectFit="cover"
-                          borderRadius="1rem"
-                          boxSize="100%"
-                          src={pageData.image_url}
-                          alt={pageData.image_prompt}
-                        />
-                        <Text fontSize="sm" fontStyle="normal">
-                          {pageData.image_prompt}
-                        </Text>
-                        <Text fontSize="lg" fontStyle="normal">
-                          {pageData.text}
-                        </Text>
-                        <Box position="absolute" bottom="1rem">
-                          <Divider />
-                          <Text fontSize="sm" fontStyle="normal">
-                            {pageData.page}
-                          </Text>
-                        </Box>
-                      </VStack>
-                      <Box
-                        backgroundImage={pageData.image_url}
-                        backgroundSize="cover"
-                        filter="blur(5px)"
-                        border="1px"
-                        borderColor="gray.300"
-                        borderRadius="10px"
-                        position="absolute"
-                        top="0"
-                        left="0"
-                        zIndex="-1"
-                        opacity="0.2"
-                        bgPosition="center"
-                        width="100%"
-                        height="100%"
-                      />
-                    </Box>
-                  ))}
-              </HTMLFlipBook>
+              <Container textAlign="center" maxW={'4xl'} py={12}>
+                <FlipbookDisplay selectedStory={selectedStory} />
+              </Container>
             </Center>
           </ModalBody>
         </ModalContent>
       </Modal>
-    </>
+    </Container>
   );
 };
 
