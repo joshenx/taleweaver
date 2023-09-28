@@ -83,6 +83,27 @@ const MyLibrary = () => {
     }
   };
 
+  const handleDeleteStory = async (storyId: number) => {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8080/${storyId}/delete-story`,
+        {
+          method: 'DELETE',
+        },
+      );
+      if (!response.ok) {
+        console.log('Network response was not ok');
+        return;
+      }
+      // Update the userStories state to reflect the change in public status
+      setUserStories((prevStories) =>
+        prevStories.filter((story) => story.storyid !== storyId),
+      );
+    } catch (error) {
+      console.error('Error deleting story:', error);
+    }
+  };
+
   // Function to open the modal
   const openModal = () => {
     setIsModalOpen(true);
@@ -230,6 +251,13 @@ const MyLibrary = () => {
                   Unpublish
                 </Button>
               )}
+              <Button
+                variant="solid"
+                colorScheme='red'
+                onClick={() => handleDeleteStory(story.storyid)}
+              >
+                Delete
+              </Button>
             </VStack>
           </Box>
         ))
