@@ -12,7 +12,8 @@ def generate_response(system_prompt, user_prompt):
     print(system_prompt)
     print(user_prompt)
     text_response = generate_story(system_prompt, user_prompt)
-    if ("Violation Detected" in text_response):
+    print(f'Response: {text_response}')
+    if ("Content Flag" in text_response):
         return text_response
     text_json = json.loads(text_response)
     pages = text_json["story"]
@@ -40,10 +41,10 @@ def generate_story(system_prompt, user_prompt):
                     "role": "user", 
                     "content": user_prompt
                 },
-                {
-                    "role": "assistant", 
-                    "content": str(generate_story_debugger("prompt"))
-                },
+                # {
+                #     "role": "assistant", 
+                #     "content": str(generate_story_debugger("prompt"))
+                # },
             ],
         )
 

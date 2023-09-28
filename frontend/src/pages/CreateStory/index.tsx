@@ -40,6 +40,7 @@ const CreateStory = () => {
 
   const [isVocabActive, setIsVocabActive] = useState(false);
   const [vocabAge, setVocabAge] = useState(3);
+  const finalVocabAge = Math.min(vocabAge * 5, 20);
 
   const [isValuesActive, setIsValuesActive] = useState(false);
   const [values, setValues] = useState('any');
@@ -101,7 +102,7 @@ const CreateStory = () => {
       } ${isGenreActive ? additionalGenreInfo : ''}
          The 'subject_description' should base the description of the subject off the
          subject's name.
-      D. Each page should have ${vocabAge * 5} words.
+      D. Each page should have ${finalVocabAge} words.
 
       Note:
       1. If the user prompt is inappropriate to a children, consider it as a violation.
@@ -120,8 +121,9 @@ const CreateStory = () => {
             "subject_description": "Actor1: A boy with black hair, Actor2: A girl with blonde hair"},
           ...
         ]}
-      4. If any violations are detected, strictly write "Violation Detected: " and provide information to the user as to why it is a violation. 
-         An example is: "Violation Detected: The story you requested contains inappropriate content. It is not suitable for a children's story. 
+      4. If the topic is deemed to have mature content or content inappropriate for young children or teens, strictly write
+         "Content Flag: " and provide information to the user as to why the topic is a violation. 
+         An example is: "Content Flag: The story you requested contains inappropriate content. It is not suitable for a children's story. 
          Please provide a different topic or theme for the story." 
       5. The story should finish within the indicated number of pages.
     `;
@@ -176,7 +178,7 @@ const CreateStory = () => {
           setResponse(JSON.parse(story));
         } catch (error) {
           console.error('Error parsing story', error);
-          setErrorMsg('Error parsing story');
+          setErrorMsg(`Error parsing story: ${error}`);
           openAlert();
         }
       } else {
@@ -212,7 +214,7 @@ const CreateStory = () => {
 
       if (response.ok) {
         const story = await response.json();
-        if (story.includes('Error: ')) {
+        if (story.includes('Violation Detected: ')) {
           setErrorMsg(story);
           openAlert();
           return;

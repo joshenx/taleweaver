@@ -40,7 +40,6 @@ export interface Story {
 }
 
 const FlipbookDisplay = ({ selectedStory }: { selectedStory: Story }) => {
-  console.log(selectedStory);
   if (!selectedStory || !selectedStory.story) {
     return null; // Add a fallback for when the data is not available.
   }
