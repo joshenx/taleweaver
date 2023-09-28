@@ -35,6 +35,7 @@ const MyLibrary = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // To toggle the modal
   const [searchQuery, setSearchQuery] = useState(''); // State for the search query
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(-1);
 
   const getUserStories = async () => {
     try {
@@ -84,6 +85,7 @@ const MyLibrary = () => {
   };
 
   const handleDeleteStory = async (storyId: number) => {
+    setIsDeleting(storyId);
     try {
       const response = await fetch(
         `http://127.0.0.1:8080/${storyId}/delete-story`,
@@ -101,6 +103,8 @@ const MyLibrary = () => {
       );
     } catch (error) {
       console.error('Error deleting story:', error);
+    } finally {
+      setIsDeleting(-1);
     }
   };
 
@@ -256,7 +260,12 @@ const MyLibrary = () => {
                 colorScheme='red'
                 onClick={() => handleDeleteStory(story.storyid)}
               >
-                Delete
+                {
+                  isDeleting == story.storyid && <Text as="i">Deleting...</Text>
+                }
+                {
+                  isDeleting != story.storyid && <Text>Delete</Text>
+                }
               </Button>
             </VStack>
           </Box>
