@@ -53,15 +53,16 @@ export default function SplitWithMessage(props: any) {
             SAFETY
           </Text>
           <Heading color={'brand.dark'}>
-            Safe, Secure, and Age-Appropriate Content Every Time
+            We Strive for Safe, Secure, and Age-Appropriate Content
           </Heading>
           <Text color={'gray.500'} fontSize={'lg'}>
-            "Your child's safety is our top priority, and we've gone the extra
-            mile to ensure that our content is a safe haven for young minds. Say
-            goodbye to worries about profanity, mature themes, or
-            age-inappropriate material. Our content is carefully curated and
-            designed with your child's well-being in mind, offering a worry-free
-            experience for both parents and kids.
+            Your child's safety is our top priority, and we've gone the extra
+            mile to ensure that our content is a safe haven for young minds. We
+            test our system for profanity, mature themes, or age-inappropriate
+            material, and review every anomaly submitted by our users.
+            TaleWeaver is designed to generate storybooks with your child's
+            well-being in mind, offering a worry-free experience for both
+            parents and kids.
           </Text>
           <Stack
             spacing={4}
