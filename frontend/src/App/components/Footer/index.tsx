@@ -47,6 +47,8 @@ const Footer = () => {
             <ListHeader>Links</ListHeader>
             <Link href={'/'}>Home</Link>
             <Link href={'/create'}>Weave Story</Link>
+            <Link href={'/my-library'}>My Library</Link>
+            <Link href={'/public-library'}>Gallery</Link>
           </Stack>
           <Stack align={'flex-start'}>
             <ListHeader>Contribute</ListHeader>

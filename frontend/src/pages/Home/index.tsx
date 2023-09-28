@@ -29,6 +29,7 @@ import SimpleThreeColumns from '../../App/components/SimpleThreeColumns';
 import SplitWithImage from '../../App/components/SplitWithImage';
 import SplitWithMessage from '../../App/components/SplitWithMessage';
 import SplineScene from '../../App/components/SplineScene';
+import PricingSection from '../../App/components/PricingSection';
 
 const Home = () => {
   /*
@@ -196,6 +197,7 @@ const Home = () => {
 
         <SplitWithImage pt="5rem" />
         <SplitWithMessage pt="5rem" />
+        <PricingSection />
         <VStack
           spacing="5"
           width={{ base: '100vw', sm: '60vw', md: '30vw' }}
