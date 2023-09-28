@@ -13,7 +13,7 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException
 
-from src.supabase_api import get_users, get_stories_by_user, get_public_stories, get_story_by_id, save_users_story, set_story_public_status, save_image
+from src.supabase_api import get_users, get_stories_by_user, get_public_stories, get_story_by_id, save_users_story, set_story_public_status, delete_story_by_id
 
 app = FastAPI()
 
@@ -43,14 +43,6 @@ supabase: Client = create_client(url, key)
 async def get_all_users():
     # no particular return format settled
     return get_users(supabase)
-
-# @app.post("/create-user")
-# async def create_user(user_id: str, name: str):
-#     # Return format: {success: bool}
-#     success = create_user_from_userid(supabase, user_id, name) == user_id
-#     return {
-#         "success": success
-#     }
 
 # @app.put("/update-name")
 # async def update_name(user_id: str, name: str):
@@ -92,6 +84,15 @@ async def set_story_to_private(story_id: int):
 async def get_story(story_id: int):
     # Return format: same return format as with the genapi
     return get_story_by_id(supabase, story_id)
+
+@app.delete("/{story_id}/delete-story")
+async def delete_story(story_id: int):
+    # Return format: {success: bool}
+    response = delete_story_by_id(supabase, story_id)
+    success = response['storyid'] == story_id
+    return {
+        "success": success
+    }
 
 class SaveStoryRequest(BaseModel):
     user_id: str

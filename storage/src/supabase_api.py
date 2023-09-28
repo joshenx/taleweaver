@@ -7,15 +7,6 @@ def get_users(db: Client):
     users = json.loads(users)
     return users['data']
 
-# def create_user_from_userid(db: Client, user_id: str, name: str):
-#     user_info = {
-#         "userid": user_id,
-#         "name": name,
-#     }
-#     response = db.table('users').insert(user_info).execute().model_dump_json()
-#     user_id = json.loads(response)['data'][0]['userid']
-#     return user_id
-
 # def update_name_from_userid(db: Client, user_id: str, name: str):
 #     response = db.table('users').update({'name': name}).eq('userid', user_id).execute().model_dump_json()
 #     name = json.loads(response)['data'][0]['name']
@@ -38,7 +29,10 @@ def set_story_public_status(db: Client, story_id: int, new_status: bool):
 
 def get_story_by_id(db: Client, story_id: int):
     story_info = db.table('stories').select('title', 'age', 'moral', 'genre').eq('storyid', story_id).execute().model_dump_json()
-    story_info = json.loads(story_info)['data'][0]
+    story_info = json.loads(story_info)['data']
+    if story_info == []:
+        return {} # TODO: proper error handling
+    story_info = story_info[0]
 
     pages = db.table('pages').select('*').eq('storyid', story_id).execute().model_dump_json()
     pages = json.loads(pages)['data']
@@ -63,6 +57,20 @@ def get_story_by_id(db: Client, story_id: int):
             "image_url": contents['imageurl']
         })
     return json.dumps(story)
+
+def delete_story_by_id(db: Client, story_id: int):
+    delete_images(db, story_id)
+    response = db.table('stories').delete().eq('storyid', story_id).execute().model_dump_json()
+    response = json.loads(response)
+    return response['data'][0]
+
+def delete_images(db: Client, story_id: int):
+    pages = db.table('pages').select('pagenumber').eq('storyid', story_id).execute().model_dump_json()
+    pages = json.loads(pages)['data']
+    pages.sort(key=lambda x: x['pagenumber'])
+    for page in pages:
+        path = f'{story_id}/{page["pagenumber"]}.png'
+        db.storage.get_bucket('images').remove(path)
 
 def save_users_story(db: Client, user_id: int, story: dict):
     story_id = save_story_info(db, user_id, story['title'], int(story['vocabulary_age']), story['moral'], story['genre'])
