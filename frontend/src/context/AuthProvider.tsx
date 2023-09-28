@@ -13,7 +13,7 @@ const signOut = () => supabase.auth.signOut();
 
 const passwordReset = (email: string) =>
   supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: 'http://localhost:5173/update-password',
+    redirectTo: 'https://taleweaver.onrender.com/password-reset',
   });
 
 const updatePassword = (updatedPassword: string) =>
