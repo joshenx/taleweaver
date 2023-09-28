@@ -226,16 +226,21 @@ const MyLibrary = () => {
               justifyContent="space-between"
               pt="1rem"
             >
-              <Button
-                variant="styled"
-                onClick={() => handleViewStoryClick(story.storyid)}
-              >
-                View Story
-              </Button>
+              <Box flexGrow={1}>
+                <Button
+                  variant="styled"
+                  onClick={() => handleViewStoryClick(story.storyid)}
+                >
+                  View Story
+                </Button>
+              </Box>
               {!story.ispublic && (
                 <Button
                   variant="outline"
                   onClick={() => handleShareButtonClick(story.storyid)}
+                  fontWeight="400"
+                  size="sm"
+                  px="1.5rem"
                 >
                   Publish
                 </Button>
@@ -257,15 +262,13 @@ const MyLibrary = () => {
               )}
               <Button
                 variant="solid"
-                colorScheme='red'
+                colorScheme="red"
                 onClick={() => handleDeleteStory(story.storyid)}
+                fontWeight="400"
+                size="sm"
               >
-                {
-                  isDeleting == story.storyid && <Text as="i">Deleting...</Text>
-                }
-                {
-                  isDeleting != story.storyid && <Text>Delete</Text>
-                }
+                {isDeleting == story.storyid && <Text as="i">Deleting...</Text>}
+                {isDeleting != story.storyid && <Text>Delete</Text>}
               </Button>
             </VStack>
           </Box>

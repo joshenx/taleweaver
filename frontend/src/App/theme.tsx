@@ -96,10 +96,10 @@ const theme = extendTheme({
           userSelect: 'none',
           WebkitUserSelect: 'none',
           touchAction: 'manipulation',
-          bgColor: '#eb5050',
+          bgColor: '#FF6314',
           color: 'white',
           cursor: 'pointer',
-          boxShadow: '0 -12px 6px #d63e3e inset',
+          boxShadow: '0 -12px 6px #da521c inset',
 
           _hover: {
             bgColor: '#FFC229',
