@@ -214,7 +214,7 @@ const CreateStory = () => {
 
       if (response.ok) {
         const story = await response.json();
-        if (story.includes('Violation Detected: ')) {
+        if (story.includes('Content Flag: ')) {
           setErrorMsg(story);
           openAlert();
           return;
