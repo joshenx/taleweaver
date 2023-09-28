@@ -19,6 +19,7 @@ import {
   Spinner,
   Center,
   SkeletonText,
+  ModalFooter,
 } from '@chakra-ui/react';
 import { useAuth } from '../../context/AuthProvider';
 import { useState, useEffect } from 'react';
@@ -218,12 +219,17 @@ const MyLibrary = () => {
         ))
       )}
 
-      <Modal isOpen={isModalOpen} onClose={closeModal} size={'full'}>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        size={'full'}
+        scrollBehavior={'inside'}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{selectedStory?.title}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody overflowX="hidden" overflowY="scroll">
             <Center>
               <Container textAlign="center" maxW={'4xl'} py={12}>
                 <FlipbookDisplay selectedStory={selectedStory} />
