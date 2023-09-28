@@ -57,7 +57,7 @@ const CreateStory = () => {
   const [isSaved, setIsSaved] = useState(false);
 
   const [name, setName] = useState('');
-  const additionalAgeInfo = `The story should contain vocabulary appropriate for a ${vocabAge}-year-old.`;
+  const additionalAgeInfo = `The story should contain vocabulary as simple/complex as a ${vocabAge}-year-old could understand it.`;
   const additionalValuesInfo = `The moral of the story should teach ${values}.`;
   const additionalGenreInfo = `The story should be of ${genre} genre.`;
   const additionalNameInfo =
@@ -101,6 +101,7 @@ const CreateStory = () => {
       } ${isGenreActive ? additionalGenreInfo : ''}
          The 'subject_description' should base the description of the subject off the
          subject's name.
+      D. Each page should have ${vocabAge * 5} words.
 
       Note:
       1. If the user prompt is inappropriate to a children, consider it as a violation.
@@ -295,6 +296,7 @@ const CreateStory = () => {
               size="md"
               isChecked={isStoryRandom}
               onChange={handleStoryRandomToggle}
+              isDisabled={isLoading}
               defaultChecked
             >
               Randomise{' '}

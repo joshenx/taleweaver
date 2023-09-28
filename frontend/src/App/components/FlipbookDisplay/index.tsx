@@ -22,7 +22,7 @@ import {
 import { useState, useEffect } from 'react';
 import HTMLFlipBook from 'react-pageflip';
 
-interface Story {
+export interface Story {
   storyid: number;
   ispublic: boolean;
   age: number;
@@ -30,7 +30,13 @@ interface Story {
   title: string;
   genre: string;
   userid: string;
-  story: [];
+  story: {
+    image_prompt: string;
+    image_url: string;
+    page: number;
+    subject_description: string;
+    text: string;
+  }[];
 }
 
 const FlipbookDisplay = ({ selectedStory }: { selectedStory: Story }) => {
@@ -42,13 +48,13 @@ const FlipbookDisplay = ({ selectedStory }: { selectedStory: Story }) => {
   return (
     <>
       <HTMLFlipBook
-        width={300}
-        height={450}
+        width={400}
+        height={600}
         size="stretch"
         minWidth={172}
-        maxWidth={545}
+        maxWidth={700}
         minHeight={218}
-        maxHeight={837}
+        maxHeight={1000}
         maxShadowOpacity={0.5}
         showCover={false}
         mobileScrollSupport={true}
@@ -59,7 +65,7 @@ const FlipbookDisplay = ({ selectedStory }: { selectedStory: Story }) => {
           selectedStory.story.map((pageData) => (
             <Box
               key={pageData.page}
-              p="2rem"
+              p="10px"
               bg="white"
               border="1px"
               borderColor="gray.300"
@@ -74,10 +80,10 @@ const FlipbookDisplay = ({ selectedStory }: { selectedStory: Story }) => {
                   src={pageData.image_url}
                   alt={pageData.image_prompt}
                 />
-                <Text fontSize="sm" fontStyle="normal">
+                {/* <Text fontSize="sm" fontStyle="normal">
                   {pageData.image_prompt}
-                </Text>
-                <Text fontSize="lg" fontStyle="normal">
+                </Text> */}
+                <Text overflow="clip" fontSize="1rem" fontStyle="normal">
                   {pageData.text}
                 </Text>
                 <Box position="absolute" bottom="1rem">
@@ -98,7 +104,7 @@ const FlipbookDisplay = ({ selectedStory }: { selectedStory: Story }) => {
                 top="0"
                 left="0"
                 zIndex="-1"
-                opacity="0.2"
+                opacity="0.1"
                 bgPosition="center"
                 width="100%"
                 height="100%"

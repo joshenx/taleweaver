@@ -13,8 +13,8 @@ import {
   ModalCloseButton,
   Input,
   Image,
-  Spinner,
-  SkeletonText,
+  Stack,
+  Skeleton,
   VStack,
   Center,
   Divider,
@@ -122,7 +122,12 @@ const PublicLibrary = () => {
       />
 
       {isLoading ? (
-        <SkeletonText mt="4" noOfLines={4} spacing="4" skeletonHeight="4" />
+        <Stack spacing={5} mt="2rem">
+          <Skeleton height="60px" />
+          <Skeleton height="60px" />
+          <Skeleton height="60px" />
+          <Skeleton height="60px" />
+        </Stack>
       ) : filteredStories.length === 0 ? (
         <Text>No stories available.</Text>
       ) : (

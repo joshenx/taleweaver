@@ -16,26 +16,16 @@ import {
   Image,
   VStack,
   Divider,
-  Spinner,
+  Stack,
   Center,
-  SkeletonText,
+  Skeleton,
   ModalFooter,
 } from '@chakra-ui/react';
 import { useAuth } from '../../context/AuthProvider';
 import { useState, useEffect } from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import FlipbookDisplay from '../../App/components/FlipbookDisplay';
-
-interface Story {
-  storyid: number;
-  ispublic: boolean;
-  age: number;
-  moral: string;
-  title: string;
-  genre: string;
-  userid: string;
-  story: [];
-}
+import { Story } from '../../App/components/FlipbookDisplay';
 
 const MyLibrary = () => {
   const { user } = useAuth();
@@ -178,7 +168,12 @@ const MyLibrary = () => {
         onChange={(e) => setSearchQuery(e.target.value)}
       />
       {isLoading ? (
-        <SkeletonText mt="4" noOfLines={4} spacing="4" skeletonHeight="4" />
+        <Stack spacing={5} mt="2rem">
+          <Skeleton height="60px" />
+          <Skeleton height="60px" />
+          <Skeleton height="60px" />
+          <Skeleton height="60px" />
+        </Stack>
       ) : filteredStories.length === 0 ? (
         <Text>No stories available.</Text>
       ) : (
@@ -190,6 +185,7 @@ const MyLibrary = () => {
             m="1rem"
             p="4"
           >
+            {/* <Image src={story['story'][0].image_url} /> */}
             <Text fontWeight="bold">
               {index + 1}. {story.title}
             </Text>
@@ -200,21 +196,41 @@ const MyLibrary = () => {
             <Tag m="3px" size={'sm'} variant="solid" colorScheme="orange">
               {story.genre}
             </Tag>
-            <HStack pt="1rem">
-              <Button onClick={() => handleViewStoryClick(story.storyid)}>
+            <VStack
+              flexDirection="row"
+              justifyContent="space-between"
+              pt="1rem"
+            >
+              <Button
+                variant="styled"
+                onClick={() => handleViewStoryClick(story.storyid)}
+              >
                 View Story
               </Button>
               {!story.ispublic && (
-                <Button onClick={() => handleShareButtonClick(story.storyid)}>
-                  Share My Story
+                <Button
+                  variant="outline"
+                  onClick={() => handleShareButtonClick(story.storyid)}
+                >
+                  Publish
                 </Button>
               )}
               {story.ispublic && (
-                <Button onClick={() => handleUnshareButtonClick(story.storyid)}>
-                  Unshare My Story
+                <Button
+                  _hover={{
+                    textDecoration: 'none',
+                    color: 'gray.800',
+                  }}
+                  mx="1rem"
+                  fontSize={'sm'}
+                  fontWeight={400}
+                  variant={'link'}
+                  onClick={() => handleUnshareButtonClick(story.storyid)}
+                >
+                  Unpublish
                 </Button>
               )}
-            </HStack>
+            </VStack>
           </Box>
         ))
       )}
