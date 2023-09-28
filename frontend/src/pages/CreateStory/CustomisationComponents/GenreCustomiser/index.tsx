@@ -13,7 +13,17 @@ export const GenreCustomiser: React.FC<GenreCustomiserProps> = ({
   isActive,
   onToggleActive,
 }) => {
-  const genres = ['Action', 'Educational', 'Fantasy'];
+  const genres = [
+    'Adventure',
+    'Fantasy',
+    'Mystery',
+    'Science Fiction',
+    'Fairy Tale',
+    'Animal Stories',
+    'Humor',
+    'Educational',
+    'Poetry',
+  ];
 
   const handleSelectChange = (event: { target: { value: string } }) => {
     // Call the callback function to set the age

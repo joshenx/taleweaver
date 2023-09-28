@@ -13,7 +13,38 @@ export const ValuesCustomiser: React.FC<ValuesCustomiserProps> = ({
   isActive,
   onToggleActive,
 }) => {
-  const morals = ['Generosity', 'Integrity', 'Graciousness'];
+  const morals = [
+    'Caring',
+    'Cooperation',
+    'Courage',
+    'Empathy',
+    'Fairness',
+    'Forgiveness',
+    'Friendship',
+    'Generosity',
+    'Gratitude',
+    'Honesty',
+    'Humility',
+    'Independence',
+    'Integrity',
+    'Kindness',
+    'Love',
+    'Loyalty',
+    'Optimism',
+    'Patience',
+    'Perseverance',
+    'Respect',
+    'Responsibility',
+    'Self-discipline',
+    'Self-respect',
+    'Sharing',
+    'Teamwork',
+    'Tolerance',
+    'Trust',
+    'Understanding',
+    'Unity',
+    'Wisdom',
+  ];
 
   const handleSelectChange = (event: { target: { value: string } }) => {
     // Call the callback function to set the age

@@ -36,7 +36,7 @@ import FlipbookDisplay from '../../App/components/FlipbookDisplay';
 const CreateStory = () => {
   const { auth, user, signOut } = useAuth();
   console.log(`CreateStory: ${user}`);
-  const numPages = 2;
+  const numPages = 5;
 
   const [isVocabActive, setIsVocabActive] = useState(false);
   const [vocabAge, setVocabAge] = useState(3);
@@ -211,7 +211,7 @@ const CreateStory = () => {
 
       if (response.ok) {
         const story = await response.json();
-        if (story.includes('Violation Detected: ')) {
+        if (story.includes('Error: ')) {
           setErrorMsg(story);
           openAlert();
           return;
@@ -289,6 +289,7 @@ const CreateStory = () => {
               resize="none"
               size="lg"
               placeholder="Type your story here!"
+              isRequired
             />
             <Checkbox
               size="md"
@@ -346,7 +347,7 @@ const CreateStory = () => {
               <Button
                 m="1rem"
                 variant="styled-color"
-                onClick={handleSubmitDebug} // handleSubmitDebug for testing, handleSubmit for actual API call
+                onClick={handleSubmit} // handleSubmitDebug for testing, handleSubmit for actual API call
               >
                 Create Story
               </Button>
@@ -402,7 +403,7 @@ const CreateStory = () => {
         )}
       </Container>
       <Container textAlign="center" maxW={'4xl'} py={12}>
-        <Heading letterSpacing="-0.2rem" as="h1" size="3xl">
+        <Heading letterSpacing="-0.2rem" as="h1" p="1rem" size="3xl">
           {response?.title}
         </Heading>
         <VStack>
