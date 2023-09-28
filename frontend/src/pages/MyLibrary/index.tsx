@@ -230,6 +230,23 @@ const MyLibrary = () => {
           <ModalHeader>{selectedStory?.title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody overflowX="hidden" overflowY="scroll">
+            <style>
+              {`
+                /* Hide the scrollbar track and thumb */
+                ::-webkit-scrollbar {
+                  width: 0.5rem; /* Adjust the width as needed */
+                }
+                ::-webkit-scrollbar-track {
+                  background: transparent;
+                }
+                ::-webkit-scrollbar-thumb {
+                  background: transparent;
+                }
+
+                /* Hide the scrollbar in Firefox */
+                scrollbar-width: none;
+              `}
+            </style>
             <Center>
               <Container textAlign="center" maxW={'4xl'} py={12}>
                 <FlipbookDisplay selectedStory={selectedStory} />
