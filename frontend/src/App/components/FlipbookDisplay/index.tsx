@@ -41,6 +41,12 @@ export interface Story {
 }
 
 const FlipbookDisplay = ({ selectedStory }: { selectedStory: Story }) => {
+  const [isImageLoaded, setIsImageLoaded] = useState<Number[]>([]);
+
+  const onLoad = (pageNumber: Number) => {
+    setIsImageLoaded([...isImageLoaded, pageNumber]);
+  }
+
   if (!selectedStory || !selectedStory.story) {
     return null; // Add a fallback for when the data is not available.
   }
@@ -79,7 +85,10 @@ const FlipbookDisplay = ({ selectedStory }: { selectedStory: Story }) => {
                   boxSize="100%"
                   src={pageData.image_url}
                   alt={pageData.image_prompt}
+                  onLoad={() => onLoad(pageData.page)}
+                  style={{display: isImageLoaded.includes(pageData.page) ? 'block' : 'none'}}
                 />
+                {!isImageLoaded.includes(pageData.page) && <Spinner />}
                 {/* <Text fontSize="sm" fontStyle="normal">
                   {pageData.image_prompt}
                 </Text> */}

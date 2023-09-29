@@ -18,6 +18,7 @@ import {
   VStack,
   Center,
   Divider,
+  Spinner,
   HStack,
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
@@ -42,6 +43,11 @@ const PublicLibrary = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // To toggle the modal
   const [searchQuery, setSearchQuery] = useState(''); // State for the search query
   const [isLoading, setIsLoading] = useState(true);
+  const [isImageLoaded, setIsImageLoaded] = useState<Number[]>([]);
+
+  const onLoad = (storyId: Number) => {
+    setIsImageLoaded([...isImageLoaded, storyId]);
+  }
 
   const getPublicStories = async () => {
     try {
@@ -154,7 +160,10 @@ const PublicLibrary = () => {
                   boxSize="25%"
                   src={story.coverurl}
                   alt={`Cover image for ${story.title}`}
+                  onLoad={() => onLoad(story.storyid)}
+                  style={{display: isImageLoaded.includes(story.storyid) ? 'block' : 'none'}}
                 />
+                {!isImageLoaded.includes(story.storyid) && <Spinner />}
 
                 <HStack
                   flexDirection="column"

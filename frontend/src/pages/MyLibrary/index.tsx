@@ -19,6 +19,7 @@ import {
   Stack,
   Center,
   Skeleton,
+  Spinner,
   ModalFooter,
 } from '@chakra-ui/react';
 import { useAuth } from '../../context/AuthProvider';
@@ -36,6 +37,11 @@ const MyLibrary = () => {
   const [searchQuery, setSearchQuery] = useState(''); // State for the search query
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState<Number[]>([]);
+  const [isImageLoaded, setIsImageLoaded] = useState<Number[]>([]);
+
+  const onLoad = (storyId: Number) => {
+    setIsImageLoaded([...isImageLoaded, storyId]);
+  }
 
   const getUserStories = async () => {
     try {
@@ -220,7 +226,10 @@ const MyLibrary = () => {
                 boxSize="25%"
                 src={story.coverurl}
                 alt={`Cover image for ${story.title}`}
+                onLoad={() => onLoad(story.storyid)}
+                style={{display: isImageLoaded.includes(story.storyid) ? 'block' : 'none'}}
               />
+              {!isImageLoaded.includes(story.storyid) && <Spinner />}
               <HStack
                 flexDirection="column"
               >
