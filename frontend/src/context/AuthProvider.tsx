@@ -19,7 +19,7 @@ const passwordReset = (email: string) =>
 const updatePassword = (updatedPassword: string) =>
   supabase.auth.updateUser({ password: updatedPassword });
 
-const AuthProvider = ({ children }: any) => {
+const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState(null);
   const [user, setUser] = useState<User | null>(null);
   const [auth, setAuth] = useState(false);

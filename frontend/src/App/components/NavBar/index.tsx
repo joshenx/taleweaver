@@ -94,7 +94,7 @@ export default function NavBar() {
         >
           {!auth && (
             <>
-              <Box margin="auto">
+              <Box margin={{ base: 'default', md: 'auto' }}>
                 <Link to={'/login'}>
                   <Button
                     _hover={{
@@ -189,9 +189,12 @@ const MobileNav = () => {
   return (
     <Stack
       bg={useColorModeValue('white', 'gray.800')}
-      mt="3rem"
+      borderRadius="10px"
+      mt="4rem"
       p={4}
       display={{ md: 'none' }}
+      position="fixed"
+      zIndex="overlay"
     >
       {pagesData
         .filter(({ mainNav }: routerType) => mainNav)
