@@ -28,7 +28,7 @@ def generate_story(system_prompt, user_prompt):
         response = openai.ChatCompletion.create(
             model = "gpt-3.5-turbo",
             # n=1, => higher = generate multiple messages choices
-            # top_p=1, => see docs... idrk what this is
+            top_p=0.8,
             # frequency_penalty=0,
             # presence_penalty=0,
             temperature = 0.7,
