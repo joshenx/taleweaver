@@ -19,7 +19,7 @@ export const App = () => (
       <AuthProvider>
         <Box fontSize="md">
           <NavBar />
-          <Box mt="20">
+          <Box mt="20" minHeight="100vh">
             <Router />
           </Box>
           <Footer />
