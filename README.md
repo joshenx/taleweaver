@@ -109,8 +109,8 @@ Lau Zhan Ming - A0236552E
 
 - [![React][React.js]][React-url]
 - [![Chakra UI][Chakra-ui]][Chakra-url]
-- [![Flask][Flask]][Flask-url]
-- [![OpenAI][OpenAI]][Flask-url]
+- [![FastAPI][FastAPI]][FastAPI-url]
+- [![OpenAI][OpenAI]][OpenAI-url]
 - [![Supabase][Supabase-icon]][Supabase-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -211,9 +211,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [React-url]: https://reactjs.org/
 [Chakra-ui]: https://shields.io/badge/chakra--ui-black?logo=chakraui&style=for-the-badge
 [Chakra-url]: https://chakra-ui.com/
-[Flask]: https://shields.io/badge/Flask-black?logo=flask&style=for-the-badge
-[Flask-url]: https://flask.palletsprojects.com/en/2.3.x/
+[FastAPI]: https://img.shields.io/badge/FastAPI-black?style=for-the-badge&logo=fastapi
+[FastAPI-url]: https://fastapi.tiangolo.com/
 [Supabase-icon]: https://shields.io/badge/supabase-black?logo=supabase&style=for-the-badge
 [Supabase-url]: https://supabase.com/
 [OpenAI]: https://shields.io/badge/OpenAI-black?logo=openai&style=for-the-badge
-[Supabase-url]: https://supabase.com/
+[OpenAI-url]: https://openai.com/
