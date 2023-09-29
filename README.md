@@ -22,21 +22,19 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/joshenx/concertcougher">
-    <img src="/src/images/demo1.png" alt="img1" width="650" height="450">
+  <a href="https://github.com/joshenx/taleweaver">
+    <img style="margin: 2rem" src="/frontend/src/images/taleweaver_logo_svg.svg" alt="TaleWeaver Logo" width="300" height="100">
   </a>
 
-  <h3 align="center">SYN</h3>
-
   <p align="center">
-    Listen to Colours.
+    Millions of Customisable, Safe Storybooks
     <br />
     <br />
-    <a href="https://syn.vercel.app">View Demo</a>
+    <a href="https://taleweaver.onrender.com/">View Demo</a>
     ·
-    <a href="https://github.com/joshenx/syn/issues">Report Bug</a>
+    <a href="https://github.com/joshenx/taleweaver/issues">Report Bug</a>
     ·
-    <a href="https://github.com/joshenx/syn/issues">Request Feature</a>
+    <a href="https://github.com/joshenx/taleweaver/issues">Request Feature</a>
   </p>
 </div>
 
@@ -69,7 +67,39 @@
 
 ## About The Project
 
-What colour does a violin sound like? SYN is a Vercel website (ReactJS, ts, Supabase, Chakra) for people to vote on what colour comes to their mind when they listen to some classical music pieces, which then creatively displays the data through gradients and timestamps.
+Are you a time-strapped working parent struggling to find quality storytime for your child? Say goodbye to the frustration of repetitive bedtime tales and the endless quest for the right book. TaleWeaver offers a convenient and time-efficient means for parents to provide personalised storytelling experiences through the use of Language Models (LLMs) for rapid story generation. This not only alleviates the frustration of repetitive and hard-to-find books but also fosters engagement through the child's inclusion as the main character. It stands out as a superior alternative to mindless screen time, encouraging children to explore imaginative worlds through personalised stories and illustrations while also enabling parents to instil moral values, ensuring that the time children spend with TaleWeaver is not just entertaining but also enriching.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- CONTACT -->
+
+## Contributions
+
+Joshen Lim - A0214525M
+
+- Branding of TaleWeaver
+- Frontend development of landing page, assets, UI, book display
+- Development of authentication and authentication provider
+
+Neo Wei Qing - A0217395X
+
+- Implement backend and storage in Flask
+- Integrate frontend with backend servers
+- Frontend development of library
+
+Jivesh Mohan - A0221768Y
+
+- Development of authentication
+- Improvement of signup validation
+- Implement Google analytics
+- Frontend development of authentication provider
+
+Lau Zhan Ming - A0236552E
+
+- Prompt refinement, prompt engineering
+- Frontend development of libraries
+- Integration frontend with backend servers
+- Full stack development of libraries
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -77,6 +107,8 @@ What colour does a violin sound like? SYN is a Vercel website (ReactJS, ts, Supa
 
 - [![React][React.js]][React-url]
 - [![Chakra UI][Chakra-ui]][Chakra-url]
+- [![Flask][Flask]][Flask-url]
+- [![OpenAI][OpenAI]][Flask-url]
 - [![Supabase][Supabase-icon]][Supabase-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -94,19 +126,29 @@ What colour does a violin sound like? SYN is a Vercel website (ReactJS, ts, Supa
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services. All three processes (frontend, backend, storage) should be running at the same time._
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/joshenx/syn.git
+   git clone https://github.com/joshenx/taleweaver.git
    ```
-2. Install NPM packages
+2. Setup frontend on localhost:5173
    ```sh
-   npm install
+   cd taleweaver/frontend
+   yarn install
+   yarn start
    ```
-3. Run your dev environment
+3. Setup backend on localhost:8000 (default)
    ```sh
-   npm start
+   cd taleweaver/genapi
+   pip install -r requirements.txt
+   uvicorn src.main:app --reload
+   ```
+4. Setup storage on localhost:8080 (default)
+   ```sh
+   cd taleweaver/storage
+   pip install -r requirements.txt
+   uvicorn src.main:app --port 8080 --reload
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -116,21 +158,17 @@ _Below is an example of how you can instruct your audience on installing and set
 ## Roadmap
 
 - [x] Add main features
-- [x] Add about me page
-- [x] Add toggle/hide gradient feature
-- [ ] Add metronome
-- [ ] Display list of comments
 - [x] Add readme
+- [ ] Improve image generation
+- [ ] Make stories sharable
 
-See the [open issues](https://github.com/joshenx/syn/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/joshenx/taleweaver/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
 
 ## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 Don't forget to give the project a star! Thanks again!
@@ -151,27 +189,15 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- CONTACT -->
-
-## Contact
-
-Joshen Lim - [@joshenz](linkedin.com/in/joshenxlim)
-
-Project Link: [https://github.com/joshenx/syn](https://github.com/joshenx/syn)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 <!-- ACKNOWLEDGMENTS -->
 
 ## Acknowledgments
 
-- [Choose an Open Source License](https://choosealicense.com)
-- [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
+- [ChatGPT](https://chat.openai.com/)
+- [Authentication in React with Supabase](https://blog.openreplay.com/authentication-in-react-with-supabase/)
 - [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
 - [Malven's Grid Cheatsheet](https://grid.malven.co/)
 - [Img Shields](https://shields.io)
-- [GitHub Pages](https://pages.github.com)
-- [Font Awesome](https://fontawesome.com)
 - [React Icons](https://react-icons.github.io/react-icons/search)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -183,5 +209,9 @@ Project Link: [https://github.com/joshenx/syn](https://github.com/joshenx/syn)
 [React-url]: https://reactjs.org/
 [Chakra-ui]: https://shields.io/badge/chakra--ui-black?logo=chakraui&style=for-the-badge
 [Chakra-url]: https://chakra-ui.com/
+[Flask]: https://shields.io/badge/Flask-black?logo=flask&style=for-the-badge
+[Flask-url]: https://flask.palletsprojects.com/en/2.3.x/
 [Supabase-icon]: https://shields.io/badge/supabase-black?logo=supabase&style=for-the-badge
+[Supabase-url]: https://supabase.com/
+[OpenAI]: https://shields.io/badge/OpenAI-black?logo=openai&style=for-the-badge
 [Supabase-url]: https://supabase.com/
