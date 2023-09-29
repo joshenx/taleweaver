@@ -251,6 +251,9 @@ const CreateStory = () => {
   };
 
   const handleSave = async () => {
+    if (isSaved) {
+      return;
+    }
     const storyData = response;
     setIsSaved(true);
     try {

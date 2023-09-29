@@ -92,8 +92,8 @@ def generate_story_debugger(prompt):
         {"title": "The Enchanted Forest", "moral": "Curiosity", "genre": "Fantasy", "vocabulary_age": "3", "total_pages": "2", "story": [{"page": 1, "text": "Once upon a time, in a land far away, there was a magical forest. The trees were tall and vibrant, and the flowers bloomed in every color of the rainbow. In this forest, there lived a little fairy named Lily. Lily had sparkling wings and a mischievous smile.", "image_prompt": "Lily the fairy flying among colorful flowers", "subject_description": "Lily: A small fairy with golden hair and shimmering wings", "image_url": "https://oaidalleapiprodscus.blob.core.windows.net/private/org-PuMGCWJ1M3tJ6ExWwgZAlVT4/user-TETd6CWnI82tNSrj9rzXTm2Z/img-6PvYN4V00pcxFEuggN0cwgCp.png?st=2023-09-27T14%3A09%3A36Z&se=2023-09-27T16%3A09%3A36Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-09-26T23%3A35%3A53Z&ske=2023-09-27T23%3A35%3A53Z&sks=b&skv=2021-08-06&sig=9JtvIbxe3otlLCwi3N%2BhBNeLEPUpfFz6WUXXaf%2Bf8/8%3D"}, {"page": 2, "text": "Every day, Lily would explore the enchanted forest, discovering new creatures and hidden treasures. One day, as she was flying near a sparkling waterfall, she noticed a tiny unicorn named Sparkle. Sparkle had a magical horn and a coat that shimmered in the sunlight.", "image_prompt": "Lily and Sparkle the unicorn playing near a sparkling waterfall", "subject_description": "Lily: A small fairy with golden hair and shimmering wings, Sparkle: A tiny unicorn with a magical horn and a shimmering coat", "image_url": "https://oaidalleapiprodscus.blob.core.windows.net/private/org-PuMGCWJ1M3tJ6ExWwgZAlVT4/user-TETd6CWnI82tNSrj9rzXTm2Z/img-OVBG0lPeikyrd4v8YgjKezki.png?st=2023-09-27T14%3A09%3A42Z&se=2023-09-27T16%3A09%3A42Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-09-26T23%3A40%3A04Z&ske=2023-09-27T23%3A40%3A04Z&sks=b&skv=2021-08-06&sig=f/X8nYoJJMqumo9Ob3V6aLlr70uFOwL3XdeUnDt9nB0%3D"}]})
 
 def generate_random_story():
-    system_prompt = "Generate a random brief description of a story suitable for children in 15 words."
-    assistant_example = "A child adventure in the forest."
+    system_prompt = "Generate a brief description of a story suitable for children in 15 words."
+    # assistant_example = "A child adventure in the forest."
     try:
         response = openai.ChatCompletion.create(
             model = "gpt-3.5-turbo",
@@ -101,16 +101,16 @@ def generate_random_story():
             # top_p=1, => see docs... idrk what this is
             # frequency_penalty=0,
             # presence_penalty=0,
-            temperature = 0.7,
+            temperature = 1.5,
             messages = [
                 {
                     "role": "system", 
                     "content": system_prompt
                 },
-                {
-                    "role": "assistant", 
-                    "content": assistant_example
-                },
+                # {
+                #     "role": "assistant", 
+                #     "content": assistant_example
+                # },
             ],
         )
         print(response)
