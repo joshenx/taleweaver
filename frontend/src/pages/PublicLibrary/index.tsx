@@ -18,21 +18,23 @@ import {
   VStack,
   Center,
   Divider,
+  HStack,
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import FlipbookDisplay from '../../App/components/FlipbookDisplay';
+import { Story } from '../../App/components/FlipbookDisplay';
 
-interface Story {
-  storyid: number;
-  ispublic: boolean;
-  age: number;
-  moral: string;
-  title: string;
-  genre: string;
-  userid: string;
-  story: [];
-}
+// interface Story {
+//   storyid: number;
+//   ispublic: boolean;
+//   age: number;
+//   moral: string;
+//   title: string;
+//   genre: string;
+//   userid: string;
+//   story: [];
+// }
 
 const PublicLibrary = () => {
   const [publicStories, setPublicStories] = useState<Story[]>([]);
@@ -143,24 +145,49 @@ const PublicLibrary = () => {
           >
             {' '}
             <Box>
-              <Text fontWeight="bold">
-                {index + 1}. {story.title}
-              </Text>
-              <Tag m="3px" size={'sm'} variant="solid" colorScheme="teal">
-                {story.moral}
-              </Tag>
-
-              <Tag m="3px" size={'sm'} variant="solid" colorScheme="orange">
-                {story.genre}
-              </Tag>
-            </Box>{' '}
-            <Box>
-              <Button
-                margin="auto"
-                onClick={() => handleViewStoryClick(story.storyid)}
+              <VStack
+                flexDirection="row"
+                justifyContent="left"
               >
-                View Story
-              </Button>
+                <Image
+                  borderRadius="1rem"
+                  boxSize="25%"
+                  src={story.coverurl}
+                  alt={`Cover image for ${story.title}`}
+                />
+
+                <HStack
+                  flexDirection="column"
+                  justifyContent="left"
+                  alignItems="left"
+                >
+                  <Text fontWeight="bold">
+                    {index + 1}. {story.title}
+                  </Text>
+
+                  <VStack
+                    flexDirection="row"
+                    justifyContent="left"
+                    alignItems="left"
+                  >
+                    <Tag m="3px" size={'sm'} variant="solid" colorScheme="teal">
+                      {story.moral}
+                    </Tag>
+                    <Tag m="3px" size={'sm'} variant="solid" colorScheme="orange">
+                      {story.genre}
+                    </Tag>
+                  </VStack>
+
+                  <Box>
+                    <Button
+                      margin="auto"
+                      onClick={() => handleViewStoryClick(story.storyid)}
+                    >
+                      View Story
+                    </Button>
+                  </Box>
+                </HStack>
+              </VStack>
             </Box>
           </Flex>
         ))

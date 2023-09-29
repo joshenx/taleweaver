@@ -35,7 +35,7 @@ const MyLibrary = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // To toggle the modal
   const [searchQuery, setSearchQuery] = useState(''); // State for the search query
   const [isLoading, setIsLoading] = useState(true);
-  const [isDeleting, setIsDeleting] = useState(-1);
+  const [isDeleting, setIsDeleting] = useState<Number[]>([]);
 
   const getUserStories = async () => {
     try {
@@ -85,7 +85,7 @@ const MyLibrary = () => {
   };
 
   const handleDeleteStory = async (storyId: number) => {
-    setIsDeleting(storyId);
+    setIsDeleting((prevDeletings) => [...prevDeletings, storyId]);
     try {
       const response = await fetch(
         `http://127.0.0.1:8080/${storyId}/delete-story`,
@@ -104,7 +104,7 @@ const MyLibrary = () => {
     } catch (error) {
       console.error('Error deleting story:', error);
     } finally {
-      setIsDeleting(-1);
+      setIsDeleting((prevDeletings) => prevDeletings.filter((id) => id !== storyId));
     }
   };
 
@@ -211,65 +211,93 @@ const MyLibrary = () => {
             p="4"
           >
             {/* <Image src={story['story'][0].image_url} /> */}
-            <Text fontWeight="bold">
-              {index + 1}. {story.title}
-            </Text>
-            <Tag m="3px" size={'sm'} variant="solid" colorScheme="teal">
-              {story.moral}
-            </Tag>
-
-            <Tag m="3px" size={'sm'} variant="solid" colorScheme="orange">
-              {story.genre}
-            </Tag>
             <VStack
               flexDirection="row"
-              justifyContent="space-between"
-              pt="1rem"
+              justifyContent="left"
             >
-              <Box flexGrow={1}>
-                <Button
-                  variant="styled"
-                  onClick={() => handleViewStoryClick(story.storyid)}
-                >
-                  View Story
-                </Button>
-              </Box>
-              {!story.ispublic && (
-                <Button
-                  variant="outline"
-                  onClick={() => handleShareButtonClick(story.storyid)}
-                  fontWeight="400"
-                  size="sm"
-                  px="1.5rem"
-                >
-                  Publish
-                </Button>
-              )}
-              {story.ispublic && (
-                <Button
-                  _hover={{
-                    textDecoration: 'none',
-                    color: 'gray.800',
-                  }}
-                  mx="1rem"
-                  fontSize={'sm'}
-                  fontWeight={400}
-                  variant={'link'}
-                  onClick={() => handleUnshareButtonClick(story.storyid)}
-                >
-                  Unpublish
-                </Button>
-              )}
-              <Button
-                variant="solid"
-                colorScheme="red"
-                onClick={() => handleDeleteStory(story.storyid)}
-                fontWeight="400"
-                size="sm"
+              <Image
+                borderRadius="1rem"
+                boxSize="25%"
+                src={story.coverurl}
+                alt={`Cover image for ${story.title}`}
+              />
+              <HStack
+                flexDirection="column"
               >
-                {isDeleting == story.storyid && <Text as="i">Deleting...</Text>}
-                {isDeleting != story.storyid && <Text>Delete</Text>}
-              </Button>
+                <VStack
+                  flexDirection="row"
+                  justifyContent="space-between"
+                  w="100%"
+                >
+                  <Text fontWeight="bold">
+                    {index + 1}. {story.title}
+                  </Text>
+                </VStack>
+                
+                <VStack
+                  flexDirection="row"
+                  justifyContent="left"
+                  w="100%"
+                >
+                  <Tag m="3px" size={'sm'} variant="solid" colorScheme="teal">
+                  {story.moral}
+                  </Tag>
+                  <Tag m="3px" size={'sm'} variant="solid" colorScheme="orange">
+                    {story.genre}
+                  </Tag>
+                </VStack>
+
+                <VStack
+                  flexDirection="row"
+                  justifyContent="space-between"
+                  pt="1rem"
+                >
+                  <Box flexGrow={1}>
+                    <Button
+                      variant="styled"
+                      onClick={() => handleViewStoryClick(story.storyid)}
+                    >
+                      View Story
+                    </Button>
+                  </Box>
+                  {!story.ispublic && (
+                    <Button
+                      variant="outline"
+                      onClick={() => handleShareButtonClick(story.storyid)}
+                      fontWeight="400"
+                      size="sm"
+                      px="1.5rem"
+                    >
+                      Publish
+                    </Button>
+                  )}
+                  {story.ispublic && (
+                    <Button
+                      _hover={{
+                        textDecoration: 'none',
+                        color: 'gray.800',
+                      }}
+                      mx="1rem"
+                      fontSize={'sm'}
+                      fontWeight={400}
+                      variant={'link'}
+                      onClick={() => handleUnshareButtonClick(story.storyid)}
+                    >
+                      Unpublish
+                    </Button>
+                  )}
+                  <Button
+                    variant="solid"
+                    colorScheme="red"
+                    onClick={() => handleDeleteStory(story.storyid)}
+                    fontWeight="400"
+                    size="sm"
+                  >
+                    {isDeleting.filter((id) => id === story.storyid).length === 0 && <Text>Delete</Text>}
+                    {isDeleting.filter((id) => id === story.storyid).length > 0 && <Text>Deleting...</Text>}
+                  </Button>
+                </VStack>
+              </HStack>
             </VStack>
           </Box>
         ))
