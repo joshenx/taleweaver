@@ -53,10 +53,11 @@ export default function Register() {
       setMsg('');
       setLoading(true);
       // Check if user exists
-      const usersWithEmail = getUserByEmail(email);
-      if (usersWithEmail && usersWithEmail.length !== 0) {
+      const usersWithEmail = await getUserByEmail(email);
+      if (usersWithEmail && usersWithEmail.length > 0) {
         setErrorMsg('This email is already registered. Please login or reset password instead.');
         setLoading(false);
+        return;
       }
     }
     catch (error) {
@@ -69,9 +70,14 @@ export default function Register() {
         email,
         password,
       });
+
       if (!error && data) {
         setMsg(
           'Registration Successful. Check your email to confirm your account',
+        );
+      } else if (error && error.status === 429) {
+        setErrorMsg(
+          'The server has hit its limit for sending confimration emails. Please wait a while before trying again.',
         );
       }
     } catch (error) {
