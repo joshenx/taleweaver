@@ -38,9 +38,10 @@ const MyLibrary = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState<Number[]>([]);
   const [isImageLoaded, setIsImageLoaded] = useState<Number[]>([]);
+  const [storyBeingLoaded, setStoryBeingLoaded] = useState(-1);
 
-  const onLoad = (storyId: Number) => {
-    setIsImageLoaded([...isImageLoaded, storyId]);
+  const onLoad = (storyId: number) => {
+    setIsImageLoaded(prevImages => ([...prevImages, storyId]));
   }
 
   const getUserStories = async () => {
@@ -125,7 +126,10 @@ const MyLibrary = () => {
   };
 
   const handleViewStoryClick = async (storyId: number) => {
+    // hmm if story being loaded is not -1, then we should not load the story?
+    setStoryBeingLoaded(storyId);
     await getStory(storyId);
+    setStoryBeingLoaded(-1);
     openModal();
   };
 
@@ -266,6 +270,7 @@ const MyLibrary = () => {
                       variant="styled"
                       onClick={() => handleViewStoryClick(story.storyid)}
                     >
+                      {storyBeingLoaded === story.storyid && <Spinner mr="3px" />}
                       View Story
                     </Button>
                   </Box>
