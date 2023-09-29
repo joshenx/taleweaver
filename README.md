@@ -23,7 +23,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/joshenx/taleweaver">
-    <img style="margin: 2rem" src="/frontend/src/images/taleweaver_logo_svg.svg" alt="TaleWeaver Logo" width="300" height="100">
+    <img style="margin: 2rem" src="/frontend/src/images/taleweaver_logo_color_light.svg" alt="TaleWeaver Logo" width="300" height="100">
   </a>
 
   <p align="center">
