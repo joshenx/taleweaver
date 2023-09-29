@@ -128,7 +128,7 @@ Lau Zhan Ming - A0236552E
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services. All three processes (frontend, backend, storage) should be running at the same time._
+All three processes (frontend, backend, storage) should be running at the same time.
 
 1. Clone the repo
    ```sh
