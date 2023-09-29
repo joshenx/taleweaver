@@ -20,6 +20,16 @@ import { useRef, useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { supabase } from '../../App/components/supabaseClient';
 
+//TODO: route this through backend
+async function getUserByEmail(email: string) {
+  try {
+    const { data } = await supabase.from('users').select().eq('email', email);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
@@ -34,9 +44,26 @@ export default function Register() {
       setErrorMsg('Please fill all the fields');
       return;
     }
+    if (password.length < 6) {
+      setErrorMsg('Please ensure password is at least 6 characters');
+      return;
+    }
     try {
       setErrorMsg('');
+      setMsg('');
       setLoading(true);
+      // Check if user exists
+      const usersWithEmail = getUserByEmail(email);
+      if (usersWithEmail && usersWithEmail.length !== 0) {
+        setErrorMsg('This email is already registered. Please login or reset password instead.');
+        setLoading(false);
+      }
+    }
+    catch (error) {
+      console.log(error);
+      setErrorMsg('Error in Creating Account');
+    }
+    try {
       // Call your registration function
       const { data, error } = await supabase.auth.signUp({
         email,
