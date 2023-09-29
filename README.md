@@ -83,9 +83,11 @@ Joshen Lim - A0214525M
 
 Neo Wei Qing - A0217395X
 
-- Implement backend and storage in Flask
-- Integrate frontend with backend servers
+- Database design and setup
+- Implement backend APIs to connect with database storage and LLM
+- Integrate frontend with backend APIs
 - Frontend development of library
+- Hosting and deployment
 
 Jivesh Mohan - A0221768Y
 
