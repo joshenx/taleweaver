@@ -44,9 +44,10 @@ const PublicLibrary = () => {
   const [searchQuery, setSearchQuery] = useState(''); // State for the search query
   const [isLoading, setIsLoading] = useState(true);
   const [isImageLoaded, setIsImageLoaded] = useState<Number[]>([]);
+  const [storyBeingLoaded, setStoryBeingLoaded] = useState(-1);
 
   const onLoad = (storyId: Number) => {
-    setIsImageLoaded([...isImageLoaded, storyId]);
+    setIsImageLoaded(prevImages => ([...prevImages, storyId]));
   }
 
   const getPublicStories = async () => {
@@ -107,7 +108,10 @@ const PublicLibrary = () => {
   };
 
   const handleViewStoryClick = async (storyId: number) => {
+    // hmm if story being loaded is not -1, then we should not load the story?
+    setStoryBeingLoaded(storyId);
     await getStory(storyId);
+    setStoryBeingLoaded(-1);
     openModal();
   };
 
@@ -192,6 +196,7 @@ const PublicLibrary = () => {
                       margin="auto"
                       onClick={() => handleViewStoryClick(story.storyid)}
                     >
+                      {storyBeingLoaded === story.storyid && <Spinner mr="3px" />}
                       View Story
                     </Button>
                   </Box>

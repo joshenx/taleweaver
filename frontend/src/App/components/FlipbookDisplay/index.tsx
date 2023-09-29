@@ -41,10 +41,10 @@ export interface Story {
 }
 
 const FlipbookDisplay = ({ selectedStory }: { selectedStory: Story }) => {
-  const [isImageLoaded, setIsImageLoaded] = useState<Number[]>([]);
+  const [isImageLoaded, setIsImageLoaded] = useState<number[]>([]);
 
-  const onLoad = (pageNumber: Number) => {
-    setIsImageLoaded([...isImageLoaded, pageNumber]);
+  const onLoad = (pageNumber: number) => {
+    setIsImageLoaded(prevImages => ([...prevImages, pageNumber]));
   }
 
   if (!selectedStory || !selectedStory.story) {
