@@ -56,6 +56,7 @@ const CreateStory = () => {
   const [isStoryRandom, setIsStoryRandom] = useState(false);
 
   const [isSaved, setIsSaved] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const [name, setName] = useState('');
   const additionalAgeInfo = `The story should contain vocabulary as simple/complex as a ${vocabAge}-year-old could understand it.`;
@@ -132,29 +133,6 @@ const CreateStory = () => {
   const getUserPrompt = () => {
     return `Generate a children's story about ${storyPrompt}.`;
   };
-
-  // const getFullPrompt = () => {
-  //   return `Generate a children's story about ${storyPrompt}. The story should have ${numPages} pages. For each page,
-  //     include an image prompt that is specific, colourful and creative and
-  //     matches the story of the page content. The subject(s) in the "image_prompt" should include the main character with optional side subjects.
-  //     ${additionalPromptInfo} ${additionalNameInfo} The 'subject_description' should base the description of the subject off the
-  //     subject's name.
-  //     Format it in json format, like this example:
-  //     """
-  //     {
-  //     "title": "Creative Story Title Here",
-  //     "focus": "${focus}",
-  //     "vocabulary_age": "${vocabAge}",
-  //     "total_pages": "${numPages}",
-  //     "story": [
-  //       {"page": 1,
-  //       "text": "First page of the story text goes here",
-  //       "image_prompt": "A subject(s) doing an activity at a place",
-  //       "subject_description": "Actor1: A boy with black hair, Actor2: A girl with blonde hair"},
-  //     ...
-  //     ]}
-  //     """`;
-  // };
 
   const handleSubmitDebug = async () => {
     try {
@@ -255,7 +233,7 @@ const CreateStory = () => {
       return;
     }
     const storyData = response;
-    setIsSaved(true);
+    setIsSaving(true);
     try {
       const response = await fetch('http://127.0.0.1:8080/save-story', {
         method: 'POST',
@@ -270,9 +248,13 @@ const CreateStory = () => {
 
       if (!response.ok) {
         console.log('Failed to save story.');
+      } else {
+        setIsSaved(true);
       }
     } catch (error) {
       console.error('Error saving story:', error);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -415,14 +397,14 @@ const CreateStory = () => {
         </Heading>
         <VStack>
           <FlipbookDisplay selectedStory={response} />
-
+          
           {response && response.story && (
             <Button
               colorScheme={isSaved ? 'gray' : 'green'}
               onClick={handleSave}
               disabled={isSaved}
             >
-              {isSaved ? 'Story Saved' : 'Save My Story'}
+              {isSaving ? <Spinner /> : isSaved ? 'Story Saved' : 'Save My Story'}
             </Button>
           )}
           {isSaved && (
@@ -436,5 +418,6 @@ const CreateStory = () => {
     </>
   );
 };
+// {isSaved ? 'Story Saved' : 'Save My Story'}
 
 export default CreateStory;
