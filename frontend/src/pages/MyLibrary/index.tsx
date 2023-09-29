@@ -35,7 +35,7 @@ const MyLibrary = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // To toggle the modal
   const [searchQuery, setSearchQuery] = useState(''); // State for the search query
   const [isLoading, setIsLoading] = useState(true);
-  const [isDeleting, setIsDeleting] = useState(-1);
+  const [isDeleting, setIsDeleting] = useState<Number[]>([]);
 
   const getUserStories = async () => {
     try {
@@ -85,7 +85,7 @@ const MyLibrary = () => {
   };
 
   const handleDeleteStory = async (storyId: number) => {
-    setIsDeleting(storyId);
+    setIsDeleting((prevDeletings) => [...prevDeletings, storyId]);
     try {
       const response = await fetch(
         `http://127.0.0.1:8080/${storyId}/delete-story`,
@@ -104,7 +104,7 @@ const MyLibrary = () => {
     } catch (error) {
       console.error('Error deleting story:', error);
     } finally {
-      setIsDeleting(-1);
+      setIsDeleting((prevDeletings) => prevDeletings.filter((id) => id !== storyId));
     }
   };
 
@@ -293,8 +293,8 @@ const MyLibrary = () => {
                     fontWeight="400"
                     size="sm"
                   >
-                    {isDeleting == story.storyid && <Text as="i">Deleting...</Text>}
-                    {isDeleting != story.storyid && <Text>Delete</Text>}
+                    {isDeleting.filter((id) => id === story.storyid).length === 0 && <Text>Delete</Text>}
+                    {isDeleting.filter((id) => id === story.storyid).length > 0 && <Text>Deleting...</Text>}
                   </Button>
                 </VStack>
               </HStack>
