@@ -30,6 +30,7 @@ export interface Story {
   title: string;
   genre: string;
   userid: string;
+  coverurl: string;
   story: {
     image_prompt: string;
     image_url: string;

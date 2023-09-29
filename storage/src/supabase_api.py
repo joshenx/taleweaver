@@ -74,7 +74,8 @@ def delete_images(db: Client, story_id: int):
 
 def save_users_story(db: Client, user_id: int, story: dict):
     story_id = save_story_info(db, user_id, story['title'], int(story['vocabulary_age']), story['moral'], story['genre'])
-    save_story_pages(db, story_id, story['story'])
+    first_image_url = save_story_pages(db, story_id, story['story'])
+    db.table('stories').update({'coverurl': first_image_url}).eq('storyid', story_id).execute()
     return story_id
 
 def save_story_info(db: Client, user_id: str, title: str, age: int, moral: str, genre: str):
@@ -90,6 +91,7 @@ def save_story_info(db: Client, user_id: str, title: str, age: int, moral: str, 
     return story_id
 
 def save_story_pages(db: Client, story_id: int, pages: list):
+    first_image_url = ''
     for page in pages:
         page_info = {
             "storyid": story_id,
@@ -99,8 +101,12 @@ def save_story_pages(db: Client, story_id: int, pages: list):
         page_id = json.loads(response)['data'][0]['pageid']
 
         image_url = save_image(db, story_id, page['page'], page['image_url'])
+        if page['page'] == 1:
+            first_image_url = image_url
 
         save_page_contents(db, page_id, page['text'], page['image_prompt'], page['subject_description'], image_url)
+
+    return first_image_url
 
 def save_image(db: Client, story_id: int, page_number: int, image_url: str):
     data = requests.get(image_url)
